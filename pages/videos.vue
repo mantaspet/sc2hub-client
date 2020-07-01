@@ -21,10 +21,11 @@ export default {
   components: { MediaCard },
 
   async fetch({ store, error }) {
+    if (store.state.videos.videos) {
+      return;
+    }
     try {
-      if (!store.state.videos.videos) {
-        await store.dispatch('videos/fetchVideos');
-      }
+      await store.dispatch('videos/fetchVideos');
     } catch (e) {
       error({
         statusCode: 503,
@@ -38,7 +39,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('videos', ['fetchVideos', 'fetchNextVideosPage']),
+    ...mapActions('videos', ['fetchNextVideosPage']),
   },
 };
 </script>
