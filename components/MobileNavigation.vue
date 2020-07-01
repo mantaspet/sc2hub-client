@@ -5,7 +5,7 @@
     <nuxt-link
       v-for="page in pages"
       :key="page.name"
-      :to="{ name: page.name }"
+      :to="page.url"
       class="w-1/5 flex flex-col justify-center duration-150 transition-all"
       exact-active-class="text-primary-600"
     >
@@ -25,11 +25,11 @@ export default {
 
   data: () => ({
     pages: [
-      { name: 'Home', icon: 'home' },
-      { name: 'Videos', icon: 'videocam' },
-      { name: 'Calendar', icon: 'calendar' },
-      { name: 'News', icon: 'news' },
-      { name: 'Livestreams', icon: 'play' },
+      { name: 'Home', url: '/', icon: 'home' },
+      { name: 'Videos', url: '/videos', icon: 'videocam' },
+      { name: 'Calendar', url: '/calendar', icon: 'calendar' },
+      { name: 'News', url: '/news', icon: 'news' },
+      { name: 'Livestreams', url: '/livestreams', icon: 'play' },
     ],
     isHidden: false,
   }),
