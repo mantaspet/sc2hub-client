@@ -15,12 +15,12 @@ export const state = () => ({
 
 export const mutations = {
   SET_ARTICLES(state, { Cursor, Items }) {
-    state.paginationCursor = Cursor;
+    state.articlePaginationCursor = Cursor;
     state.articles = decorateArticles(Items);
   },
 
   STORE_ARTICLES_PAGE(state, { Cursor, Items }) {
-    state.paginationCursor = Cursor;
+    state.articlePaginationCursor = Cursor;
     state.articles.push(...decorateArticles(Items));
   },
 };
@@ -33,7 +33,7 @@ export const actions = {
 
   async fetchNextArticlesPage({ state, commit }, params) {
     const response = await this.$axios.$get('/articles', {
-      params: { ...params, from: state.paginationCursor },
+      params: { ...params, from: state.articlePaginationCursor },
     });
     commit('STORE_ARTICLES_PAGE', response);
   },
