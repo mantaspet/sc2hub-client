@@ -3,7 +3,16 @@
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
     >
-      <MediaCard v-for="video in videos" :key="video.ID" :video="video" />
+      <MediaCard
+        v-for="video in videos"
+        :key="video.ID"
+        :url="video.VideoURL"
+        :image-url="video.ThumbnailURL"
+        :title="video.Title"
+        :top-left="video.Duration"
+        :bottom-left="video.ViewCount"
+        :bottom-right="video.CreatedAt"
+      />
       <button v-if="videoPaginationCursor" @click="fetchNextVideosPage">
         Load more
       </button>

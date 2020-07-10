@@ -15,7 +15,7 @@ function decorateVideos(videos) {
     //   v.ThumbnailURL = 'assets/placeholder-thumbnail.png';
     // }
     v.CreatedAt = getHumanizedDate(v.CreatedAt, now);
-    v.ViewCount = getHumanizedNumber(v.ViewCount, 'views');
+    v.ViewCount = getHumanizedNumber(v.ViewCount, 'view', 'views');
     v.Duration = getHumanizedDuration(v.Duration);
     if (v.PlatformID === 1) {
       // twitch video

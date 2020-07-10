@@ -1,14 +1,22 @@
-export function getHumanizedNumber(number, label) {
+export function getHumanizedNumber(number, labelSingular, labelPlural) {
   if (typeof number !== 'number') {
     return '';
   }
+  let result = '';
   if (number > 1000000) {
-    return `${(number / 1000000).toFixed(1)}M ${label}`;
+    result = `${(number / 1000000).toFixed(1)}M`;
   } else if (number > 1000) {
-    return `${(number / 1000).toFixed(1)}K ${label}`;
+    result = `${(number / 1000).toFixed(1)}K`;
   } else {
-    return `${number.toString()} ${label}`;
+    result = number.toString();
   }
+
+  if (number === 1 && labelSingular) {
+    result += ` ${labelSingular}`;
+  } else if (labelPlural) {
+    result += ` ${labelPlural}`;
+  }
+  return result;
 }
 
 // duration argument has to be in seconds
