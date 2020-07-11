@@ -39,3 +39,58 @@ export function getHumanizedDate(date, now) {
   }
   return (timeDiff / 31104000).toFixed(0) + ' years ago';
 }
+
+export function formatDate(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const monthNumber = d.getMonth() + 1;
+  const dayNumber = d.getDate();
+  const month = monthNumber < 10 ? `0${monthNumber}` : monthNumber;
+  const day = dayNumber < 10 ? `0${dayNumber}` : dayNumber;
+  return `${year}-${month}-${day}`;
+}
+
+export function dateRange(from, to) {
+  if (!from || !to || to <= from) {
+    return [];
+  }
+  const _from = new Date(from);
+  const _to = new Date(to);
+  const dates = [];
+  // eslint-disable-next-line no-unmodified-loop-condition
+  for (let d = _from; d < _to; d.setDate(d.getDate() + 1)) {
+    dates.push(new Date(d));
+  }
+  return dates;
+}
+
+export function startOfWeek(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day;
+  return new Date(d.setDate(diff));
+}
+
+export function endOfWeek(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  let diff = d.getDate();
+  if (day !== 6) {
+    diff += 7 - day;
+  }
+  return new Date(d.setDate(diff));
+}
+
+export function startOfMonth(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = d.getMonth();
+  return new Date(year, month, 1);
+}
+
+export function endOfMonth(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = d.getMonth();
+  return new Date(year, month + 1, 0);
+}
