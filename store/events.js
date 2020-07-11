@@ -12,6 +12,7 @@ function decorateEvents(events) {
 export const state = () => ({
   events: null,
   eventFilterParams: {},
+  loadedEventIntervals: [],
 });
 
 export const getters = {
@@ -34,9 +35,27 @@ export const getters = {
 
 export const mutations = {
   STORE_EVENTS(state, events) {
-    state.events = state.events
-      ? [...state.events, ...decorateEvents(events)]
-      : decorateEvents(events);
+    if (!state.events) {
+      state.events = events;
+      return;
+    }
+    const eventMap = {};
+    for (let i = 0; i < state.events.length; i++) {
+      const event = state.events[i];
+      eventMap[event.id] = event;
+    }
+    for (let i = 0; i < events.length; i++) {
+      const event = events[i];
+      eventMap[event.id] = event;
+    }
+    state.events = Object.values(eventMap);
+  },
+
+  STORE_LOADED_INTERVAL(state, interval) {
+    // events don't change often
+    // (only after crawler goes off, which is about every 30 minutes)
+    // so there's no need to query API multiple times for same month's data
+    state.loadedEventIntervals.push(interval);
   },
 
   SET_EVENT_FILTER_PARAMS(state, params) {
@@ -46,10 +65,16 @@ export const mutations = {
 
 export const actions = {
   async fetchEvents({ state, commit }, params) {
-    commit('SET_EVENT_FILTER_PARAMS', params);
+    const interval = `${params.date_from}/${params.date_to}`;
+    if (state.loadedEventIntervals.includes(interval)) {
+      commit('SET_EVENT_FILTER_PARAMS', params);
+      return;
+    }
     const events = await this.$axios.$get('/events', {
-      params: state.eventFilterParams,
+      params,
     });
-    commit('STORE_EVENTS', events);
+    commit('SET_EVENT_FILTER_PARAMS', params);
+    commit('STORE_LOADED_INTERVAL', interval);
+    commit('STORE_EVENTS', decorateEvents(events));
   },
 };

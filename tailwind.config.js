@@ -86,6 +86,7 @@ module.exports = {
   },
   variants: {
     backgroundColor: ['hover', 'focus', 'active'],
+    textColor: ['hover', 'focus', 'active'],
   },
   plugins: [],
   purge: {

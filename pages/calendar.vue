@@ -1,5 +1,11 @@
 <template>
   <section>
+    <CalendarHeader
+      :title="title"
+      class="mt-4 md:mt-0"
+      @previousMonth="previousMonth"
+      @nextMonth="nextMonth"
+    />
     <div
       class="grid grid-cols-1 md:grid-cols-7 border-l md:text-xs font-semibold"
     >
@@ -23,19 +29,27 @@
         <div
           v-for="event in eventsByDate[date]"
           :key="event.id"
-          class="flex justify-between pt-2 pt-md-0"
+          class="flex justify-between pt-2 md:pt-1"
         >
           <span class="whitespace-no-wrap truncate">{{ event.title }}</span>
           <span class="text-neutral-500 ml-1">{{ event.time }}</span>
         </div>
       </div>
     </div>
+    <CalendarHeader
+      v-if="!mdAndUp"
+      :title="title"
+      class="mt-4"
+      @previousMonth="previousMonth"
+      @nextMonth="nextMonth"
+    />
   </section>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import {
+  addMonths,
   dateRange,
   endOfMonth,
   endOfWeek,
@@ -44,23 +58,34 @@ import {
   startOfWeek,
 } from '../util/date';
 import breakpointMixin from '../mixins/breakpoint-mixin';
+import CalendarHeader from '../components/CalendarHeader';
+
+function getDefaultEventFilterParams() {
+  const dateFrom = startOfWeek(startOfMonth(new Date()));
+  const dateTo = endOfWeek(endOfMonth(new Date()));
+  return {
+    date_from: formatDate(dateFrom),
+    date_to: formatDate(dateTo),
+  };
+}
 
 export default {
   name: 'Calendar',
 
+  components: { CalendarHeader },
+
   mixins: [breakpointMixin],
 
-  async fetch({ store, error }) {
+  async fetch({ store, error, route }) {
     if (store.state.events.events) {
       return;
     }
     try {
-      const dateFrom = startOfWeek(startOfMonth(new Date()));
-      const dateTo = endOfWeek(endOfMonth(new Date()));
-      await store.dispatch('events/fetchEvents', {
-        date_from: formatDate(dateFrom),
-        date_to: formatDate(dateTo),
-      });
+      const params =
+        route.query.date_from && route.query.date_to
+          ? route.query
+          : getDefaultEventFilterParams();
+      await store.dispatch('events/fetchEvents', params);
     } catch (e) {
       error({
         statusCode: 503,
@@ -72,6 +97,20 @@ export default {
   data() {
     return {
       weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      months: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ],
     };
   },
 
@@ -89,6 +128,65 @@ export default {
         dates = dates.filter((d) => this.eventsByDate[d]);
       }
       return dates;
+    },
+
+    middleDate() {
+      if (!this.displayedDates.length) {
+        return null;
+      }
+
+      return new Date(
+        this.displayedDates[Math.floor(this.displayedDates.length / 2)],
+      );
+    },
+
+    title() {
+      if (!this.displayedDates.length) {
+        return '';
+      }
+
+      return `${this.months[this.middleDate.getMonth()]}, ${formatDate(
+        this.middleDate,
+      ).slice(0, 4)}`;
+    },
+  },
+
+  async beforeRouteUpdate(to, from, next) {
+    const params =
+      to.query.date_from && to.query.date_to
+        ? to.query
+        : getDefaultEventFilterParams();
+    await this.fetchEvents(params);
+    next();
+  },
+
+  methods: {
+    ...mapActions('events', ['fetchEvents']),
+
+    previousMonth() {
+      const previousMonth = addMonths(this.middleDate, -1);
+      const dateFrom = startOfWeek(startOfMonth(previousMonth));
+      const dateTo = endOfWeek(endOfMonth(previousMonth));
+      this.$router.push({
+        name: 'calendar',
+        query: {
+          date_from: formatDate(dateFrom),
+          date_to: formatDate(dateTo),
+        },
+      });
+    },
+
+    nextMonth() {
+      const nextMonth = addMonths(this.middleDate, 1);
+      const dateFrom = startOfWeek(startOfMonth(nextMonth));
+      const dateTo = endOfWeek(endOfMonth(nextMonth));
+      this.$router.push({
+        name: 'calendar',
+        query: {
+          date_from: formatDate(dateFrom),
+          date_to: formatDate(dateTo),
+        },
+      });
     },
   },
 };

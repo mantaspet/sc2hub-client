@@ -94,3 +94,7 @@ export function endOfMonth(date) {
   const month = d.getMonth();
   return new Date(year, month + 1, 0);
 }
+
+export function addMonths(date, count) {
+  return new Date(date.setMonth(date.getMonth() + count));
+}

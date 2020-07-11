@@ -8,12 +8,12 @@
       <div class="flex">
         <nuxt-link
           v-for="page in leftLinks"
-          :key="page.url"
-          :to="page.url"
+          :key="page.text"
+          :to="page.route"
           class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
           exact-active-class="active-link"
         >
-          {{ page.name }}
+          {{ page.text }}
         </nuxt-link>
       </div>
     </div>
@@ -30,12 +30,12 @@
       <div class="flex">
         <nuxt-link
           v-for="page in rightLinks"
-          :key="page.url"
-          :to="page.url"
+          :key="page.text"
+          :to="page.route"
           class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
           exact-active-class="active-link"
         >
-          {{ page.name }}
+          {{ page.text }}
         </nuxt-link>
       </div>
 
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import scrollPositionMixin from '../mixins/scroll-position-mixin';
 
 export default {
@@ -52,17 +53,25 @@ export default {
 
   mixins: [scrollPositionMixin],
 
-  data() {
-    return {
-      leftLinks: [
-        { name: 'Calendar', url: '/calendar' },
-        { name: 'News', url: '/news' },
-      ],
-      rightLinks: [
-        { name: 'Videos', url: '/videos' },
-        { name: 'Livestreams', url: '/livestreams' },
-      ],
-    };
+  computed: {
+    ...mapState('events', ['eventFilterParams']),
+
+    leftLinks() {
+      return [
+        {
+          text: 'Calendar',
+          route: { name: 'calendar', query: this.eventFilterParams },
+        },
+        { text: 'News', route: { name: 'news' } },
+      ];
+    },
+
+    rightLinks() {
+      return [
+        { text: 'Videos', route: { name: 'videos' } },
+        { text: 'Livestreams', route: { name: 'livestreams' } },
+      ];
+    },
   },
 };
 </script>

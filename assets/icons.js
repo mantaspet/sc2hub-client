@@ -9,6 +9,10 @@ const icons = {
     '<circle cx="12" cy="12" r="10" class="primary"/><path class="secondary" d="M15.51 11.14a1 1 0 0 1 0 1.72l-5 3A1 1 0 0 1 9 15V9a1 1 0 0 1 1.51-.86l5 3z"/>',
   videocam:
     '<path class="secondary" d="M13.59 12l6.7-6.7A1 1 0 0 1 22 6v12a1 1 0 0 1-1.7.7L13.58 12z"/><rect width="14" height="14" x="2" y="5" class="primary" rx="2"/>',
+  'chevron-left':
+    '<circle cx="12" cy="12" r="10" class="primary"></circle><path class="secondary" d="M13.7 15.3a1 1 0 0 1-1.4 1.4l-4-4a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.4 1.4L10.42 12l3.3 3.3z"></path>',
+  'chevron-right':
+    '<circle cx="12" cy="12" r="10" class="primary"></circle><path class="secondary" d="M10.3 8.7a1 1 0 0 1 1.4-1.4l4 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-1.4-1.4l3.29-3.3-3.3-3.3z"></path>',
 };
 
 export default icons;
