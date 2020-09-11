@@ -165,4 +165,8 @@ h6 {
 .video-card-image-wrapper {
   padding-top: 56%;
 }
+
+.error svg {
+  margin: 0 auto;
+}
 /* purgecss end ignore */
