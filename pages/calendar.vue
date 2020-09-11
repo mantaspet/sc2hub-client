@@ -18,6 +18,9 @@
           {{ weekday }}
         </div>
       </template>
+      <div v-if="!displayedDates.length" class="text-center my-2">
+        No events are registered for this month
+      </div>
       <div
         v-for="date in displayedDates"
         :key="date"
@@ -37,7 +40,7 @@
       </div>
     </div>
     <CalendarHeader
-      v-if="!mdAndUp"
+      v-if="!mdAndUp && displayedDates.length"
       :title="title"
       class="mt-4"
       @previousMonth="previousMonth"
@@ -131,20 +134,16 @@ export default {
     },
 
     middleDate() {
-      if (!this.displayedDates.length) {
-        return null;
-      }
+      // eslint-disable-next-line camelcase
+      const { date_from, date_to } = this.eventFilterParams;
+      const timeFrom = new Date(date_from).getTime();
+      const timeTo = new Date(date_to).getTime();
 
-      return new Date(
-        this.displayedDates[Math.floor(this.displayedDates.length / 2)],
-      );
+      const timeMiddle = (timeTo - timeFrom) / 2 + timeFrom;
+      return new Date(timeMiddle);
     },
 
     title() {
-      if (!this.displayedDates.length) {
-        return '';
-      }
-
       return `${this.months[this.middleDate.getMonth()]}, ${formatDate(
         this.middleDate,
       ).slice(0, 4)}`;
