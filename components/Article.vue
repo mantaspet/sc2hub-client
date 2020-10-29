@@ -1,7 +1,7 @@
 <template>
   <a
     :href="url"
-    class="no-underline flex-col sm:flex-row sm:p-2 sm:my-2 sm:-mx-2 transition-all duration-150 hover:bg-neutral-200"
+    class="no-underline flex-col sm:flex-row sm:p-2 sm:my-2 sm:-mx-2 transition-all duration-150 hover:bg-neutral-200 active:bg-neutral-300"
     target="_blank"
   >
     <article class="flex flex-col sm:flex-row sm:items-center">
