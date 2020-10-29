@@ -14,22 +14,28 @@
       />
     </div>
 
-    <button
-      v-if="liveChannelsPaginationCursor"
-      @click="fetchNextLiveChannelsPage"
-    >
-      Load more
-    </button>
+    <div v-if="liveChannelsPaginationCursor" class="pagination-wrapper">
+      <BaseButton
+        v-if="liveChannelsPaginationCursor"
+        block
+        @click="fetchNextLiveChannelsPage"
+      >
+        Load more
+      </BaseButton>
+    </div>
   </section>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import MediaCard from '../components/MediaCard';
+import MediaCard from '@/components/MediaCard';
+import BaseButton from '@/components/base/BaseButton';
 
 export default {
   name: 'LiveChannels',
-  components: { MediaCard },
+
+  components: { BaseButton, MediaCard },
+
   async fetch({ store, error }) {
     if (store.state.channels.liveChannels) {
       return;

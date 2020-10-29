@@ -10,20 +10,22 @@
       :published-at="article.PublishedAt"
       :source="article.Source"
     />
-    <button v-if="articlePaginationCursor" @click="fetchNextArticlesPage">
-      Load more
-    </button>
+
+    <div v-if="articlePaginationCursor" class="pagination-wrapper mx-auto">
+      <BaseButton block @click="fetchNextArticlesPage"> Load more </BaseButton>
+    </div>
   </section>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import Article from '../components/Article';
+import Article from '@/components/Article';
+import BaseButton from '@/components/base/BaseButton';
 
 export default {
   name: 'News',
 
-  components: { Article },
+  components: { BaseButton, Article },
 
   async fetch({ store, error }) {
     if (store.state.articles.articles) {

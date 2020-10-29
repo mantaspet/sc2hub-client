@@ -1,5 +1,5 @@
-import { getHumanizedDate } from '../util/date';
-import { getHumanizedDuration, getHumanizedNumber } from '../util/number';
+import { getHumanizedDate } from '@/util/date';
+import { getHumanizedDuration, getHumanizedNumber } from '@/util/number';
 
 function decorateVideos(videos) {
   const now = new Date();
@@ -29,11 +29,33 @@ function decorateVideos(videos) {
 }
 
 export const state = () => ({
+  lastOpenedVideos: null,
   videos: null,
   videoPaginationCursor: 0,
 });
 
 export const mutations = {
+  SET_LAST_OPENED_VIDEOS(state, videos) {
+    state.lastOpenedVideos = videos;
+  },
+
+  STORE_LAST_OPENED_VIDEO(state, video) {
+    // last 4
+    state.lastOpenedVideos = state.lastOpenedVideos?.filter(
+      (v) => v.ID !== video.ID,
+    );
+    state.lastOpenedVideos = [
+      video,
+      ...(state.lastOpenedVideos?.slice(0, 3) || []),
+    ];
+  },
+
+  REMOVE_LAST_OPENED_VIDEO(state, video) {
+    state.lastOpenedVideos = state.lastOpenedVideos.filter(
+      (v) => v.ID !== video.ID,
+    );
+  },
+
   SET_VIDEOS(state, payload) {
     state.videoPaginationCursor = payload.Cursor;
     state.videos = decorateVideos(payload.Items);
@@ -56,5 +78,38 @@ export const actions = {
       params: { ...params, from: state.videoPaginationCursor },
     });
     commit('STORE_VIDEOS_PAGE', response);
+  },
+
+  loadLastOpenedVideos({ state, commit }) {
+    if (state.lastOpenedVideos) {
+      return;
+    }
+    // try {
+    let videos = localStorage.getItem('lastOpenedVideos');
+    if (videos) {
+      videos = JSON.parse(videos);
+      if (videos.length) {
+        commit('SET_LAST_OPENED_VIDEOS', videos);
+      }
+    }
+    // } catch (e) {
+    //   localStorage.removeItem('lastOpenedVideos');
+    // }
+  },
+
+  storeLastOpenedVideo({ state, commit }, video) {
+    commit('STORE_LAST_OPENED_VIDEO', video);
+    localStorage.setItem(
+      'lastOpenedVideos',
+      JSON.stringify(state.lastOpenedVideos),
+    );
+  },
+
+  removeLastOpenedVideo({ commit }, video) {
+    commit('REMOVE_LAST_OPENED_VIDEO', video);
+    localStorage.setItem(
+      'lastOpenedVideos',
+      JSON.stringify(state.lastOpenedVideos),
+    );
   },
 };

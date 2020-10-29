@@ -10,7 +10,7 @@
           v-for="page in leftLinks"
           :key="page.text"
           :to="page.route"
-          class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
+          class="hover:bg-neutral-100 active:bg-neutral-200 transition-all duration-150 flex items-center px-3"
           exact-active-class="active-link"
         >
           {{ page.text }}
@@ -32,7 +32,7 @@
           v-for="page in rightLinks"
           :key="page.text"
           :to="page.route"
-          class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
+          class="hover:bg-neutral-100 active:bg-neutral-200 transition-all duration-150 flex items-center px-3"
           exact-active-class="active-link"
         >
           {{ page.text }}

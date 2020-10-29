@@ -9,11 +9,20 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import NavigationDesktop from '../components/DesktopNavigation';
 import NavigationMobile from '../components/MobileNavigation';
 
 export default {
   components: { NavigationMobile, NavigationDesktop },
+
+  mounted() {
+    this.loadLastOpenedVideos();
+  },
+
+  methods: {
+    ...mapActions('videos', ['loadLastOpenedVideos']),
+  },
 };
 </script>
 

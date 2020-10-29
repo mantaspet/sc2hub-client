@@ -1,8 +1,6 @@
 <template>
   <section class="content-wrapper flex flex-col items-center justify-center">
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-    >
+    <div class="video-grid">
       <MediaCard
         v-for="video in videos"
         :key="video.ID"
@@ -12,22 +10,24 @@
         :top-left="video.Duration"
         :bottom-left="video.ViewCount"
         :bottom-right="video.CreatedAt"
+        @click="storeLastOpenedVideo(video)"
       />
-      <button v-if="videoPaginationCursor" @click="fetchNextVideosPage">
-        Load more
-      </button>
+    </div>
+    <div v-if="videoPaginationCursor" class="pagination-wrapper">
+      <BaseButton block @click="fetchNextVideosPage"> Load more </BaseButton>
     </div>
   </section>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import MediaCard from '../components/MediaCard.vue';
+import MediaCard from '@/components/MediaCard.vue';
+import BaseButton from '@/components/base/BaseButton';
 
 export default {
   name: 'Videos',
 
-  components: { MediaCard },
+  components: { BaseButton, MediaCard },
 
   async fetch({ store, error }) {
     if (store.state.videos.videos) {
@@ -48,7 +48,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('videos', ['fetchNextVideosPage']),
+    ...mapActions('videos', ['fetchNextVideosPage', 'storeLastOpenedVideo']),
   },
 };
 </script>

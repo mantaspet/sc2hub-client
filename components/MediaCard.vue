@@ -1,5 +1,5 @@
 <template>
-  <a :href="url" class="media-card-wrapper" target="_blank">
+  <a :href="url" target="_blank" @click="$emit('click')">
     <article
       class="flex flex-col h-full mb-4 duration-150 transition-all transform hover:scale-105"
     >
@@ -10,10 +10,12 @@
         >
           {{ topLeft }}
         </div>
-        <div
-          class="absolute top-0 right-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"
-        >
-          {{ topRight }}
+        <div class="absolute top-0 right-0 m-1">
+          <slot name="top-right">
+            <div class="bg-black text-white px-1 rounded text-xs font-bold">
+              {{ topRight }}
+            </div>
+          </slot>
         </div>
         <div
           class="absolute bottom-0 left-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"

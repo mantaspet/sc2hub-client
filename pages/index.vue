@@ -1,68 +1,47 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">sc2hub-client</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
+  <section class="content-wrapper">
+    <template v-if="lastOpenedVideos && lastOpenedVideos.length">
+      <h2 class="py-3 text-center">Continue watching</h2>
+      <div class="video-grid">
+        <MediaCard
+          v-for="video in lastOpenedVideos"
+          :key="video.ID"
+          :url="video.VideoURL"
+          :image-url="video.ThumbnailURL"
+          :title="video.Title"
+          :top-left="video.Duration"
+          :bottom-left="video.ViewCount"
+          :bottom-right="video.CreatedAt"
         >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+          <template #top-right>
+            <BaseIconButton
+              classes="text-white bg-black rounded-full h-6 hover:text-neutral-200 active:text-neutral-300"
+              icon="close"
+              @click.prevent="removeLastOpenedVideo(video)"
+            />
+          </template>
+        </MediaCard>
       </div>
-    </div>
-  </div>
+    </template>
+  </section>
 </template>
 
 <script>
-export default {};
+import { mapState, mapActions } from 'vuex';
+import MediaCard from '@/components/MediaCard';
+import BaseIconButton from '@/components/base/BaseIconButton';
+
+export default {
+  name: 'Home',
+
+  components: { BaseIconButton, MediaCard },
+
+  computed: {
+    ...mapState('videos', ['lastOpenedVideos']),
+  },
+
+  methods: {
+    ...mapActions('videos', ['removeLastOpenedVideo']),
+  },
+};
 </script>
-
-<style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-@apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
