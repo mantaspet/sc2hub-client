@@ -169,4 +169,26 @@ h6 {
 .error svg {
   margin: 0 auto;
 }
+
+.video-grid {
+  @apply grid grid-cols-1 gap-4;
+}
+
+@screen sm {
+  .video-grid {
+    @apply grid-cols-2;
+  }
+}
+
+@screen md {
+  .video-grid {
+    @apply grid-cols-3;
+  }
+}
+
+@screen lg {
+  .video-grid {
+    @apply grid-cols-4;
+  }
+}
 /* purgecss end ignore */
