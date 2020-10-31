@@ -39,7 +39,7 @@
         </nuxt-link>
       </div>
 
-      <div class="flex items-center pr-3">
+      <div class="flex items-center pr-4">
         <BaseMenu>
           <template #activator>
             <BaseIconButton icon="cog" />

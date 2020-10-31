@@ -11,9 +11,11 @@ function decorateVideos(videos) {
         '360',
       );
     }
-    // if (!v.ThumbnailURL) {
-    //   v.ThumbnailURL = 'assets/placeholder-thumbnail.png';
-    // }
+    if (!v.ThumbnailURL) {
+      v.ThumbnailURL = v.PlatformID
+        ? '/twitch-placeholder.jpg'
+        : '/youtube-placeholder.jpg';
+    }
     v.CreatedAt = getHumanizedDate(v.CreatedAt, now);
     v.ViewCount = getHumanizedNumber(v.ViewCount, 'view', 'views');
     v.Duration = getHumanizedDuration(v.Duration);
@@ -33,6 +35,39 @@ export const state = () => ({
   videos: null,
   videoPaginationCursor: 0,
 });
+
+export const getters = {
+  videos(state, getters, rootState, rootGetters) {
+    const playerIdRegexes = rootGetters['players/playerIdRegexes'];
+
+    if (rootState.settings.enableSpoilers || !state.videos) {
+      return state.videos;
+    }
+
+    // spoilers are disabled but playerIds are not loaded yet
+    if (!playerIdRegexes && !rootState.settings.enableSpoilers) {
+      return null;
+    }
+
+    const videos = [];
+    for (let i = 0; i < state.videos.length; i++) {
+      const video = state.videos[i];
+      let videoTitle = video.Title;
+      for (let j = 0; j < playerIdRegexes.length; j++) {
+        videoTitle = videoTitle.replace(playerIdRegexes[j], '<player>');
+      }
+      videos.push({
+        ...video,
+        Title: videoTitle,
+        ThumbnailURL:
+          video.PlatformID === 1
+            ? '/twitch-placeholder.jpg'
+            : '/youtube-placeholder.jpg',
+      });
+    }
+    return videos;
+  },
+};
 
 export const mutations = {
   SET_LAST_OPENED_VIDEOS(state, videos) {

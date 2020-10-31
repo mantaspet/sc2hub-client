@@ -9,19 +9,29 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import NavigationDesktop from '../components/DesktopNavigation';
 import NavigationMobile from '../components/MobileNavigation';
 
 export default {
   components: { NavigationMobile, NavigationDesktop },
 
+  computed: {
+    ...mapState('settings', ['enableSpoilers']),
+  },
+
   mounted() {
     this.loadLastOpenedVideos();
+    this.loadSettings();
+    if (!this.enableSpoilers) {
+      this.loadPlayerIds();
+    }
   },
 
   methods: {
     ...mapActions('videos', ['loadLastOpenedVideos']),
+    ...mapActions('settings', ['loadSettings']),
+    ...mapActions('players', ['loadPlayerIds']),
   },
 };
 </script>

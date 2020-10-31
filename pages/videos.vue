@@ -13,14 +13,14 @@
         @click="storeLastOpenedVideo(video)"
       />
     </div>
-    <div v-if="videoPaginationCursor" class="pagination-wrapper">
+    <div v-if="videoPaginationCursor && videos" class="pagination-wrapper">
       <BaseButton block @click="fetchNextVideosPage"> Load more </BaseButton>
     </div>
   </section>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import MediaCard from '@/components/MediaCard.vue';
 import BaseButton from '@/components/base/BaseButton';
 
@@ -44,7 +44,8 @@ export default {
   },
 
   computed: {
-    ...mapState('videos', ['videos', 'videoPaginationCursor']),
+    ...mapState('videos', ['videoPaginationCursor']),
+    ...mapGetters('videos', ['videos']),
   },
 
   methods: {
