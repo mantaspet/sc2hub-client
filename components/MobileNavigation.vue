@@ -25,11 +25,11 @@ export default {
 
   data: () => ({
     pages: [
-      { name: 'Calendar', url: '/calendar', icon: 'calendar' },
-      { name: 'News', url: '/news', icon: 'news' },
       { name: 'Home', url: '/', icon: 'home' },
       { name: 'Videos', url: '/videos', icon: 'videocam' },
+      { name: 'News', url: '/news', icon: 'news' },
       { name: 'Livestreams', url: '/livestreams', icon: 'play' },
+      { name: 'More', url: '/more', icon: 'dots-horizontal' },
     ],
     isHidden: false,
   }),

@@ -137,6 +137,13 @@
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+html,
+body,
+#__nuxt,
+#__layout {
+  height: 100%;
+}
+
 body {
   font-family: 'Lato', sans-serif;
   /*-webkit-font-smoothing: antialiased;*/

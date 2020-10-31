@@ -2,7 +2,7 @@
   <div class="h-full">
     <NavigationDesktop />
     <NavigationMobile />
-    <div class="mb-20 md:mb-0 t-0 md:mt-16 p-0 sm:p-4">
+    <div class="h-full pb-20 md:pb-0 t-0 md:pt-20 px-0 sm:px-4">
       <Nuxt />
     </div>
   </div>
