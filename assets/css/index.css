@@ -193,6 +193,11 @@ button {
   opacity: 0;
 }
 
+.narrow-page-wrapper {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
 @screen sm {
   .video-grid {
     @apply grid-cols-2;

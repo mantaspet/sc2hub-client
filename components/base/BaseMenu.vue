@@ -1,11 +1,14 @@
 <template>
   <div class="relative" @click.stop="isOpen = !isOpen">
-    <slot name="activator" />
+    <div :class="{ 'text-primary-700': isOpen }" class="h-full">
+      <slot name="activator" :is-open="isOpen" />
+    </div>
     <transition name="fade">
       <div
         v-if="isOpen"
-        :class="`${right ? 'left' : 'right'}-0 mt-${nudgeTop}`"
-        class="absolute top-0 bg-white rounded border shadow-md p-4"
+        :class="`${right ? 'left' : 'right'}-0 p-${padding}`"
+        class="absolute bg-white rounded border shadow-md"
+        :style="`top: ${nudgeTop}px`"
         @click="onContentClick"
       >
         <slot></slot>
@@ -25,11 +28,15 @@ export default {
     },
     nudgeTop: {
       type: [Number, String],
-      default: 8,
+      default: 24,
     },
     closeOnContentClick: {
       type: Boolean,
       default: false,
+    },
+    padding: {
+      type: [Number, String],
+      default: 0,
     },
   },
 

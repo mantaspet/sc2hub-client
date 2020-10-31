@@ -1,3 +1,11 @@
+import {
+  endOfMonth,
+  endOfWeek,
+  formatDate,
+  startOfMonth,
+  startOfWeek,
+} from '@/util/date';
+
 function decorateEvents(events) {
   return events.map((e) => ({
     id: e.ID,
@@ -9,9 +17,18 @@ function decorateEvents(events) {
   }));
 }
 
+function getDefaultEventFilterParams() {
+  const dateFrom = startOfWeek(startOfMonth(new Date()));
+  const dateTo = endOfWeek(endOfMonth(new Date()));
+  return {
+    date_from: formatDate(dateFrom),
+    date_to: formatDate(dateTo),
+  };
+}
+
 export const state = () => ({
   events: null,
-  eventFilterParams: {},
+  eventFilterParams: getDefaultEventFilterParams(),
   loadedEventIntervals: [],
 });
 

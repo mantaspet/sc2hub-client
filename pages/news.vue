@@ -1,5 +1,5 @@
 <template>
-  <section class="news-page-wrapper w-full flex flex-col">
+  <section class="narrow-page-wrapper w-full flex flex-col">
     <Article
       v-for="article in articles"
       :key="article.id"
@@ -52,10 +52,3 @@ export default {
   methods: mapActions('articles', ['fetchNextArticlesPage']),
 };
 </script>
-
-<style scoped>
-.news-page-wrapper {
-  max-width: 48rem;
-  margin: 0 auto;
-}
-</style>

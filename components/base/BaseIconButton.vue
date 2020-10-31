@@ -1,6 +1,7 @@
 <template>
   <button
-    class="hover:text-primary-700 active:text-primary-900"
+    :class="{ 'active:text-primary-900': !noActiveColor }"
+    class="hover:text-primary-700"
     @click="$emit('click', $event)"
   >
     <BaseIcon :icon="icon" :classes="classes" />
@@ -24,6 +25,11 @@ export default {
     classes: {
       type: String,
       default: 'h-6',
+    },
+
+    noActiveColor: {
+      type: Boolean,
+      default: false,
     },
   },
 };

@@ -24,15 +24,20 @@ export default {
   components: { BaseIcon },
 
   data: () => ({
-    pages: [
-      { name: 'Home', url: '/', icon: 'home' },
-      { name: 'Videos', url: '/videos', icon: 'videocam' },
-      { name: 'News', url: '/news', icon: 'news' },
-      { name: 'Livestreams', url: '/livestreams', icon: 'play' },
-      { name: 'More', url: '/more', icon: 'dots-horizontal' },
-    ],
     isHidden: false,
   }),
+
+  computed: {
+    pages() {
+      return [
+        { name: 'Home', url: '/', icon: 'home' },
+        { name: 'Videos', url: '/videos', icon: 'videocam' },
+        { name: 'News', url: '/news', icon: 'news' },
+        { name: 'Livestreams', url: '/livestreams', icon: 'play' },
+        { name: 'More', url: '/more', icon: 'dots-horizontal' },
+      ];
+    },
+  },
 };
 </script>
 

@@ -63,15 +63,6 @@ import {
 import breakpointMixin from '../mixins/breakpoint-mixin';
 import CalendarHeader from '../components/CalendarHeader';
 
-function getDefaultEventFilterParams() {
-  const dateFrom = startOfWeek(startOfMonth(new Date()));
-  const dateTo = endOfWeek(endOfMonth(new Date()));
-  return {
-    date_from: formatDate(dateFrom),
-    date_to: formatDate(dateTo),
-  };
-}
-
 export default {
   name: 'Calendar',
 
@@ -84,11 +75,7 @@ export default {
       return;
     }
     try {
-      const params =
-        route.query.date_from && route.query.date_to
-          ? route.query
-          : getDefaultEventFilterParams();
-      await store.dispatch('events/fetchEvents', params);
+      await store.dispatch('events/fetchEvents', route.query);
     } catch (e) {
       error({
         statusCode: 503,
@@ -151,11 +138,7 @@ export default {
   },
 
   async beforeRouteUpdate(to, from, next) {
-    const params =
-      to.query.date_from && to.query.date_to
-        ? to.query
-        : getDefaultEventFilterParams();
-    await this.fetchEvents(params);
+    await this.fetchEvents(to.query);
     next();
   },
 

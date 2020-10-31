@@ -11,20 +11,20 @@
           :key="page.text"
           :to="page.route"
           class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
-          exact-active-class="active-link"
+          exact-active-class="active-primary-link"
         >
           {{ page.text }}
         </nuxt-link>
       </div>
     </div>
     <div class="flex items-center py-1">
-      <router-link to="/">
+      <a href="https://starcraft2.com" target="_blank">
         <img
           src="~/assets/logo.png"
           class="site-logo h-12 transition-all duration-200"
           alt="site-logo"
         />
-      </router-link>
+      </a>
     </div>
     <div class="flex justify-between flex-1">
       <div class="flex">
@@ -33,16 +33,36 @@
           :key="page.text"
           :to="page.route"
           class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
-          exact-active-class="active-link"
+          exact-active-class="active-primary-link"
         >
           {{ page.text }}
         </nuxt-link>
+        <BaseMenu nudge-top="56" close-on-content-click>
+          <template #activator>
+            <div
+              class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3 h-full cursor-pointer"
+            >
+              More
+            </div>
+          </template>
+          <div>
+            <nuxt-link
+              v-for="page in moreMenuLinks"
+              :key="page.text"
+              :to="page.route"
+              class="hover:bg-neutral-100 block transition-all duration-150 py-4 px-4 whitespace-no-wrap text-center"
+              exact-active-class="active-secondary-link"
+            >
+              {{ page.text }}
+            </nuxt-link>
+          </div>
+        </BaseMenu>
       </div>
 
       <div class="flex items-center pr-4">
-        <BaseMenu>
+        <BaseMenu nudge-top="43" padding="4">
           <template #activator>
-            <BaseIconButton icon="cog" />
+            <BaseIconButton icon="cog" no-active-color />
           </template>
           <Settings class="w-64" />
         </BaseMenu>
@@ -71,17 +91,33 @@ export default {
     leftLinks() {
       return [
         {
-          text: 'Calendar',
-          route: { name: 'calendar', query: this.eventFilterParams },
+          text: 'Home',
+          route: { name: 'index' },
         },
+        { text: 'Videos', route: { name: 'videos' } },
         { text: 'News', route: { name: 'news' } },
       ];
     },
 
     rightLinks() {
       return [
-        { text: 'Videos', route: { name: 'videos' } },
         { text: 'Livestreams', route: { name: 'livestreams' } },
+
+        {
+          text: 'Calendar',
+          route: { name: 'calendar', query: this.eventFilterParams },
+        },
+      ];
+    },
+
+    moreMenuLinks() {
+      return [
+        { text: 'Content creators', route: { name: 'content-creators' } },
+        { text: 'About SC2Hub', route: { name: 'information' } },
+        {
+          text: 'Planned features',
+          route: { name: 'information', hash: '#planned-features' },
+        },
       ];
     },
   },
@@ -93,9 +129,13 @@ nav {
   background-color: var(--panel-background-color);
 }
 
-.active-link {
+.active-primary-link {
   color: var(--color-primary-700);
   box-shadow: inset 0 -2px var(--color-primary-700);
+}
+
+.active-secondary-link {
+  color: var(--color-primary-700);
 }
 
 .site-logo:hover {

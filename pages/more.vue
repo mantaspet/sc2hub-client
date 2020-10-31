@@ -1,11 +1,14 @@
 <template>
   <div class="flex flex-col">
-    <div class="p-4 border-b">
-      <h2 class="mb-4">Pages</h2>
+    <div class="py-4 border-b">
+      <h2 class="mb-4 px-4">Pages</h2>
       <div v-for="page in pages" :key="page.name">
-        <nuxt-link :to="page.url" class="flex">
-          <BaseIcon :icon="page.icon" classes="h-6 mr-4" />
-          {{ page.name }}
+        <nuxt-link
+          :to="page.route"
+          class="hover:bg-neutral-200 flex transition-all duration-150 py-2 px-4 whitespace-no-wrap"
+        >
+          <BaseIcon v-if="page.icon" :icon="page.icon" classes="h-6 mr-4" />
+          {{ page.text }}
         </nuxt-link>
       </div>
     </div>
@@ -15,6 +18,7 @@
 
 <script>
 // only meant to be loaded on small screens
+import { mapState } from 'vuex';
 import Settings from '@/components/Settings';
 import BaseIcon from '@/components/base/BaseIcon';
 
@@ -23,10 +27,23 @@ export default {
 
   components: { BaseIcon, Settings },
 
-  data() {
-    return {
-      pages: [{ name: 'Calendar', url: '/calendar', icon: 'calendar' }],
-    };
+  computed: {
+    ...mapState('events', ['eventFilterParams']),
+
+    pages() {
+      return [
+        {
+          text: 'Calendar',
+          route: { name: 'calendar', query: this.eventFilterParams },
+        }, // , icon: 'calendar'
+        { text: 'Content creators', route: { name: 'content-creators' } },
+        { text: 'About SC2Hub', route: { name: 'information' } },
+        {
+          text: 'Planned features',
+          route: { name: 'information', hash: '#planned-features' },
+        },
+      ];
+    },
   },
 };
 </script>
