@@ -39,17 +39,29 @@
         </nuxt-link>
       </div>
 
-      <div></div>
+      <div class="flex items-center pr-3">
+        <BaseMenu>
+          <template #activator>
+            <BaseIconButton icon="cog" />
+          </template>
+          <Settings class="w-64" />
+        </BaseMenu>
+      </div>
     </div>
   </nav>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import scrollPositionMixin from '../mixins/scroll-position-mixin';
+import BaseIconButton from '@/components/base/BaseIconButton';
+import scrollPositionMixin from '@/mixins/scroll-position-mixin';
+import BaseMenu from '@/components/base/BaseMenu';
+import Settings from '@/components/Settings';
 
 export default {
   name: 'NavigationDesktop',
+
+  components: { Settings, BaseMenu, BaseIconButton },
 
   mixins: [scrollPositionMixin],
 

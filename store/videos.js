@@ -84,17 +84,17 @@ export const actions = {
     if (state.lastOpenedVideos) {
       return;
     }
-    // try {
-    let videos = localStorage.getItem('lastOpenedVideos');
-    if (videos) {
-      videos = JSON.parse(videos);
-      if (videos.length) {
-        commit('SET_LAST_OPENED_VIDEOS', videos);
+    try {
+      let videos = localStorage.getItem('lastOpenedVideos');
+      if (videos) {
+        videos = JSON.parse(videos);
+        if (videos.length) {
+          commit('SET_LAST_OPENED_VIDEOS', videos);
+        }
       }
+    } catch (e) {
+      localStorage.removeItem('lastOpenedVideos');
     }
-    // } catch (e) {
-    //   localStorage.removeItem('lastOpenedVideos');
-    // }
   },
 
   storeLastOpenedVideo({ state, commit }, video) {

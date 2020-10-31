@@ -183,6 +183,16 @@ button {
   @apply px-3 mb-6 mt-3 w-full;
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 @screen sm {
   .video-grid {
     @apply grid-cols-2;
