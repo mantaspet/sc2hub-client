@@ -6,6 +6,11 @@
         :key="video.ID"
         :url="video.VideoURL"
         :image-url="video.ThumbnailURL"
+        :fallback-image-url="
+          video.PlatformID === 1
+            ? '/twitch-placeholder.jpg'
+            : '/youtube-placeholder.jpg'
+        "
         :title="video.Title"
         :top-left="video.Duration"
         :bottom-left="video.ViewCount"

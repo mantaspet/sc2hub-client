@@ -4,7 +4,11 @@
       class="flex flex-col h-full mb-4 duration-150 transition-all transform hover:scale-105"
     >
       <div class="bg-gray-200 relative video-card-image-wrapper">
-        <img :src="imageUrl" class="absolute top-0 left-0 w-full" />
+        <img
+          :src="currentImageUrl"
+          class="absolute top-0 left-0 w-full"
+          @error="failedToLoadImage = true"
+        />
         <div
           class="absolute top-0 left-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"
         >
@@ -50,6 +54,11 @@ export default {
       default: '', // TODO: add placeholder image URL
     },
 
+    fallbackImageUrl: {
+      type: String,
+      default: '',
+    },
+
     title: {
       type: String,
       default: '',
@@ -73,6 +82,21 @@ export default {
     bottomRight: {
       type: String,
       default: '',
+    },
+  },
+
+  data() {
+    return {
+      failedToLoadImage: false,
+    };
+  },
+
+  computed: {
+    currentImageUrl() {
+      if (this.failedToLoadImage) {
+        return this.fallbackImageUrl || '/youtube-placeholder.jpg';
+      }
+      return this.imageUrl;
     },
   },
 };
