@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full flex flex-col justify-end md:justify-start">
+  <div class="flex flex-col">
     <div class="p-4 border-b">
       <h2 class="mb-4">Pages</h2>
       <div v-for="page in pages" :key="page.name">
