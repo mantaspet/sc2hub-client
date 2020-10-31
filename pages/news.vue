@@ -11,14 +11,17 @@
       :source="article.Source"
     />
 
-    <div v-if="articlePaginationCursor" class="pagination-wrapper mx-auto">
+    <div
+      v-if="articlePaginationCursor && articles"
+      class="pagination-wrapper mx-auto"
+    >
       <BaseButton block @click="fetchNextArticlesPage"> Load more </BaseButton>
     </div>
   </section>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import Article from '@/components/Article';
 import BaseButton from '@/components/base/BaseButton';
 
@@ -41,7 +44,10 @@ export default {
     }
   },
 
-  computed: mapState('articles', ['articles', 'articlePaginationCursor']),
+  computed: {
+    ...mapState('articles', ['articlePaginationCursor']),
+    ...mapGetters('articles', ['articles']),
+  },
 
   methods: mapActions('articles', ['fetchNextArticlesPage']),
 };
