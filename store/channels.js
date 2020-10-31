@@ -20,6 +20,8 @@ export const state = () => ({
 export const getters = {
   liveChannels(state, getters, rootState, rootGetters) {
     const playerIdRegexes = rootGetters['players/playerIdRegexes'];
+    const matchupRegexes = rootGetters['matchups/matchupRegexes'];
+    const raceRegexes = rootGetters['races/raceRegexes'];
 
     if (rootState.settings.enableSpoilers || !state.liveChannels) {
       return state.liveChannels;
@@ -36,6 +38,12 @@ export const getters = {
       let channelTitle = channel.title;
       for (let j = 0; j < playerIdRegexes.length; j++) {
         channelTitle = channelTitle.replace(playerIdRegexes[j], '<player>');
+      }
+      for (let j = 0; j < matchupRegexes.length; j++) {
+        channelTitle = channelTitle.replace(matchupRegexes[j], '<matchup>');
+      }
+      for (let j = 0; j < raceRegexes.length; j++) {
+        channelTitle = channelTitle.replace(raceRegexes[j], '<race>');
       }
       channels.push({
         ...channel,

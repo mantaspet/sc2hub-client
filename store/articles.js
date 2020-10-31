@@ -16,6 +16,8 @@ export const state = () => ({
 export const getters = {
   articles(state, getters, rootState, rootGetters) {
     const playerIdRegexes = rootGetters['players/playerIdRegexes'];
+    const matchupRegexes = rootGetters['matchups/matchupRegexes'];
+    const raceRegexes = rootGetters['races/raceRegexes'];
 
     if (rootState.settings.enableSpoilers || !state.articles) {
       return state.articles;
@@ -32,6 +34,12 @@ export const getters = {
       let articleTitle = article.Title;
       for (let j = 0; j < playerIdRegexes.length; j++) {
         articleTitle = articleTitle.replace(playerIdRegexes[j], '<player>');
+      }
+      for (let j = 0; j < matchupRegexes.length; j++) {
+        articleTitle = articleTitle.replace(matchupRegexes[j], '<matchup>');
+      }
+      for (let j = 0; j < raceRegexes.length; j++) {
+        articleTitle = articleTitle.replace(raceRegexes[j], '<race>');
       }
       articles.push({
         ...article,

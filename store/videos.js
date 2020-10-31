@@ -39,6 +39,8 @@ export const state = () => ({
 export const getters = {
   videos(state, getters, rootState, rootGetters) {
     const playerIdRegexes = rootGetters['players/playerIdRegexes'];
+    const matchupRegexes = rootGetters['matchups/matchupRegexes'];
+    const raceRegexes = rootGetters['races/raceRegexes'];
 
     if (rootState.settings.enableSpoilers || !state.videos) {
       return state.videos;
@@ -55,6 +57,12 @@ export const getters = {
       let videoTitle = video.Title;
       for (let j = 0; j < playerIdRegexes.length; j++) {
         videoTitle = videoTitle.replace(playerIdRegexes[j], '<player>');
+      }
+      for (let j = 0; j < matchupRegexes.length; j++) {
+        videoTitle = videoTitle.replace(matchupRegexes[j], '<matchup>');
+      }
+      for (let j = 0; j < raceRegexes.length; j++) {
+        videoTitle = videoTitle.replace(raceRegexes[j], '<race>');
       }
       videos.push({
         ...video,
@@ -132,8 +140,11 @@ export const actions = {
     }
   },
 
-  storeLastOpenedVideo({ state, commit }, video) {
-    commit('STORE_LAST_OPENED_VIDEO', video);
+  storeLastOpenedVideo({ rootState, state, commit }, video) {
+    const videoWithSpoilers = !rootState.settings.enableSpoilers
+      ? state.videos.find((v) => v.ID === video.ID)
+      : video;
+    commit('STORE_LAST_OPENED_VIDEO', videoWithSpoilers);
     localStorage.setItem(
       'lastOpenedVideos',
       JSON.stringify(state.lastOpenedVideos),

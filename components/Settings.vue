@@ -3,13 +3,13 @@
     <h2 class="mb-4">Settings</h2>
     <div class="flex justify-between items-center">
       <div>Enable spoilers?</div>
-      <BaseSwitch :checked="enableSpoilers" @change="onSpoilersToggle" />
+      <BaseSwitch :checked="enableSpoilers" @change="toggleSpoilers" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import BaseSwitch from '@/components/base/BaseSwitch';
 
 export default {
@@ -22,15 +22,8 @@ export default {
   },
 
   methods: {
-    ...mapMutations('settings', ['SET_SETTING']),
     ...mapActions('players', ['loadPlayerIds']),
-
-    onSpoilersToggle(value) {
-      this.SET_SETTING({ key: 'enableSpoilers', value });
-      if (!value) {
-        this.loadPlayerIds();
-      }
-    },
+    ...mapActions('settings', ['toggleSpoilers']),
   },
 };
 </script>

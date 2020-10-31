@@ -16,6 +16,13 @@ export const mutations = {
 };
 
 export const actions = {
+  async toggleSpoilers({ commit, rootState, dispatch }, value) {
+    if (!value) {
+      await dispatch('players/loadPlayerIds', null, { root: true });
+    }
+    commit('SET_SETTING', { key: 'enableSpoilers', value });
+  },
+
   loadSettings({ commit }) {
     try {
       let settings = localStorage.getItem('settings');
