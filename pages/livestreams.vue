@@ -14,7 +14,10 @@
       />
     </div>
 
-    <div v-if="liveChannelsPaginationCursor" class="pagination-wrapper">
+    <div
+      v-if="liveChannelsPaginationCursor && liveChannels"
+      class="pagination-wrapper"
+    >
       <BaseButton
         v-if="liveChannelsPaginationCursor"
         block
@@ -27,7 +30,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import MediaCard from '@/components/MediaCard';
 import BaseButton from '@/components/base/BaseButton';
 
@@ -52,7 +55,8 @@ export default {
   },
 
   computed: {
-    ...mapState('channels', ['liveChannels', 'liveChannelsPaginationCursor']),
+    ...mapState('channels', ['liveChannelsPaginationCursor']),
+    ...mapGetters('channels', ['liveChannels']),
   },
 
   methods: {

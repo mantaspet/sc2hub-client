@@ -17,6 +17,36 @@ export const state = () => ({
   // liveRegisteredChannels: null,
 });
 
+export const getters = {
+  liveChannels(state, getters, rootState, rootGetters) {
+    const playerIdRegexes = rootGetters['players/playerIdRegexes'];
+
+    if (rootState.settings.enableSpoilers || !state.liveChannels) {
+      return state.liveChannels;
+    }
+
+    // spoilers are disabled but playerIds are not loaded yet
+    if (!playerIdRegexes && !rootState.settings.enableSpoilers) {
+      return null;
+    }
+
+    const channels = [];
+    for (let i = 0; i < state.liveChannels.length; i++) {
+      const channel = state.liveChannels[i];
+      let channelTitle = channel.title;
+      for (let j = 0; j < playerIdRegexes.length; j++) {
+        channelTitle = channelTitle.replace(playerIdRegexes[j], '<player>');
+      }
+      channels.push({
+        ...channel,
+        title: channelTitle,
+        thumbnailUrl: '/twitch-placeholder.jpg',
+      });
+    }
+    return channels;
+  },
+};
+
 export const mutations = {
   SET_LIVE_CHANNELS(state, { Items, Cursor }) {
     state.liveChannels = decorateChannels(Items);

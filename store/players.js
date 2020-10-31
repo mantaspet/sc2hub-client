@@ -9,9 +9,10 @@ export const getters = {
     }
     const regexes = [];
     for (let i = 0; i < state.playerIds.length; i++) {
-      // if (!state.playerIds[i] === 'Winter') {
-      // remove player 'Winter' to not obscure WCS Winter event titles
-      regexes.push(new RegExp(`\\b${state.playerIds[i]}\\b`, 'gi'));
+      if (state.playerIds[i] !== 'Winter') {
+        // remove player 'Winter' to not obscure WCS and ESL Winter event titles
+        regexes.push(new RegExp(`\\b${state.playerIds[i]}\\b`, 'gi'));
+      }
     }
     return regexes;
   },
