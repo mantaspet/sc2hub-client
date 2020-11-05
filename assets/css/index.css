@@ -183,6 +183,7 @@ button {
   @apply px-3 mb-6 mt-3 w-full;
 }
 
+/* transitions start */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.15s;
@@ -192,6 +193,27 @@ button {
 .fade-leave-to {
   opacity: 0;
 }
+
+.slide-x-enter-active,
+.slide-x-leave-active {
+  transition: transform 0.15s ease-out;
+}
+
+.slide-x-enter,
+.slide-x-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-y-enter-active,
+.slide-y-leave-active {
+  transition: transform 0.15s ease-out;
+}
+
+.slide-y-enter,
+.slide-y-leave-to {
+  transform: translateY(100%);
+}
+/* transitions end */
 
 .narrow-page-wrapper {
   max-width: 48rem;
