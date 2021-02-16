@@ -21,23 +21,23 @@
     <div v-if="videoPaginationCursor && videos" class="pagination-wrapper">
       <BaseButton block @click="fetchNextVideosPage"> Load more </BaseButton>
     </div>
-    <BaseFloatingActionButton
-      icon="search"
-      :top="mdAndUp ? '80px' : null"
-      :bottom="mdAndUp ? null : '80px'"
-      right="16px"
-      @click="isDrawerOpen = true"
-    />
-    <BaseOverlay :is-displayed="isDrawerOpen" @click="isDrawerOpen = false" />
-    <BaseDrawer
-      :is-open="isDrawerOpen"
-      :top="mdAndUp ? '80px' : null"
-      :right="mdAndUp ? 0 : null"
-      :bottom="mdAndUp ? null : 0"
-      @click:overlay="updateFilters"
-    >
-      <div class="w-32 h-64">Hello world</div>
-    </BaseDrawer>
+    <!--    <BaseFloatingActionButton-->
+    <!--      icon="search"-->
+    <!--      :top="mdAndUp ? '80px' : null"-->
+    <!--      :bottom="mdAndUp ? null : '80px'"-->
+    <!--      right="16px"-->
+    <!--      @click="isDrawerOpen = true"-->
+    <!--    />-->
+    <!--    <BaseOverlay :is-displayed="isDrawerOpen" @click="isDrawerOpen = false" />-->
+    <!--    <BaseDrawer-->
+    <!--      :is-open="isDrawerOpen"-->
+    <!--      :top="mdAndUp ? '80px' : null"-->
+    <!--      :right="mdAndUp ? 0 : null"-->
+    <!--      :bottom="mdAndUp ? null : 0"-->
+    <!--      @click:overlay="updateFilters"-->
+    <!--    >-->
+    <!--      <div class="w-32 h-64">Hello world</div>-->
+    <!--    </BaseDrawer>-->
   </section>
 </template>
 
@@ -45,18 +45,18 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import MediaCard from '@/components/MediaCard.vue';
 import BaseButton from '@/components/base/BaseButton';
-import BaseFloatingActionButton from '@/components/base/BaseFloatingActionButton';
-import BaseDrawer from '@/components/base/BaseDrawer';
-import BaseOverlay from '@/components/base/BaseOverlay';
+// import BaseFloatingActionButton from '@/components/base/BaseFloatingActionButton';
+// import BaseDrawer from '@/components/base/BaseDrawer';
+// import BaseOverlay from '@/components/base/BaseOverlay';
 import breakpointMixin from '@/mixins/breakpoint-mixin';
 
 export default {
   name: 'Videos',
 
   components: {
-    BaseOverlay,
-    BaseDrawer,
-    BaseFloatingActionButton,
+    // BaseOverlay,
+    // BaseDrawer,
+    // BaseFloatingActionButton,
     BaseButton,
     MediaCard,
   },

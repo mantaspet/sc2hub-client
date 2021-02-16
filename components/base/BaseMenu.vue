@@ -7,7 +7,7 @@
       <div
         v-if="isOpen"
         :class="`${right ? 'left' : 'right'}-0 p-${padding}`"
-        class="absolute bg-white rounded border shadow-md"
+        class="absolute bg-white rounded border shadow-md z-20"
         :style="`top: ${nudgeTop}px`"
         @click="onContentClick"
       >
