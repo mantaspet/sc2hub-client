@@ -63,17 +63,6 @@ export default {
 
   mixins: [breakpointMixin],
 
-  data() {
-    return {
-      isDrawerOpen: false,
-    };
-  },
-
-  computed: {
-    ...mapState('videos', ['videoPaginationCursor']),
-    ...mapGetters('videos', ['videos']),
-  },
-
   async fetch({ store, error }) {
     if (store.state.videos.videos) {
       return;
@@ -86,6 +75,17 @@ export default {
         message: 'Unable to fetch videos at this time. Please try again later.',
       });
     }
+  },
+
+  data() {
+    return {
+      isDrawerOpen: false,
+    };
+  },
+
+  computed: {
+    ...mapState('videos', ['videoPaginationCursor']),
+    ...mapGetters('videos', ['videos']),
   },
 
   methods: {

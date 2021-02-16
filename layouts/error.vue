@@ -9,7 +9,15 @@
 
 <script>
 export default {
-  props: ['error'],
+  props: {
+    error: {
+      type: Object,
+      default: () => ({
+        status: 500,
+        message: 'Oops, something went wrong',
+      }),
+    },
+  },
 
   layout: 'default', // If you prefers you can set a custom layout for the error page
 };
