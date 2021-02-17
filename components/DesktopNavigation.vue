@@ -18,13 +18,13 @@
       </div>
     </div>
     <div class="flex items-center py-1">
-      <a href="https://starcraft2.com" target="_blank">
+      <nuxt-link to="/">
         <img
           src="~/assets/logo.png"
           class="site-logo h-12 transition-all duration-200"
           alt="site-logo"
         />
-      </a>
+      </nuxt-link>
     </div>
     <div class="flex justify-between flex-1">
       <div class="flex">

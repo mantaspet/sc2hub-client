@@ -73,6 +73,10 @@
     <h1 id="planned-features" class="pt-8">Planned features</h1>
     <ul class="py-4">
       <li>Dark theme</li>
+      <li>
+        "Must watch" voting (votes tracked by IP address to prevent/reduce
+        spamming)
+      </li>
       <li>Your suggestion?</li>
     </ul>
   </div>

@@ -1,7 +1,7 @@
 <template>
   <section class="content-wrapper">
     <template v-if="liveRegisteredChannels && liveRegisteredChannels.length">
-      <h2 class="py-3 text-center">Live tournament channels</h2>
+      <h2 class="py-3 text-center text-xl">Live tournament channels</h2>
       <div class="video-grid pb-8">
         <MediaCard
           v-for="channel in liveRegisteredChannels"
@@ -15,7 +15,7 @@
       </div>
     </template>
     <template v-if="lastOpenedVideos && lastOpenedVideos.length">
-      <h2 class="py-3 text-center">Continue watching</h2>
+      <h2 class="py-3 text-center text-xl">Continue watching</h2>
       <div class="video-grid pb-8">
         <MediaCard
           v-for="video in lastOpenedVideos"
@@ -37,6 +37,21 @@
         </MediaCard>
       </div>
     </template>
+    <template v-if="recentArticles && recentArticles.length">
+      <h2 class="py-3 text-center text-xl">Latest news</h2>
+      <section class="narrow-page-wrapper w-full flex flex-col">
+        <Article
+          v-for="article in recentArticles"
+          :key="article.id"
+          :title="article.Title"
+          :image="article.ThumbnailURL"
+          :excerpt="article.Excerpt"
+          :url="article.URL"
+          :published-at="article.PublishedAt"
+          :source="article.Source"
+        />
+      </section>
+    </template>
   </section>
 </template>
 
@@ -55,11 +70,15 @@ export default {
     if (!store.state.channels.liveRegisteredChannels) {
       requests.push(store.dispatch('channels/fetchLiveRegisteredChannels'));
     }
+    if (!store.state.articles.recentArticles) {
+      requests.push(store.dispatch('articles/fetchRecentArticles'));
+    }
     await Promise.all(requests);
   },
 
   computed: {
     ...mapState('videos', ['lastOpenedVideos']),
+    ...mapGetters('articles', ['recentArticles']),
     ...mapGetters('channels', ['liveRegisteredChannels']),
   },
 
