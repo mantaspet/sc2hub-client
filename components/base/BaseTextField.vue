@@ -3,8 +3,17 @@
     <label class="block">
       {{ label }}
       <input
+        v-if="!textarea"
         :value="value"
         :type="type"
+        :placeholder="placeholder"
+        class="w-full rounded border p-2 border-gray-300"
+        @input="$emit('input', $event.target.value)"
+      />
+      <textarea
+        v-else
+        :value="value"
+        :rows="rows"
         :placeholder="placeholder"
         class="w-full rounded border p-2 border-gray-300"
         @input="$emit('input', $event.target.value)"
@@ -44,6 +53,16 @@ export default {
     errors: {
       type: String,
       default: '',
+    },
+
+    textarea: {
+      type: Boolean,
+      default: false,
+    },
+
+    rows: {
+      type: Number,
+      default: 4,
     },
   },
 };
