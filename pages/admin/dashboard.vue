@@ -9,8 +9,8 @@
       Crawl events
     </BaseButton>
     <BaseButton
-      :disabled="loading['get:/events/crawl']"
-      :loading="loading['get:/events/crawl']"
+      :disabled="loading['get:/videos/query-apis']"
+      :loading="loading['get:/videos/query-apis']"
       @click="initVideoQueries"
     >
       Query videos
