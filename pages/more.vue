@@ -29,9 +29,10 @@ export default {
 
   computed: {
     ...mapState('events', ['eventFilterParams']),
+    ...mapState('auth', ['accessToken']),
 
     pages() {
-      return [
+      const pages = [
         {
           text: 'Calendar',
           route: { name: 'calendar', query: this.eventFilterParams },
@@ -43,6 +44,13 @@ export default {
           route: { name: 'information', hash: '#planned-features' },
         },
       ];
+      if (this.accessToken) {
+        pages.unshift({
+          text: 'Admin dashboard',
+          route: { name: 'admin-dashboard' },
+        });
+      }
+      return pages;
     },
   },
 };
