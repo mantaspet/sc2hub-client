@@ -4,16 +4,7 @@
     :class="`${scrollY > 0 ? 'shadow-md' : 'border-b'}`"
   >
     <div class="flex justify-between flex-1">
-      <div class="flex">
-        <nuxt-link
-          v-if="accessToken"
-          to="/admin/dashboard"
-          class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
-          exact-active-class="active-primary-link"
-        >
-          Admin
-        </nuxt-link>
-      </div>
+      <div></div>
       <div class="flex">
         <nuxt-link
           v-for="page in leftLinks"
@@ -121,7 +112,7 @@ export default {
     },
 
     moreMenuLinks() {
-      return [
+      const links = [
         { text: 'Content creators', route: { name: 'content-creators' } },
         { text: 'About SC2Hub', route: { name: 'information' } },
         {
@@ -129,6 +120,13 @@ export default {
           route: { name: 'information', hash: '#planned-features' },
         },
       ];
+      if (this.accessToken) {
+        links.unshift({
+          text: 'Admin dashboard',
+          route: { name: 'admin-dashboard' },
+        });
+      }
+      return links;
     },
   },
 };

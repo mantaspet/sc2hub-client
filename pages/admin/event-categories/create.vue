@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div class="px-3 pb-8">
     <EventCategoryForm
       :form-item="newEventCategory"
       :errors="eventCategoryValidationErrors"
       :saving="loading['post:/event-categories']"
-      @save="storeEventCategory"
-      @clear:errors="CLEAR_VALIDATION_ERRORS"
+      @save="createEventCategory"
+      @clear:errors="clearEventCategoryValidationErrors"
     />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'CreateEventCategory',
@@ -27,8 +27,10 @@ export default {
   },
 
   methods: {
-    ...mapMutations('eventCategories', ['CLEAR_VALIDATION_ERRORS']),
-    ...mapActions('eventCategories', ['storeEventCategory']),
+    ...mapActions('eventCategories', [
+      'createEventCategory',
+      'clearEventCategoryValidationErrors',
+    ]),
   },
 };
 </script>

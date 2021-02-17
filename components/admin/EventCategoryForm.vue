@@ -1,5 +1,5 @@
 <template>
-  <form class="px-3" @submit.prevent="$emit('save', eventCategory)">
+  <form @submit.prevent="$emit('save', eventCategory)">
     <BaseTextField
       v-model="eventCategory.Name"
       :errors="errors.Name"

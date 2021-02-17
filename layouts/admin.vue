@@ -28,6 +28,8 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 
 export default {
+  name: 'AdminLayout',
+
   data() {
     return {
       adminLinks: [

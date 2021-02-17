@@ -71,7 +71,7 @@ export const actions = {
     return eventCategory;
   },
 
-  async storeEventCategory({ commit }, eventCategory) {
+  async createEventCategory({ commit }, eventCategory) {
     try {
       const newCategory = await this.$axios.$post(
         '/event-categories',
@@ -81,6 +81,12 @@ export const actions = {
       await this.$router.push('/admin/event-categories');
     } catch (e) {
       commit('SET_EVENT_CATEGORY_VALIDATION_ERRORS', e.response?.data || {});
+    }
+  },
+
+  clearEventCategoryValidationErrors({ commit, state }, field) {
+    if (state.eventCategoryValidationErrors[field]) {
+      commit('CLEAR_VALIDATION_ERRORS', field);
     }
   },
 
@@ -94,7 +100,6 @@ export const actions = {
       await this.$router.push('/admin/event-categories');
     } catch (e) {
       commit('SET_EVENT_CATEGORY_VALIDATION_ERRORS', e.response?.data || {});
-      throw e;
     }
   },
 

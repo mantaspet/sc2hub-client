@@ -9,15 +9,18 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import NavigationDesktop from '../components/DesktopNavigation';
 import NavigationMobile from '../components/MobileNavigation';
 
 export default {
+  name: 'DefaultLayout',
+
   components: { NavigationMobile, NavigationDesktop },
 
   computed: {
     ...mapState('settings', ['enableSpoilers']),
+    ...mapState('auth', ['accessToken']),
   },
 
   mounted() {
@@ -26,9 +29,16 @@ export default {
     if (!this.enableSpoilers) {
       this.loadPlayerIds();
     }
+    if (!this.accessToken) {
+      const token = localStorage.sc2hubAccessToken;
+      if (token) {
+        this.SET_ACCESS_TOKEN(token);
+      }
+    }
   },
 
   methods: {
+    ...mapMutations('auth', ['SET_ACCESS_TOKEN']),
     ...mapActions('videos', ['loadLastOpenedVideos']),
     ...mapActions('settings', ['loadSettings']),
     ...mapActions('players', ['loadPlayerIds']),
