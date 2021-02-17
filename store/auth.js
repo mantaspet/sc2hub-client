@@ -12,12 +12,18 @@ export const mutations = {
 export const actions = {
   async login({ commit }, payload) {
     try {
-      const response = await this.$axios.$post('/auth/token', payload);
-      commit('SET_ACCESS_TOKEN', response);
+      const token = await this.$axios.$post('/auth/token', payload);
+      commit('SET_ACCESS_TOKEN', token);
       this.$router.push('/admin/dashboard');
-      localStorage.setItem('sc2hubAccessToken', response);
+      localStorage.sc2hubAccessToken = token;
     } catch (e) {
       alert('Wrong username or password');
     }
+  },
+
+  logout({ commit }) {
+    localStorage.removeItem('sc2hubAccessToken');
+    commit('SET_ACCESS_TOKEN', null);
+    this.$router.push('/login');
   },
 };

@@ -220,6 +220,14 @@ button {
   margin: 0 auto;
 }
 
+.link {
+  @apply text-primary-500;
+}
+
+.link:hover {
+  @apply text-primary-700 underline;
+}
+
 @screen sm {
   .video-grid {
     @apply grid-cols-2;

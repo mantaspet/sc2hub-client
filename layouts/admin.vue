@@ -10,6 +10,12 @@
       >
         {{ page.text }}
       </nuxt-link>
+      <span
+        class="hover:bg-primary-200 transition-all duration-150 rounded p-3 m-2 cursor-pointer"
+        @click="logout"
+      >
+        Logout
+      </span>
     </div>
     <hr />
     <div class="sm:px-4 sm:pt-4">
@@ -52,6 +58,7 @@ export default {
 
   methods: {
     ...mapActions('settings', ['loadSettings']),
+    ...mapActions('auth', ['logout']),
     ...mapMutations('auth', ['SET_ACCESS_TOKEN']),
   },
 };

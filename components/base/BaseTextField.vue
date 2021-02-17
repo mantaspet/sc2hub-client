@@ -1,5 +1,5 @@
 <template>
-  <div class="col-span-3 sm:col-span-2">
+  <div class="col-span-3 sm:col-span-2 mb-4">
     <label class="block">
       {{ label }}
       <input
@@ -10,6 +10,9 @@
         @input="$emit('input', $event.target.value)"
       />
     </label>
+    <div class="text-sm text-negative-500">
+      {{ errors }}
+    </div>
   </div>
 </template>
 
@@ -20,7 +23,7 @@ export default {
   props: {
     value: {
       type: String,
-      required: true,
+      default: '',
     },
 
     label: {
@@ -34,6 +37,11 @@ export default {
     },
 
     placeholder: {
+      type: String,
+      default: '',
+    },
+
+    errors: {
       type: String,
       default: '',
     },
