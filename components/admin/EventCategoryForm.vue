@@ -18,6 +18,13 @@
       label="InfoURL"
       @input="$emit('clear:errors', 'InfoURL')"
     />
+    <BaseTextField
+      v-model="eventCategory.Description"
+      :errors="errors.Description"
+      label="Description"
+      textarea
+      @input="$emit('clear:errors', 'Description')"
+    />
     <BaseButton :disabled="saving" :loading="saving" type="submit">
       Save
     </BaseButton>
