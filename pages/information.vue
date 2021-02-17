@@ -4,15 +4,15 @@
     <div class="pb-8 pt-4 border-b">
       <p class="mb-4">
         SC2Hub is a hobby project I've started to make it easier to follow SC2
-        esports scene (and finish my bachelor's degree. Was a little awkward
-        presenting this to a group of scientists/lecturers who probably haven't
-        heard of esports up until that point).
+        esports scene. I love StarCraft II and want to see it do well, so I hope
+        that this project could make it's esports scene and content creators be
+        more easily discoverable.
       </p>
       <p class="mb-4">
-        It requires minimal administration efforts as the only data that needs
-        to be entered are the event categories (e.g. GSL, ESL) and the channels
-        where those events are livestreamed, where you can find their VoDs. The
-        rest the server does on it's own, periodically checking
+        SC2Hub requires minimal administration efforts as the only data that
+        needs to be entered are the event categories (e.g. GSL, ESL) and the
+        channels where those events are livestreamed, where you can find their
+        VoDs. The rest the server does on it's own, periodically checking
         <a href="https://twitch.net" class="link" target="_blank">Twitch</a> and
         <a href="https://youtube.come" class="link" target="_blank">Youtube</a>
         for any new videos,
