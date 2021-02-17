@@ -1,8 +1,22 @@
 <template>
   <section class="content-wrapper">
+    <template v-if="liveRegisteredChannels && liveRegisteredChannels.length">
+      <h2 class="py-3 text-center">Live tournament channels</h2>
+      <div class="video-grid pb-8">
+        <MediaCard
+          v-for="channel in liveRegisteredChannels"
+          :key="channel.userName"
+          :url="`https://twitch.tv/${channel.userName}`"
+          :title="channel.title"
+          :image-url="channel.thumbnailUrl"
+          :bottom-left="channel.viewerCount"
+          :bottom-right="channel.userName"
+        />
+      </div>
+    </template>
     <template v-if="lastOpenedVideos && lastOpenedVideos.length">
       <h2 class="py-3 text-center">Continue watching</h2>
-      <div class="video-grid">
+      <div class="video-grid pb-8">
         <MediaCard
           v-for="video in lastOpenedVideos"
           :key="video.ID"
@@ -27,7 +41,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import MediaCard from '@/components/MediaCard';
 import BaseIconButton from '@/components/base/BaseIconButton';
 
@@ -36,8 +50,17 @@ export default {
 
   components: { BaseIconButton, MediaCard },
 
+  async fetch({ store }) {
+    const requests = [];
+    if (!store.state.channels.liveRegisteredChannels) {
+      requests.push(store.dispatch('channels/fetchLiveRegisteredChannels'));
+    }
+    await Promise.all(requests);
+  },
+
   computed: {
     ...mapState('videos', ['lastOpenedVideos']),
+    ...mapGetters('channels', ['liveRegisteredChannels']),
   },
 
   methods: {
