@@ -37,6 +37,27 @@
         </MediaCard>
       </div>
     </template>
+    <template v-if="recentVideos && recentVideos.length">
+      <h2 class="py-3 text-center text-xl">Latest videos</h2>
+      <div class="video-grid pb-8">
+        <MediaCard
+          v-for="video in recentVideos"
+          :key="video.ID"
+          :url="video.VideoURL"
+          :image-url="video.ThumbnailURL"
+          :fallback-image-url="
+            video.PlatformID === 1
+              ? '/twitch-placeholder.jpg'
+              : '/youtube-placeholder.jpg'
+          "
+          :title="video.Title"
+          :top-left="video.Duration"
+          :bottom-left="video.ViewCount"
+          :bottom-right="video.CreatedAt"
+          @click="storeLastOpenedVideo(video)"
+        />
+      </div>
+    </template>
     <template v-if="recentArticles && recentArticles.length">
       <h2 class="py-3 text-center text-xl">Latest news</h2>
       <section class="narrow-page-wrapper w-full flex flex-col">
@@ -56,7 +77,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import MediaCard from '@/components/MediaCard';
 import BaseIconButton from '@/components/base/BaseIconButton';
 
@@ -73,17 +94,20 @@ export default {
     if (!store.state.articles.recentArticles) {
       requests.push(store.dispatch('articles/fetchRecentArticles'));
     }
+    if (!store.state.videos.recentVideos) {
+      requests.push(store.dispatch('videos/fetchRecentVideos'));
+    }
     await Promise.all(requests);
   },
 
   computed: {
-    ...mapState('videos', ['lastOpenedVideos']),
     ...mapGetters('articles', ['recentArticles']),
+    ...mapGetters('videos', ['recentVideos', 'lastOpenedVideos']),
     ...mapGetters('channels', ['liveRegisteredChannels']),
   },
 
   methods: {
-    ...mapActions('videos', ['removeLastOpenedVideo']),
+    ...mapActions('videos', ['removeLastOpenedVideo', 'storeLastOpenedVideo']),
   },
 };
 </script>

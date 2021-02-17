@@ -30,50 +30,68 @@ function decorateVideos(videos) {
   return videos;
 }
 
+function processVideos(videos, getters, rootState, rootGetters) {
+  const playerIdRegexes = rootGetters['players/playerIdRegexes'];
+  const matchupRegexes = rootGetters['matchups/matchupRegexes'];
+  const raceRegexes = rootGetters['races/raceRegexes'];
+
+  if (rootState.settings.enableSpoilers || !videos) {
+    return videos;
+  }
+
+  // spoilers are disabled but playerIds are not loaded yet
+  if (!playerIdRegexes && !rootState.settings.enableSpoilers) {
+    return null;
+  }
+
+  const processedVideos = [];
+  for (let i = 0; i < videos.length; i++) {
+    const video = videos[i];
+    let videoTitle = video.Title;
+    for (let j = 0; j < playerIdRegexes.length; j++) {
+      videoTitle = videoTitle.replace(playerIdRegexes[j], '<player>');
+    }
+    for (let j = 0; j < matchupRegexes.length; j++) {
+      videoTitle = videoTitle.replace(matchupRegexes[j], '<matchup>');
+    }
+    for (let j = 0; j < raceRegexes.length; j++) {
+      videoTitle = videoTitle.replace(raceRegexes[j], '<race>');
+    }
+    processedVideos.push({
+      ...video,
+      Title: videoTitle,
+      ThumbnailURL:
+        video.PlatformID === 1
+          ? '/twitch-placeholder.jpg'
+          : '/youtube-placeholder.jpg',
+    });
+  }
+  return processedVideos;
+}
+
 export const state = () => ({
   lastOpenedVideos: null,
   videos: null,
+  recentVideos: null,
   videoPaginationCursor: 0,
 });
 
 export const getters = {
   videos(state, getters, rootState, rootGetters) {
-    const playerIdRegexes = rootGetters['players/playerIdRegexes'];
-    const matchupRegexes = rootGetters['matchups/matchupRegexes'];
-    const raceRegexes = rootGetters['races/raceRegexes'];
+    return processVideos(state.videos, getters, rootState, rootGetters);
+  },
 
-    if (rootState.settings.enableSpoilers || !state.videos) {
-      return state.videos;
-    }
+  lastOpenedVideos(state, getters, rootState, rootGetters) {
+    return processVideos(
+      state.lastOpenedVideos,
+      getters,
+      rootState,
+      rootGetters,
+    );
+  },
 
-    // spoilers are disabled but playerIds are not loaded yet
-    if (!playerIdRegexes && !rootState.settings.enableSpoilers) {
-      return null;
-    }
-
-    const videos = [];
-    for (let i = 0; i < state.videos.length; i++) {
-      const video = state.videos[i];
-      let videoTitle = video.Title;
-      for (let j = 0; j < playerIdRegexes.length; j++) {
-        videoTitle = videoTitle.replace(playerIdRegexes[j], '<player>');
-      }
-      for (let j = 0; j < matchupRegexes.length; j++) {
-        videoTitle = videoTitle.replace(matchupRegexes[j], '<matchup>');
-      }
-      for (let j = 0; j < raceRegexes.length; j++) {
-        videoTitle = videoTitle.replace(raceRegexes[j], '<race>');
-      }
-      videos.push({
-        ...video,
-        Title: videoTitle,
-        ThumbnailURL:
-          video.PlatformID === 1
-            ? '/twitch-placeholder.jpg'
-            : '/youtube-placeholder.jpg',
-      });
-    }
-    return videos;
+  recentVideos(state, getters, rootState, rootGetters) {
+    return processVideos(state.recentVideos, getters, rootState, rootGetters);
   },
 };
 
@@ -104,6 +122,10 @@ export const mutations = {
     state.videos = decorateVideos(payload.Items);
   },
 
+  SET_RECENT_VIDEOS(state, payload) {
+    state.recentVideos = decorateVideos(payload.Items);
+  },
+
   STORE_VIDEOS_PAGE(state, payload) {
     state.videoPaginationCursor = payload.Cursor;
     state.videos.push(...decorateVideos(payload.Items));
@@ -121,6 +143,11 @@ export const actions = {
       params: { ...params, from: state.videoPaginationCursor },
     });
     commit('STORE_VIDEOS_PAGE', response);
+  },
+
+  async fetchRecentVideos({ commit }, params) {
+    const response = await this.$axios.$get('/videos?recent=true', { params });
+    commit('SET_RECENT_VIDEOS', response);
   },
 
   loadLastOpenedVideos({ state, commit }) {
