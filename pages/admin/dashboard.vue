@@ -9,6 +9,14 @@
       Crawl events
     </BaseButton>
     <BaseButton
+      :disabled="loading['get:/articles/crawl']"
+      :loading="loading['get:/articles/crawl']"
+      class="mr-4"
+      @click="initNewsCrawling"
+    >
+      Crawl news
+    </BaseButton>
+    <BaseButton
       :disabled="loading['get:/videos/query-apis']"
       :loading="loading['get:/videos/query-apis']"
       @click="initVideoQueries"
@@ -33,6 +41,11 @@ export default {
   methods: {
     async initEventCrawling() {
       const response = await this.$axios.$get('/events/crawl');
+      alert(response);
+    },
+
+    async initNewsCrawling() {
+      const response = await this.$axios.$get('/articles/crawl');
       alert(response);
     },
 
