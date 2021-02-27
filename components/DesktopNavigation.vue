@@ -68,7 +68,7 @@
               @click="hideSpoilerMessage"
             />
           </template>
-          <Settings class="w-64" />
+          <Settings style="width: 20rem" class="w-full" />
         </BaseMenu>
       </div>
     </div>

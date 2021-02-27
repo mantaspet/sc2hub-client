@@ -5,6 +5,10 @@
       <div>Enable spoilers?</div>
       <BaseSwitch :checked="enableSpoilers" @change="onSpoilersToggle" />
     </div>
+    <p class="mt-2 text-sm text-neutral-500">
+      When spoilers are disabled video thumbnails, player names and matchups are
+      hidden in video, livestream and news titles.
+    </p>
   </div>
 </template>
 
