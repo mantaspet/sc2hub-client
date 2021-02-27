@@ -1,5 +1,7 @@
 <template>
   <div class="h-full">
+    <PopupMessages />
+
     <div class="py-4 mx-2">
       <nuxt-link
         v-for="page in adminLinks"
@@ -26,6 +28,7 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
+import { showSpoilerHintMessage } from '@/util/popup-messages';
 
 export default {
   name: 'AdminLayout',
@@ -55,7 +58,11 @@ export default {
         this.SET_ACCESS_TOKEN(token);
       }
     }
-    this.loadSettings();
+    if (!localStorage.settings) {
+      showSpoilerHintMessage();
+    } else {
+      this.loadSettings();
+    }
   },
 
   methods: {

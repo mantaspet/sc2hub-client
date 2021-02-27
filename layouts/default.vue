@@ -1,5 +1,7 @@
 <template>
   <div class="h-full">
+    <PopupMessages />
+
     <NavigationDesktop />
     <NavigationMobile />
     <div class="pb-20 md:pb-4 t-0 md:pt-20 px-0 sm:px-4">
@@ -10,6 +12,7 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
+import { showSpoilerHintMessage } from '@/util/popup-messages';
 import NavigationDesktop from '../components/DesktopNavigation';
 import NavigationMobile from '../components/MobileNavigation';
 
@@ -24,11 +27,16 @@ export default {
   },
 
   mounted() {
+    if (!localStorage.settings) {
+      showSpoilerHintMessage();
+    } else {
+      this.loadSettings();
+    }
     this.loadLastOpenedVideos();
-    this.loadSettings();
     if (!this.enableSpoilers) {
       this.loadPlayerIds();
     }
+
     if (!this.accessToken) {
       const token = localStorage.sc2hubAccessToken;
       if (token) {

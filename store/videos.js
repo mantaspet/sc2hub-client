@@ -13,7 +13,7 @@ function decorateVideos(videos) {
     if (!v.ThumbnailURL) {
       v.ThumbnailURL = v.PlatformID
         ? '/twitch-placeholder.jpg'
-        : '/youtube-placeholder.jpg';
+        : '/youtube-placeholder.png';
     }
     v.ViewCount = getHumanizedNumber(v.ViewCount, 'view', 'views');
     v.Duration = getHumanizedDuration(v.Duration);
@@ -70,7 +70,7 @@ function processVideos(videos, getters, rootState, rootGetters) {
       ThumbnailURL:
         video.PlatformID === 1
           ? '/twitch-placeholder.jpg'
-          : '/youtube-placeholder.jpg',
+          : '/youtube-placeholder.png',
     });
   }
   return processedVideos.map((v) => ({

@@ -2,6 +2,7 @@
   <section class="content-wrapper">
     <template v-if="liveRegisteredChannels && liveRegisteredChannels.length">
       <h2 class="py-3 text-center text-xl">Live tournament channels</h2>
+
       <div class="video-grid pb-8">
         <MediaCard
           v-for="channel in liveRegisteredChannels"

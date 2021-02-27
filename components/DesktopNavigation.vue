@@ -62,7 +62,11 @@
       <div class="flex items-center pr-4">
         <BaseMenu nudge-top="43" padding="4">
           <template #activator>
-            <BaseIconButton icon="cog" no-active-color />
+            <BaseIconButton
+              icon="cog"
+              no-active-color
+              @click="hideSpoilerMessage"
+            />
           </template>
           <Settings class="w-64" />
         </BaseMenu>
@@ -77,6 +81,7 @@ import BaseIconButton from '@/components/base/BaseIconButton';
 import scrollPositionMixin from '@/mixins/scroll-position-mixin';
 import BaseMenu from '@/components/base/BaseMenu';
 import Settings from '@/components/Settings';
+import { hideMessage } from '@/util/popup-messages';
 
 export default {
   name: 'NavigationDesktop',
@@ -127,6 +132,12 @@ export default {
         });
       }
       return links;
+    },
+  },
+
+  methods: {
+    hideSpoilerMessage() {
+      hideMessage('spoilers-are-enabled-by-default');
     },
   },
 };

@@ -94,7 +94,7 @@ export default {
   computed: {
     currentImageUrl() {
       if (this.failedToLoadImage) {
-        return this.fallbackImageUrl || '/youtube-placeholder.jpg';
+        return this.fallbackImageUrl || '/youtube-placeholder.png';
       }
       return this.imageUrl;
     },

@@ -9,7 +9,7 @@
         :fallback-image-url="
           video.PlatformID === 1
             ? '/twitch-placeholder.jpg'
-            : '/youtube-placeholder.jpg'
+            : '/youtube-placeholder.png'
         "
         :title="video.Title"
         :top-left="video.Duration"

@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <div class="py-4 border-b">
-      <h2 class="mb-4 px-4">Pages</h2>
+    <div class="pb-4 pt-2 border-b">
       <div v-for="page in pages" :key="page.name">
         <nuxt-link
           :to="page.route"
