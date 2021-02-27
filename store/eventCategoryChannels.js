@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { removeArrayItem } from '@/util/array';
+import { removeArrayItem, updateArrayItem } from '@/util/array';
 
 export const getChannelUrl = (channel) => {
   let url = '';
@@ -29,6 +29,14 @@ export const mutations = {
     }
     state.newChannel = {};
     state.channelValidationErrors = {};
+  },
+
+  UPDATE_EVENT_CATEGORY_CHANNEL(state, { channel, eventCategoryId }) {
+    Vue.set(
+      state.eventCategoryChannelsMap,
+      eventCategoryId,
+      updateArrayItem(state.eventCategoryChannelsMap[eventCategoryId], channel),
+    );
   },
 
   SET_CHANNEL_VALIDATION_ERRORS(state, errors) {
@@ -72,6 +80,21 @@ export const actions = {
       await this.$router.push(`/admin/event-categories/${eventCategoryId}`);
     } catch (e) {
       commit('SET_CHANNEL_VALIDATION_ERRORS', e.response?.data || {});
+    }
+  },
+
+  async updateEventCategoryChannel({ commit }, { eventCategoryId, channel }) {
+    try {
+      const newChannel = await this.$axios.$put(
+        `/channels/${channel.ID}`,
+        channel,
+      );
+      commit('UPDATE_EVENT_CATEGORY_CHANNEL', {
+        channel: newChannel,
+        eventCategoryId,
+      });
+    } catch (e) {
+      alert('Channel update failed');
     }
   },
 

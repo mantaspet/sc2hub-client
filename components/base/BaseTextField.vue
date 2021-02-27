@@ -19,7 +19,7 @@
         @input="$emit('input', $event.target.value)"
       />
     </label>
-    <div class="text-sm text-negative-500">
+    <div v-if="errors" class="text-sm text-negative-500">
       {{ errors }}
     </div>
   </div>

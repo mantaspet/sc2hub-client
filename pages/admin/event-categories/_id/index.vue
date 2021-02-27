@@ -41,6 +41,17 @@
           </div>
         </div>
       </template>
+      <template #item.IsCrawlingEnabled="{ item }">
+        <BaseCheckbox
+          :checked="item.IsCrawlingEnabled"
+          @change="
+            updateEventCategoryChannel({
+              eventCategoryId,
+              channel: { ID: item.ID, IsCrawlingEnabled: $event },
+            })
+          "
+        />
+      </template>
       <template #item.Actions="{ item }">
         <div class="flex">
           <a
@@ -131,6 +142,10 @@ export default {
           value: 'Platform',
         },
         {
+          text: 'Crawling enabled',
+          value: 'IsCrawlingEnabled',
+        },
+        {
           text: 'Actions',
           value: 'Actions',
         },
@@ -145,6 +160,7 @@ export default {
     ]),
     ...mapActions('eventCategoryChannels', [
       'createEventCategoryChannel',
+      'updateEventCategoryChannel',
       'deleteEventCategoryChannel',
     ]),
   },

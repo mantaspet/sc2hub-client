@@ -14,6 +14,13 @@
       placeholder="https://twitch.tv/gsl or https://youtube.com/channel/UCK5eBtuoj_HkdXKHNmBLAXg"
       @input="clearChannelValidationErrors('URL')"
     />
+
+    <BaseCheckbox
+      v-model="newChannel.IsCrawlingEnabled"
+      :errors="channelValidationErrors.IsCrawlingEnabled"
+      label="Save videos from this channel"
+      @input="clearChannelValidationErrors('IsCrawlingEnabled')"
+    />
     <BaseButton type="submit"> Save </BaseButton>
   </form>
 </template>
