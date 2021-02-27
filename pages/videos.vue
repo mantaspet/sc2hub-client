@@ -14,7 +14,7 @@
         :title="video.Title"
         :top-left="video.Duration"
         :bottom-left="video.ViewCount"
-        :bottom-right="video.CreatedAt"
+        :bottom-right="video.CreatedAtHumanized"
         @click="storeLastOpenedVideo(video)"
       />
     </div>

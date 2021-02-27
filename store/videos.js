@@ -2,7 +2,6 @@ import { getHumanizedDate } from '@/util/date';
 import { getHumanizedDuration, getHumanizedNumber } from '@/util/number';
 
 function decorateVideos(videos) {
-  const now = new Date();
   for (let i = 0; i < videos.length; i++) {
     const v = videos[i];
     if (v.PlatformID === 1 && v.ThumbnailURL) {
@@ -16,7 +15,6 @@ function decorateVideos(videos) {
         ? '/twitch-placeholder.jpg'
         : '/youtube-placeholder.jpg';
     }
-    v.CreatedAt = getHumanizedDate(v.CreatedAt, now);
     v.ViewCount = getHumanizedNumber(v.ViewCount, 'view', 'views');
     v.Duration = getHumanizedDuration(v.Duration);
     if (v.PlatformID === 1) {
@@ -34,9 +32,10 @@ function processVideos(videos, getters, rootState, rootGetters) {
   const playerIdRegexes = rootGetters['players/playerIdRegexes'];
   const matchupRegexes = rootGetters['matchups/matchupRegexes'];
   const raceRegexes = rootGetters['races/raceRegexes'];
+  const now = new Date();
 
-  if (rootState.settings.enableSpoilers || !videos) {
-    return videos;
+  if (!videos) {
+    return null;
   }
 
   // spoilers are disabled but playerIds are not loaded yet
@@ -44,6 +43,14 @@ function processVideos(videos, getters, rootState, rootGetters) {
     return null;
   }
 
+  if (rootState.settings.enableSpoilers) {
+    return videos.map((v) => ({
+      ...v,
+      CreatedAtHumanized: getHumanizedDate(v.CreatedAt, now),
+    }));
+  }
+
+  // remove spoilers from videos
   const processedVideos = [];
   for (let i = 0; i < videos.length; i++) {
     const video = videos[i];
@@ -66,7 +73,10 @@ function processVideos(videos, getters, rootState, rootGetters) {
           : '/youtube-placeholder.jpg',
     });
   }
-  return processedVideos;
+  return processedVideos.map((v) => ({
+    ...v,
+    CreatedAtHumanized: getHumanizedDate(v.CreatedAt, now),
+  }));
 }
 
 export const state = () => ({

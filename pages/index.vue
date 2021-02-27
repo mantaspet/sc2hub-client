@@ -25,7 +25,7 @@
           :title="video.Title"
           :top-left="video.Duration"
           :bottom-left="video.ViewCount"
-          :bottom-right="video.CreatedAt"
+          :bottom-right="video.CreatedAtHumanized"
         >
           <template #top-right>
             <BaseIconButton
@@ -53,7 +53,7 @@
           :title="video.Title"
           :top-left="video.Duration"
           :bottom-left="video.ViewCount"
-          :bottom-right="video.CreatedAt"
+          :bottom-right="video.CreatedAtHumanized"
           @click="storeLastOpenedVideo(video)"
         />
       </div>
@@ -68,7 +68,7 @@
           :image="article.ThumbnailURL"
           :excerpt="article.Excerpt"
           :url="article.URL"
-          :published-at="article.PublishedAt"
+          :published-at="article.PublishedAtHumanized"
           :source="article.Source"
         />
       </section>

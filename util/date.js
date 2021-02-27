@@ -3,6 +3,9 @@ export function getHumanizedDate(date, now) {
     return '';
   }
   const d = new Date(date);
+  if (isNaN(d.getTime())) {
+    return '';
+  }
   const timeDiff = Math.round((now.getTime() - d.getTime()) / 1000);
   if (timeDiff === 1) {
     return '1 second ago';

@@ -1,20 +1,13 @@
 import { getHumanizedDate } from '../util/date';
 
-function decorateArticles(articles) {
-  const now = new Date();
-  return articles.map((a) => ({
-    ...a,
-    PublishedAt: getHumanizedDate(a.PublishedAt, now),
-  }));
-}
-
 function processArticles(articles, getters, rootState, rootGetters) {
   const playerIdRegexes = rootGetters['players/playerIdRegexes'];
   const matchupRegexes = rootGetters['matchups/matchupRegexes'];
   const raceRegexes = rootGetters['races/raceRegexes'];
+  const now = new Date();
 
-  if (rootState.settings.enableSpoilers || !articles) {
-    return articles;
+  if (!articles) {
+    return null;
   }
 
   // spoilers are disabled but playerIds are not loaded yet
@@ -22,6 +15,14 @@ function processArticles(articles, getters, rootState, rootGetters) {
     return null;
   }
 
+  if (rootState.settings.enableSpoilers || !articles) {
+    return articles.map((a) => ({
+      ...a,
+      PublishedAtHumanized: getHumanizedDate(a.PublishedAt, now),
+    }));
+  }
+
+  // remove spoilers from videos
   const processedArticles = [];
   for (let i = 0; i < articles.length; i++) {
     const article = articles[i];
@@ -40,7 +41,10 @@ function processArticles(articles, getters, rootState, rootGetters) {
       Title: articleTitle,
     });
   }
-  return processedArticles;
+  return processedArticles.map((a) => ({
+    ...a,
+    PublishedAtHumanized: getHumanizedDate(a.PublishedAt, now),
+  }));
 }
 
 export const state = () => ({
@@ -67,16 +71,16 @@ export const getters = {
 export const mutations = {
   SET_ARTICLES(state, { Cursor, Items }) {
     state.articlePaginationCursor = Cursor;
-    state.articles = decorateArticles(Items);
+    state.articles = Items;
   },
 
   SET_RECENT_ARTICLES(state, { Items }) {
-    state.recentArticles = decorateArticles(Items);
+    state.recentArticles = Items;
   },
 
   STORE_ARTICLES_PAGE(state, { Cursor, Items }) {
     state.articlePaginationCursor = Cursor;
-    state.articles.push(...decorateArticles(Items));
+    state.articles.push(...Items);
   },
 };
 

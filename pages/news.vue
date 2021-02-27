@@ -7,7 +7,7 @@
       :image="article.ThumbnailURL"
       :excerpt="article.Excerpt"
       :url="article.URL"
-      :published-at="article.PublishedAt"
+      :published-at="article.PublishedAtHumanized"
       :source="article.Source"
     />
 
