@@ -25,7 +25,7 @@
                   {{ item.Name }}
                 </div>
                 <div class="text-sm text-gray-500">
-                  {{ item.Pattern }}
+                  {{ item.IncludePatterns }}
                 </div>
               </div>
             </div>

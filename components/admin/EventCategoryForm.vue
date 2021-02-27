@@ -7,10 +7,18 @@
       @input="$emit('clear:errors', 'Name')"
     />
     <BaseTextField
-      v-model="eventCategory.Pattern"
-      :errors="errors.Pattern"
-      label="Pattern*"
-      @input="$emit('clear:errors', 'Pattern')"
+      v-model="eventCategory.IncludePatterns"
+      :errors="errors.IncludePatterns"
+      label="Include patterns*"
+      placeholder="esl,iem"
+      @input="$emit('clear:errors', 'IncludePatterns')"
+    />
+    <BaseTextField
+      v-model="eventCategory.ExcludePatterns"
+      :errors="errors.ExcludePatterns"
+      label="Exclude patterns"
+      placeholder="rerun,repeat"
+      @input="$emit('clear:errors', 'ExcludePatterns')"
     />
     <BaseTextField
       v-model="eventCategory.InfoURL"
