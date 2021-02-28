@@ -14,14 +14,14 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: 'SC2 Hub',
+    title: 'SC2Hub',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: 'A portal for all things related to StarCraft 2 esports',
+        content: 'StarCraft 2 esports and resources',
       },
     ],
     link: [
@@ -81,4 +81,16 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
+  /*
+   ** PWA configuration
+   ** See https://pwa.nuxtjs.org/
+   */
+  pwa: {
+    meta: {
+      title: 'SC2Hub',
+      description: 'StarCraft 2 esports and resources',
+      theme_color: '#4299d7',
+      ogHost: 'https://sc2hub.net',
+    },
+  },
 };
