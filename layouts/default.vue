@@ -1,55 +1,57 @@
 <template>
-  <div>
-    <Nuxt />
+  <div class="h-full">
+    <PopupMessages />
+
+    <NavigationDesktop />
+    <NavigationMobile />
+    <div class="pb-20 md:pb-4 t-0 md:pt-20 px-0 sm:px-4">
+      <Nuxt />
+    </div>
   </div>
 </template>
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script>
+import { mapActions, mapMutations, mapState } from 'vuex';
+import { showSpoilerHintMessage } from '@/util/popup-messages';
+import NavigationDesktop from '../components/DesktopNavigation';
+import NavigationMobile from '../components/MobileNavigation';
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-}
+export default {
+  name: 'DefaultLayout',
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
+  components: { NavigationMobile, NavigationDesktop },
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
+  computed: {
+    ...mapState('settings', ['enableSpoilers']),
+    ...mapState('auth', ['accessToken']),
+  },
 
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
+  mounted() {
+    if (!localStorage.settings) {
+      showSpoilerHintMessage();
+    } else {
+      this.loadSettings();
+    }
+    this.loadLastOpenedVideos();
+    if (!this.enableSpoilers) {
+      this.loadPlayerIds();
+    }
 
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
-</style>
+    if (!this.accessToken) {
+      const token = localStorage.sc2hubAccessToken;
+      if (token) {
+        this.SET_ACCESS_TOKEN(token);
+      }
+    }
+  },
+
+  methods: {
+    ...mapMutations('auth', ['SET_ACCESS_TOKEN']),
+    ...mapActions('videos', ['loadLastOpenedVideos']),
+    ...mapActions('settings', ['loadSettings']),
+    ...mapActions('players', ['loadPlayerIds']),
+  },
+};
+</script>
+
+<style></style>

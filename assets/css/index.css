@@ -1,0 +1,260 @@
+/* purgecss start ignore */
+:root {
+  --body-background-color: hsl(210, 36%, 96%);
+  --panel-background-color: white;
+  --default-font-color: hsl(209, 61%, 16%);
+
+  /* Color palette #15 provided by Refactoring UI */
+  /* These are the splashes of color that should appear the most in your UI, and are the ones that determine the overall "look" of the site.
+  Use these for things like primary actions, links, navigation items, icons, accent borders, or text you want to emphasize. */
+
+  /* blue-grey */
+  /*--color-primary-100: hsl(210, 36%, 96%);*/
+  /*--color-primary-200: hsl(212, 33%, 89%);*/
+  /*--color-primary-300: hsl(210, 31%, 80%);*/
+  /*--color-primary-400: hsl(211, 27%, 70%);*/
+  /*--color-primary-500: hsl(209, 23%, 60%);*/
+  /*--color-primary-600: hsl(210, 22%, 49%);*/
+  /*--color-primary-700: hsl(209, 28%, 39%);*/
+  /*--color-primary-800: hsl(209, 34%, 30%);*/
+  /*--color-primary-900: hsl(211, 39%, 23%);*/
+  /*--color-primary-1000: hsl(209, 61%, 16%);*/
+
+  /* blue */
+  --color-primary-100: hsl(205, 79%, 92%);
+  --color-primary-200: hsl(205, 97%, 85%);
+  --color-primary-300: hsl(205, 84%, 74%);
+  --color-primary-400: hsl(205, 74%, 65%);
+  --color-primary-500: hsl(205, 65%, 55%);
+  --color-primary-600: hsl(205, 67%, 45%);
+  --color-primary-700: hsl(205, 76%, 39%);
+  --color-primary-800: hsl(205, 82%, 33%);
+  --color-primary-900: hsl(205, 87%, 29%);
+  --color-primary-1000: hsl(205, 100%, 21%);
+
+  /* blue (vivid) */
+  /*--color-primary-100: hsl(202, 100%, 95%);*/
+  /*--color-primary-200: hsl(204, 100%, 86%);*/
+  /*--color-primary-300: hsl(206, 93%, 73%);*/
+  /*--color-primary-400: hsl(208, 88%, 62%);*/
+  /*--color-primary-500: hsl(210, 83%, 53%);*/
+  /*--color-primary-600: hsl(212, 92%, 43%);*/
+  /*--color-primary-700: hsl(214, 95%, 36%);*/
+  /*--color-primary-800: hsl(215, 96%, 32%);*/
+  /*--color-primary-900: hsl(216, 98%, 25%);*/
+  /*--color-primary-1000: hsl(218, 100%, 17%);*/
+
+  /* light-blue */
+  /*--color-primary-100: hsl(195, 100%, 95%);*/
+  /*--color-primary-200: hsl(195, 100%, 85%);*/
+  /*--color-primary-300: hsl(195, 97%, 75%);*/
+  /*--color-primary-400: hsl(196, 94%, 67%);*/
+  /*--color-primary-500: hsl(197, 92%, 61%);*/
+  /*--color-primary-600: hsl(199, 84%, 55%);*/
+  /*--color-primary-700: hsl(201, 79%, 46%);*/
+  /*--color-primary-800: hsl(202, 83%, 41%);*/
+  /*--color-primary-900: hsl(203, 87%, 34%);*/
+  /*--color-primary-1000: hsl(204, 96%, 27%);*/
+
+  /* indigo */
+  /*--color-primary-100: hsl(221, 68%, 93%);*/
+  /*--color-primary-200: hsl(221, 78%, 86%);*/
+  /*--color-primary-300: hsl(224, 67%, 76%);*/
+  /*--color-primary-400: hsl(225, 57%, 67%);*/
+  /*--color-primary-500: hsl(227, 50%, 59%);*/
+  /*--color-primary-600: hsl(227, 42%, 51%);*/
+  /*--color-primary-700: hsl(228, 45%, 45%);*/
+  /*--color-primary-800: hsl(230, 49%, 41%);*/
+  /*--color-primary-900: hsl(232, 51%, 36%);*/
+  /*--color-primary-1000: hsl(234, 62%, 26%);*/
+
+  /* These are the colors you will use the most and will make up the majority of your UI.
+  Use them for most of your text, backgrounds, and borders, and use the higher contrast shades for your primary actions. */
+  /* grey */
+  /*--color-neutral-100: hsl(216, 33%, 97%);*/
+  /*--color-neutral-200: hsl(214, 15%, 91%);*/
+  /*--color-neutral-300: hsl(210, 16%, 82%);*/
+  /*--color-neutral-400: hsl(211, 13%, 65%);*/
+  /*--color-neutral-500: hsl(211, 10%, 53%);*/
+  /*--color-neutral-600: hsl(211, 12%, 43%);*/
+  /*--color-neutral-700: hsl(209, 14%, 37%);*/
+  /*--color-neutral-800: hsl(209, 18%, 30%);*/
+  /*--color-neutral-900: hsl(209, 20%, 25%);*/
+  /*--color-neutral-1000: hsl(210, 24%, 16%);*/
+
+  /* blue-grey */
+  --color-neutral-100: hsl(210, 36%, 96%);
+  --color-neutral-200: hsl(212, 33%, 89%);
+  --color-neutral-300: hsl(210, 31%, 80%);
+  --color-neutral-400: hsl(211, 27%, 70%);
+  --color-neutral-500: hsl(209, 23%, 60%);
+  --color-neutral-600: hsl(210, 22%, 49%);
+  --color-neutral-700: hsl(209, 28%, 39%);
+  --color-neutral-800: hsl(209, 34%, 30%);
+  --color-neutral-900: hsl(211, 39%, 23%);
+  --color-neutral-1000: hsl(209, 61%, 16%);
+
+  /* ------- SUPPORTING -------- */
+  /* These colors should be used fairly conservatively throughout your UI to avoid overpowering your primary colors.
+  Use them when you need an element to stand out, or to reinforce things like error states or positive trends with the appropriate semantic color. */
+  --color-supporting-100: hsl(165, 67%, 96%);
+  --color-supporting-200: hsl(163, 75%, 87%);
+  --color-supporting-300: hsl(162, 73%, 74%);
+  --color-supporting-400: hsl(164, 70%, 63%);
+  --color-supporting-500: hsl(166, 64%, 49%);
+  --color-supporting-600: hsl(168, 78%, 41%);
+  --color-supporting-700: hsl(170, 91%, 32%);
+  --color-supporting-800: hsl(172, 94%, 26%);
+  --color-supporting-900: hsl(172, 98%, 20%);
+  --color-supporting-1000: hsl(176, 100%, 13%);
+
+  --color-positive-100: hsl(45, 100%, 96%);
+  --color-positive-200: hsl(45, 90%, 88%);
+  --color-positive-300: hsl(45, 86%, 81%);
+  --color-positive-400: hsl(43, 90%, 76%);
+  --color-positive-500: hsl(43, 89%, 70%);
+  --color-positive-600: hsl(42, 78%, 60%);
+  --color-positive-700: hsl(42, 63%, 48%);
+  --color-positive-800: hsl(43, 72%, 37%);
+  --color-positive-900: hsl(43, 77%, 27%);
+  --color-positive-1000: hsl(43, 86%, 17%);
+
+  --color-negative-100: hsl(360, 100%, 97%);
+  --color-negative-200: hsl(360, 82%, 89%);
+  --color-negative-300: hsl(360, 77%, 78%);
+  --color-negative-400: hsl(360, 71%, 66%);
+  --color-negative-500: hsl(360, 64%, 55%);
+  --color-negative-600: hsl(360, 67%, 44%);
+  --color-negative-700: hsl(360, 72%, 38%);
+  --color-negative-800: hsl(360, 79%, 32%);
+  --color-negative-900: hsl(360, 85%, 25%);
+  --color-negative-1000: hsl(360, 92%, 20%);
+  /* ---------------------------- */
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  /*-webkit-font-smoothing: antialiased;*/
+  /*-moz-osx-font-smoothing: grayscale;*/
+  overflow-y: scroll;
+  color: var(--default-font-color);
+  background-color: var(--body-background-color);
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+button {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.875rem;
+}
+
+.content-wrapper {
+  max-width: 83em;
+  margin: 0 auto;
+}
+
+.video-card-image-wrapper {
+  padding-top: 56%;
+}
+
+.error svg {
+  margin: 0 auto;
+}
+
+.video-grid {
+  @apply grid grid-cols-1 gap-4;
+}
+
+.pagination-wrapper {
+  @apply px-3 mb-6 mt-3 w-full;
+}
+
+/* transitions start */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-x-enter-active,
+.slide-x-leave-active {
+  transition: transform 0.15s ease-out;
+}
+
+.slide-x-enter,
+.slide-x-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-y-enter-active,
+.slide-y-leave-active {
+  transition: transform 0.15s ease-out;
+}
+
+.slide-y-enter,
+.slide-y-leave-to {
+  transform: translateY(100%);
+}
+/* transitions end */
+
+.narrow-page-wrapper {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.link {
+  @apply text-primary-500;
+}
+
+.link:hover {
+  @apply text-primary-700 underline;
+}
+
+@screen sm {
+  .video-grid {
+    @apply grid-cols-2;
+  }
+
+  .pagination-wrapper {
+    @apply px-0 w-1/2;
+  }
+}
+
+@screen md {
+  .video-grid {
+    @apply grid-cols-3;
+  }
+
+  .pagination-wrapper {
+    @apply w-1/3;
+  }
+}
+
+@screen lg {
+  .video-grid {
+    @apply grid-cols-4;
+  }
+
+  .pagination-wrapper {
+    @apply w-1/4;
+  }
+}
+/* purgecss end ignore */

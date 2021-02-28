@@ -88,3 +88,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Tailwind css file for IDE intellisense purposes
+tailwind-o.css
