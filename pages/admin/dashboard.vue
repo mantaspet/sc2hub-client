@@ -19,15 +19,24 @@
     <BaseButton
       :disabled="loading['get:/videos/query-apis']"
       :loading="loading['get:/videos/query-apis']"
+      class="mr-4"
       @click="initVideoQueries"
     >
       Query videos
+    </BaseButton>
+    <BaseButton
+      :disabled="loading['get:/players/crawl']"
+      :loading="loading['get:/players/crawl']"
+      @click="initPlayerCrawling"
+    >
+      Crawl players
     </BaseButton>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import { showMessage } from '@/util/popup-messages';
 
 export default {
   name: 'Dashboard',
@@ -41,17 +50,28 @@ export default {
   methods: {
     async initEventCrawling() {
       const response = await this.$axios.$get('/events/crawl');
-      alert(response);
+      showMessage(response);
     },
 
     async initNewsCrawling() {
       const response = await this.$axios.$get('/articles/crawl');
-      alert(response);
+      showMessage(response);
     },
 
     async initVideoQueries() {
       const response = await this.$axios.$get('/videos/query-apis');
-      alert(response);
+      showMessage(response);
+    },
+
+    async initPlayerCrawling() {
+      const requests = [
+        this.$axios.$get('/players/crawl', { params: { region: 'Korea' } }),
+        this.$axios.$get('/players/crawl', { params: { region: 'Europe' } }),
+        this.$axios.$get('/players/crawl', { params: { region: 'US' } }),
+        this.$axios.$get('/players/crawl', { params: { region: 'Asia' } }),
+      ];
+      await Promise.all(requests);
+      showMessage('Successfully crawled players');
     },
   },
 };

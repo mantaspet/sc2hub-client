@@ -1,3 +1,5 @@
+import { showMessage } from '@/util/popup-messages';
+
 export const state = () => ({
   accessToken: null,
 });
@@ -17,7 +19,7 @@ export const actions = {
       this.$router.push('/admin/dashboard');
       localStorage.sc2hubAccessToken = token;
     } catch (e) {
-      alert('Wrong username or password');
+      showMessage('Wrong username or password');
     }
   },
 

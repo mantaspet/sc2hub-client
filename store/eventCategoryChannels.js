@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { removeArrayItem, updateArrayItem } from '@/util/array';
+import { showMessage } from '@/util/popup-messages';
 
 export const getChannelUrl = (channel) => {
   let url = '';
@@ -94,7 +95,7 @@ export const actions = {
         eventCategoryId,
       });
     } catch (e) {
-      alert('Channel update failed');
+      showMessage('Channel update failed');
     }
   },
 
