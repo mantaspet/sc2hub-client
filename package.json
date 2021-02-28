@@ -1,6 +1,7 @@
 {
   "name": "sc2hub-client",
   "version": "1.0.0",
+  "author": "Mantas Petrauskas",
   "private": true,
   "scripts": {
     "dev": "nuxt",
