@@ -7,8 +7,8 @@
       <div
         v-for="message in messages"
         :key="message.key"
-        class="bg-neutral-1000 hover:bg-neutral-900 text-neutral-100 transition-all duration-150 shadow-md mb-4 w-full relative rounded cursor-pointer pointer-events-auto"
-        style="max-width: 24rem"
+        class="bg-neutral-1000 hover:bg-neutral-900 text-neutral-100 transition-all duration-150 shadow-md mb-4 relative rounded cursor-pointer pointer-events-auto"
+        :style="{ width: mdAndUp ? '20rem' : '100%' }"
         @mouseenter="pauseProgress(message)"
         @mouseleave="resumeProgress(message)"
         @click="hideMessage(message.key)"
