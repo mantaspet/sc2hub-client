@@ -21,8 +21,7 @@
       <nuxt-link to="/">
         <img
           src="~/assets/logo.png"
-          class="site-logo h-12 transition-all duration-200"
-          alt="site-logo"
+          class="site-logo h-12 w-12 transition-all duration-200"
         />
       </nuxt-link>
     </div>

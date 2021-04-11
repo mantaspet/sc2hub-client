@@ -5,7 +5,7 @@
     target="_blank"
   >
     <article class="flex flex-col sm:flex-row sm:items-center">
-      <img :src="image" class="w-full sm:w-1/4 object-contain" />
+      <img :src="image" class="w-full md:w-1/4 object-cover h-48 md:h-24" />
       <div
         class="sm:w-3/4 justify-center mx-3 mt-2 mb-8 sm:ml-4 sm:mr-0 sm:my-0"
       >
