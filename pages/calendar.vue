@@ -13,7 +13,8 @@
         <div
           v-for="weekday in weekdays"
           :key="weekday"
-          class="hidden md:block text-center text-neutral-500 border-t border-b border-r uppercase"
+          class="hidden md:block text-center text-neutral-500 border-t border-b border-r uppercase bg-neutral-100 sticky"
+          style="top: 56px"
         >
           {{ weekday }}
         </div>
