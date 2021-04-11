@@ -1,4 +1,4 @@
-import { getHumanizedDate } from '../util/date';
+import { formatDistance } from 'date-fns';
 
 function processArticles(articles, getters, rootState, rootGetters) {
   const playerIdRegexes = rootGetters['players/playerIdRegexes'];
@@ -18,7 +18,9 @@ function processArticles(articles, getters, rootState, rootGetters) {
   if (rootState.settings.enableSpoilers || !articles) {
     return articles.map((a) => ({
       ...a,
-      PublishedAtHumanized: getHumanizedDate(a.PublishedAt, now),
+      PublishedAtHumanized: formatDistance(new Date(a.PublishedAt), now, {
+        addSuffix: true,
+      }),
     }));
   }
 
@@ -43,7 +45,9 @@ function processArticles(articles, getters, rootState, rootGetters) {
   }
   return processedArticles.map((a) => ({
     ...a,
-    PublishedAtHumanized: getHumanizedDate(a.PublishedAt, now),
+    PublishedAtHumanized: formatDistance(new Date(a.PublishedAt), now, {
+      addSuffix: true,
+    }),
   }));
 }
 

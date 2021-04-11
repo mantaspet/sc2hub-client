@@ -1,4 +1,4 @@
-import { getHumanizedDate } from '@/util/date';
+import { formatDistance } from 'date-fns';
 import { getHumanizedDuration, getHumanizedNumber } from '@/util/number';
 
 function decorateVideos(videos) {
@@ -46,7 +46,9 @@ function processVideos(videos, getters, rootState, rootGetters) {
   if (rootState.settings.enableSpoilers) {
     return videos.map((v) => ({
       ...v,
-      CreatedAtHumanized: getHumanizedDate(v.CreatedAt, now),
+      CreatedAtHumanized: formatDistance(new Date(v.CreatedAt), now, {
+        addSuffix: true,
+      }),
     }));
   }
 
@@ -75,7 +77,9 @@ function processVideos(videos, getters, rootState, rootGetters) {
   }
   return processedVideos.map((v) => ({
     ...v,
-    CreatedAtHumanized: getHumanizedDate(v.CreatedAt, now),
+    CreatedAtHumanized: formatDistance(new Date(v.CreatedAt), now, {
+      addSuffix: true,
+    }),
   }));
 }
 

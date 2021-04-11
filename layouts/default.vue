@@ -1,16 +1,21 @@
 <template>
-  <div class="h-full">
-    <PopupMessages />
+  <div>
+    <div
+      v-show="!isClientMounted"
+      class="w-full flex items-center justify-center"
+      style="height: 100vh"
+    >
+      <BaseLoadingSpinner />
+    </div>
 
-    <NavigationDesktop />
-    <NavigationMobile />
-    <div class="pb-20 md:pb-4 t-0 md:pt-20 px-0 sm:px-4">
-      <BaseLoadingSpinner
-        v-show="!isClientMounted"
-        class="mx-auto mt-4 mt-md-0"
-      />
+    <div v-show="isClientMounted" class="h-full">
+      <PopupMessages />
 
-      <Nuxt v-show="isClientMounted" />
+      <NavigationDesktop />
+      <NavigationMobile />
+      <div class="pb-20 md:pb-4 t-0 md:pt-20 px-0 sm:px-4">
+        <Nuxt />
+      </div>
     </div>
   </div>
 </template>
