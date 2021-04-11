@@ -24,10 +24,15 @@
       <div
         v-for="date in displayedDates"
         :key="date"
-        class="border-r border-b p-1"
+        class="border-r border-b px-1 pb-1"
       >
-        <div class="text-center text-neutral-500 text-sm">
-          {{ mdAndUp ? date.slice(8) : date }}
+        <div class="text-center text-neutral-500 text-sm mt-1">
+          <span
+            :class="{ 'bg-primary-700 text-neutral-100': today === date }"
+            class="p-1 rounded"
+          >
+            {{ mdAndUp ? date.slice(8) : date }}
+          </span>
         </div>
         <div
           v-for="event in eventsByDate[date]"
@@ -101,6 +106,7 @@ export default {
         'November',
         'December',
       ],
+      today: formatDate(new Date()),
     };
   },
 
