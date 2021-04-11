@@ -2,6 +2,7 @@ import {
   endOfMonth,
   endOfWeek,
   formatDate,
+  formatTime,
   startOfMonth,
   startOfWeek,
 } from '@/util/date';
@@ -12,8 +13,8 @@ function decorateEvents(events) {
     stage: e.Stage,
     title: e.Title,
     eventCategoryId: e.EventCategoryID,
-    date: e.StartsAt.slice(0, 10),
-    time: e.StartsAt.slice(11, 16),
+    date: formatDate(e.StartsAt),
+    time: formatTime(e.StartsAt),
   }));
 }
 

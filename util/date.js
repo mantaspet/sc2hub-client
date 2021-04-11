@@ -53,6 +53,21 @@ export function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+export function formatTime(datetime) {
+  const d = new Date(datetime);
+  const hoursNumber = d.getHours();
+  const minutesNumber = d.getMinutes();
+
+  const hours = hoursNumber < 10 ? `0${hoursNumber}` : hoursNumber;
+  const minutes = minutesNumber < 10 ? `0${minutesNumber}` : minutesNumber;
+
+  return `${hours}:${minutes}`;
+}
+
+export function formatDateTime(datetime) {
+  return `${formatDate(datetime)} ${formatTime(datetime)}`;
+}
+
 export function dateRange(from, to) {
   if (!from || !to || to <= from) {
     return [];
