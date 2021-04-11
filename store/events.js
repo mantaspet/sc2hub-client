@@ -1,10 +1,10 @@
 import {
-  endOfMonth,
-  endOfWeek,
-  formatDate,
-  startOfMonth,
+  format,
   startOfWeek,
-} from '@/util/date';
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+} from 'date-fns';
 
 function decorateEvents(events) {
   return events.map((e) => ({
@@ -12,23 +12,30 @@ function decorateEvents(events) {
     stage: e.Stage,
     title: e.Title,
     eventCategoryId: e.EventCategoryID,
-    date: e.StartsAt.slice(0, 10),
-    time: e.StartsAt.slice(11, 16),
+    date: format(new Date(e.StartsAt), 'yyyy-MM-dd'),
+    time: format(new Date(e.StartsAt), 'HH:mm'),
   }));
 }
 
 function getDefaultEventFilterParams() {
-  const dateFrom = startOfWeek(startOfMonth(new Date()));
-  const dateTo = endOfWeek(endOfMonth(new Date()));
+  const dateFrom = format(
+    startOfWeek(startOfMonth(new Date()), { weekStartsOn: 1 }),
+    'yyyy-MM-dd',
+  );
+  const dateTo = format(
+    endOfWeek(endOfMonth(new Date()), { weekStartsOn: 1 }),
+    'yyyy-MM-dd',
+  );
   return {
-    date_from: formatDate(dateFrom),
-    date_to: formatDate(dateTo),
+    date_from: dateFrom,
+    date_to: dateTo,
   };
 }
 
 export const state = () => ({
   events: null,
   eventFilterParams: getDefaultEventFilterParams(),
+  clientEventsSearch: '',
   loadedEventIntervals: [],
 });
 
@@ -37,9 +44,15 @@ export const getters = {
     if (!state.events) {
       return [];
     }
+    const search = state.clientEventsSearch.toLowerCase().trim();
+    const events = state.events.filter(
+      (e) =>
+        e.title.toLowerCase().includes(search) ||
+        e.stage.toLowerCase().includes(search),
+    );
     const eventsByDate = {};
-    for (let i = 0; i < state.events.length; i++) {
-      const event = state.events[i];
+    for (let i = 0; i < events.length; i++) {
+      const event = events[i];
       if (!eventsByDate[event.date]) {
         eventsByDate[event.date] = [event];
       } else {
@@ -78,10 +91,18 @@ export const mutations = {
   SET_EVENT_FILTER_PARAMS(state, params) {
     state.eventFilterParams = params;
   },
+
+  SET_CLIENT_EVENTS_SEARCH(state, search) {
+    state.clientEventsSearch = search;
+  },
 };
 
 export const actions = {
-  async fetchEvents({ state, commit }, params) {
+  async fetchEvents({ state, commit }, eventParams) {
+    let params = { ...eventParams };
+    if (!params.date_from || !params.date_to) {
+      params = { ...state.eventFilterParams };
+    }
     const interval = `${params.date_from}/${params.date_to}`;
     if (state.loadedEventIntervals.includes(interval)) {
       commit('SET_EVENT_FILTER_PARAMS', params);

@@ -3,6 +3,7 @@
     viewBox="0 0 24 24"
     :class="classes"
     class="icon"
+    @click="$emit('click', $event)"
     v-html="getInnerIconElements(icon)"
   />
 </template>

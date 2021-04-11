@@ -2,22 +2,37 @@
   <div class="col-span-3 sm:col-span-2 mb-4">
     <label class="block">
       {{ label }}
-      <input
-        v-if="!textarea"
-        :value="value"
-        :type="type"
-        :placeholder="placeholder"
-        class="w-full rounded border p-2 border-gray-300"
-        @input="$emit('input', $event.target.value)"
-      />
-      <textarea
-        v-else
-        :value="value"
-        :rows="rows"
-        :placeholder="placeholder"
-        class="w-full rounded border p-2 border-gray-300"
-        @input="$emit('input', $event.target.value)"
-      />
+      <div
+        :class="isFocused ? 'border-primary-500' : 'border-gray-300'"
+        class="w-full flex items-center bg-white rounded box-border border-2"
+      >
+        <input
+          v-if="!textarea"
+          :value="value"
+          :type="type"
+          :placeholder="placeholder"
+          class="p-2 border-none outline-none flex-grow"
+          @input="$emit('input', $event.target.value)"
+          @focus="isFocused = true"
+          @blur="isFocused = false"
+        />
+        <textarea
+          v-else
+          :value="value"
+          :rows="rows"
+          :placeholder="placeholder"
+          class="outline-none border-none p-2 w-full"
+          @input="$emit('input', $event.target.value)"
+        />
+        <div v-if="!textarea" class="h-8 w-8">
+          <BaseIcon
+            v-if="clearable && value"
+            classes="cursor-pointer text-neutral-500"
+            icon="close"
+            @click.stop="$emit('click:clear')"
+          />
+        </div>
+      </div>
     </label>
     <div v-if="errors" class="text-sm text-negative-500">
       {{ errors }}
@@ -64,6 +79,17 @@ export default {
       type: Number,
       default: 4,
     },
+
+    clearable: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      isFocused: false,
+    };
   },
 };
 </script>

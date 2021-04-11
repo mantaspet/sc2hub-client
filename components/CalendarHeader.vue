@@ -1,5 +1,5 @@
 <template>
-  <h1 class="flex justify-center mb-3">
+  <h1 class="flex justify-center items-center mb-5">
     <BaseIconButton icon="chevron-left" @click="$emit('previousMonth')" />
     <div class="w-40 text-center">
       {{ title }}

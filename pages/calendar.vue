@@ -1,41 +1,77 @@
 <template>
   <section>
-    <CalendarHeader
-      :title="title"
-      class="mt-4 md:mt-0"
-      @previousMonth="previousMonth"
-      @nextMonth="nextMonth"
-    />
     <div
-      class="grid grid-cols-1 md:grid-cols-7 border-l md:text-xs font-semibold"
+      class="flex flex-col-reverse md:flex-row justify-between"
+      style="min-height: 60px"
+    >
+      <div class="md:w-1/4"></div>
+      <CalendarHeader
+        :title="title"
+        class="mt-4 md:mt-0 md:w-1/2"
+        @previousMonth="previousMonth"
+        @nextMonth="nextMonth"
+      />
+      <div class="md:w-1/4 flex justify-end px-2 md:px-0 pt-2 md:pt-0">
+        <div :style="mdAndUp ? 'max-width: 16rem' : 'width: 100%'">
+          <BaseTextField
+            :value="clientEventsSearch"
+            placeholder="Search..."
+            clearable
+            @input="SET_CLIENT_EVENTS_SEARCH"
+            @click:clear="SET_CLIENT_EVENTS_SEARCH('')"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-1 md:grid-cols-7 border-l md:text-xs md:font-semibold"
     >
       <template v-if="mdAndUp">
         <div
           v-for="weekday in weekdays"
           :key="weekday"
-          class="hidden md:block text-center text-neutral-500 border-t border-b border-r uppercase"
+          class="hidden md:block text-center text-neutral-500 border-t border-b border-r uppercase bg-neutral-100 sticky"
+          style="top: 56px"
         >
           {{ weekday }}
         </div>
       </template>
       <div v-if="!displayedDates.length" class="text-center my-2">
-        No events are registered for this month
+        {{
+          clientEventsSearch
+            ? 'No events found'
+            : 'No events are registered for this month'
+        }}
       </div>
       <div
         v-for="date in displayedDates"
         :key="date"
-        class="border-r border-b p-1"
+        :class="{
+          'bg-positive-100': today === date,
+        }"
+        class="border-r border-b px-1 pb-1"
       >
-        <div class="text-center text-neutral-500 text-sm">
-          {{ mdAndUp ? date.slice(8) : date }}
+        <div class="text-center text-neutral-500 text-sm mt-1">
+          <span class="p-1">
+            {{ mdAndUp ? date.slice(8) : date }}
+          </span>
         </div>
         <div
           v-for="event in eventsByDate[date]"
           :key="event.id"
-          class="flex justify-between pt-2 md:pt-1"
+          :class="{
+            'bg-primary-700 text-neutral-100 rounded': event.eventCategoryId,
+          }"
+          class="flex justify-between px-1 mt-1"
         >
           <span class="whitespace-no-wrap truncate">{{ event.title }}</span>
-          <span class="text-neutral-500 ml-1">{{ event.time }}</span>
+          <span
+            :class="
+              event.eventCategoryId ? 'text-neutral-100' : 'text-neutral-500'
+            "
+            class="ml-1"
+            >{{ event.time }}</span
+          >
         </div>
       </div>
     </div>
@@ -50,16 +86,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
 import {
   addMonths,
-  dateRange,
-  endOfMonth,
-  endOfWeek,
-  formatDate,
+  format,
+  eachDayOfInterval,
   startOfMonth,
+  endOfMonth,
   startOfWeek,
-} from '../util/date';
+  endOfWeek,
+} from 'date-fns';
 import breakpointMixin from '../mixins/breakpoint-mixin';
 import CalendarHeader from '../components/CalendarHeader';
 
@@ -86,33 +122,19 @@ export default {
 
   data() {
     return {
-      weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      months: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ],
+      today: format(new Date(), 'yyyy-MM-dd'),
     };
   },
 
   computed: {
-    ...mapState('events', ['eventFilterParams']),
+    ...mapState('events', ['eventFilterParams', 'clientEventsSearch']),
     ...mapGetters('events', ['eventsByDate']),
 
     displayedDates() {
-      let dates = dateRange(
-        this.eventFilterParams.date_from,
-        this.eventFilterParams.date_to,
-      ).map((date) => formatDate(date));
+      let dates = eachDayOfInterval({
+        start: new Date(this.eventFilterParams.date_from),
+        end: new Date(this.eventFilterParams.date_to),
+      }).map((date) => format(date, 'yyyy-MM-dd'));
       if (!this.mdAndUp) {
         // on calendar mobile view, do not show empty days because they are displayed in one column
         dates = dates.filter((d) => this.eventsByDate[d]);
@@ -131,9 +153,15 @@ export default {
     },
 
     title() {
-      return `${this.months[this.middleDate.getMonth()]}, ${formatDate(
-        this.middleDate,
-      ).slice(0, 4)}`;
+      return format(this.middleDate, 'MMMM, yyyy');
+    },
+
+    weekdays() {
+      const weekdays = [];
+      for (let i = 0; i < 7; i++) {
+        weekdays.push(format(new Date(this.displayedDates[i]), 'E'));
+      }
+      return weekdays;
     },
   },
 
@@ -144,29 +172,43 @@ export default {
 
   methods: {
     ...mapActions('events', ['fetchEvents']),
+    ...mapMutations('events', ['SET_CLIENT_EVENTS_SEARCH']),
+    format,
 
     previousMonth() {
       const previousMonth = addMonths(this.middleDate, -1);
-      const dateFrom = startOfWeek(startOfMonth(previousMonth));
-      const dateTo = endOfWeek(endOfMonth(previousMonth));
+      const dateFrom = format(
+        startOfWeek(startOfMonth(previousMonth), { weekStartsOn: 1 }),
+        'yyyy-MM-dd',
+      );
+      const dateTo = format(
+        endOfWeek(endOfMonth(previousMonth), { weekStartsOn: 1 }),
+        'yyyy-MM-dd',
+      );
       this.$router.push({
         name: 'calendar',
         query: {
-          date_from: formatDate(dateFrom),
-          date_to: formatDate(dateTo),
+          date_from: dateFrom,
+          date_to: dateTo,
         },
       });
     },
 
     nextMonth() {
       const nextMonth = addMonths(this.middleDate, 1);
-      const dateFrom = startOfWeek(startOfMonth(nextMonth));
-      const dateTo = endOfWeek(endOfMonth(nextMonth));
+      const dateFrom = format(
+        startOfWeek(startOfMonth(nextMonth), { weekStartsOn: 1 }),
+        'yyyy-MM-dd',
+      );
+      const dateTo = format(
+        endOfWeek(endOfMonth(nextMonth), { weekStartsOn: 1 }),
+        'yyyy-MM-dd',
+      );
       this.$router.push({
         name: 'calendar',
         query: {
-          date_from: formatDate(dateFrom),
-          date_to: formatDate(dateTo),
+          date_from: dateFrom,
+          date_to: dateTo,
         },
       });
     },
