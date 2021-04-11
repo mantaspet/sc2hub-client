@@ -4,11 +4,13 @@ const breakpointMixin = {
   data() {
     return {
       mdAndUp: false,
+      isClientMounted: false,
     };
   },
 
   mounted() {
     this.setBreakpoints();
+    this.isClientMounted = true;
     window.addEventListener('resize', this.setBreakpoints);
   },
 

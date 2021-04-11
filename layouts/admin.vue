@@ -21,7 +21,12 @@
     </div>
     <hr />
     <div class="sm:px-4 sm:pt-4">
-      <Nuxt />
+      <BaseLoadingSpinner
+        v-show="!isClientMounted"
+        class="mx-auto mt-4 mt-md-0"
+      />
+
+      <Nuxt v-show="isClientMounted" />
     </div>
   </div>
 </template>
@@ -29,9 +34,12 @@
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
 import { showSpoilerHintMessage } from '@/util/popup-messages';
+import breakpointMixin from '@/mixins/breakpoint-mixin';
 
 export default {
   name: 'AdminLayout',
+
+  mixins: [breakpointMixin],
 
   data() {
     return {
