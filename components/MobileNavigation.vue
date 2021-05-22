@@ -1,6 +1,17 @@
 <template>
   <nav
-    class="border-t w-full z-10 flex align-center justify-between md:hidden bottom-0 fixed h-16"
+    class="
+      border-t
+      w-full
+      z-10
+      flex
+      align-center
+      justify-between
+      md:hidden
+      bottom-0
+      fixed
+      h-16
+    "
   >
     <nuxt-link
       v-for="page in pages"

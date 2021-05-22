@@ -1,7 +1,15 @@
 <template>
   <a :href="url" target="_blank" @click="$emit('click')">
     <article
-      class="flex flex-col h-full mb-4 duration-150 transition-all transform hover:scale-105"
+      class="
+        flex flex-col
+        h-full
+        mb-4
+        duration-150
+        transition-all
+        transform
+        hover:scale-105
+      "
     >
       <div class="bg-gray-200 relative video-card-image-wrapper">
         <img
@@ -10,7 +18,18 @@
           @error="failedToLoadImage = true"
         />
         <div
-          class="absolute top-0 left-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"
+          class="
+            absolute
+            top-0
+            left-0
+            bg-black
+            text-white
+            m-1
+            px-1
+            rounded
+            text-xs
+            font-bold
+          "
         >
           {{ topLeft }}
         </div>
@@ -22,12 +41,34 @@
           </slot>
         </div>
         <div
-          class="absolute bottom-0 left-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"
+          class="
+            absolute
+            bottom-0
+            left-0
+            bg-black
+            text-white
+            m-1
+            px-1
+            rounded
+            text-xs
+            font-bold
+          "
         >
           {{ bottomLeft }}
         </div>
         <div
-          class="absolute bottom-0 right-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"
+          class="
+            absolute
+            bottom-0
+            right-0
+            bg-black
+            text-white
+            m-1
+            px-1
+            rounded
+            text-xs
+            font-bold
+          "
         >
           {{ bottomRight }}
         </div>

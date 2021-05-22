@@ -4,7 +4,15 @@
       <div v-for="page in pages" :key="page.name">
         <nuxt-link
           :to="page.route"
-          class="hover:bg-neutral-200 flex transition-all duration-150 py-2 px-4 whitespace-no-wrap"
+          class="
+            hover:bg-neutral-200
+            flex
+            transition-all
+            duration-150
+            py-2
+            px-4
+            whitespace-no-wrap
+          "
         >
           <BaseIcon v-if="page.icon" :icon="page.icon" classes="h-6 mr-4" />
           {{ page.text }}

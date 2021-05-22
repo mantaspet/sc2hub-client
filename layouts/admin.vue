@@ -13,7 +13,15 @@
         {{ page.text }}
       </nuxt-link>
       <span
-        class="hover:bg-primary-200 transition-all duration-150 rounded p-3 m-2 cursor-pointer"
+        class="
+          hover:bg-primary-200
+          transition-all
+          duration-150
+          rounded
+          p-3
+          m-2
+          cursor-pointer
+        "
         @click="logout"
       >
         Logout

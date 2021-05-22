@@ -1,13 +1,34 @@
 <template>
   <div
-    class="fixed z-20 p-2 w-full flex justify-center md:justify-end pointer-events-none"
+    class="
+      fixed
+      z-20
+      p-2
+      w-full
+      flex
+      justify-center
+      md:justify-end
+      pointer-events-none
+    "
     :style="mdAndUp ? 'top: 56px' : 'top: 0'"
   >
     <transition-group name="fade">
       <div
         v-for="message in messages"
         :key="message.key"
-        class="bg-neutral-1000 hover:bg-neutral-900 text-neutral-100 transition-all duration-150 shadow-md mb-4 relative rounded cursor-pointer pointer-events-auto"
+        class="
+          bg-neutral-1000
+          hover:bg-neutral-900
+          text-neutral-100
+          transition-all
+          duration-150
+          shadow-md
+          mb-4
+          relative
+          rounded
+          cursor-pointer
+          pointer-events-auto
+        "
         :style="{ width: mdAndUp ? '20rem' : '100%' }"
         @mouseenter="pauseProgress(message)"
         @mouseleave="resumeProgress(message)"
@@ -68,9 +89,8 @@ export default {
       }
       this.messages.push(message);
       await this.$nextTick();
-      const messageProgressBar = this.$refs[
-        `message-${message.key}-progress-bar`
-      ][0];
+      const messageProgressBar =
+        this.$refs[`message-${message.key}-progress-bar`][0];
       messageProgressBar.style.width = '100%';
 
       message.updateIntervalId = setInterval(() => {

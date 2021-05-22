@@ -24,13 +24,27 @@
       </div>
     </div>
     <div
-      class="grid grid-cols-1 md:grid-cols-7 border-l md:text-xs md:font-semibold"
+      class="
+        grid grid-cols-1
+        md:grid-cols-7
+        border-l
+        md:text-xs
+        md:font-semibold
+      "
     >
       <template v-if="mdAndUp">
         <div
           v-for="weekday in weekdays"
           :key="weekday"
-          class="hidden md:block text-center text-neutral-500 border-t border-b border-r uppercase bg-neutral-100 sticky"
+          class="
+            hidden
+            md:block
+            text-center text-neutral-500
+            border-t border-b border-r
+            uppercase
+            bg-neutral-100
+            sticky
+          "
           style="top: 56px"
         >
           {{ weekday }}
