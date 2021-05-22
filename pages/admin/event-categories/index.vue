@@ -21,9 +21,12 @@
                 />
               </div>
               <div class="ml-4">
-                <div class="text-sm font-medium text-gray-900">
+                <nuxt-link
+                  :to="`/admin/event-categories/${item.ID}`"
+                  class="text-sm font-medium text-primary-700 hover:underline"
+                >
                   {{ item.Name }} #{{ item.ID }}
-                </div>
+                </nuxt-link>
                 <div class="text-sm text-gray-500">
                   {{ item.IncludePatterns }}
                 </div>
@@ -44,11 +47,6 @@
 
           <template #item.Actions="{ item }">
             <div class="flex">
-              <nuxt-link
-                :to="`/admin/event-categories/${item.ID}`"
-                class="text-indigo-600 hover:text-indigo-900"
-                >Edit</nuxt-link
-              >
               <a
                 href="#"
                 class="ml-2 text-red-600 hover:text-red-900"
