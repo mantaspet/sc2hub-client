@@ -32,7 +32,7 @@
         :style="{ width: mdAndUp ? '20rem' : '100%' }"
         @mouseenter="pauseProgress(message)"
         @mouseleave="resumeProgress(message)"
-        @click="hideMessage(message.key)"
+        @click="onMessageClick(message)"
       >
         <div
           :ref="`message-${message.key}-progress-bar`"
@@ -53,6 +53,7 @@ import {
   SHOW_POPUP_MESSAGE_EVENT_NAME,
 } from '@/util/popup-messages';
 import breakpointMixin from '@/mixins/breakpoint-mixin';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'PopupMessages',
@@ -77,6 +78,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('settings', ['toggleSpoilers']),
+
     async showMessage(event) {
       const message = event.detail;
       for (let i = 0; i < this.messages.length; i++) {
@@ -127,6 +130,13 @@ export default {
 
     resumeProgress(message) {
       message.isProgressPaused = false;
+    },
+
+    onMessageClick(message) {
+      this.hideMessage(message.key);
+      if (message.key === 'spoilers-are-enabled-by-default') {
+        this.toggleSpoilers(false);
+      }
     },
   },
 };
