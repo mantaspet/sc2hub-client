@@ -18,6 +18,7 @@
           @error="failedToLoadImage = true"
         />
         <div
+          v-if="topLeft"
           class="
             absolute
             top-0
@@ -35,12 +36,16 @@
         </div>
         <div class="absolute top-0 right-0 m-1">
           <slot name="top-right">
-            <div class="bg-black text-white px-1 rounded text-xs font-bold">
+            <div
+              v-if="topRight"
+              class="bg-black text-white px-1 rounded text-xs font-bold"
+            >
               {{ topRight }}
             </div>
           </slot>
         </div>
         <div
+          v-if="bottomLeft"
           class="
             absolute
             bottom-0
@@ -57,6 +62,7 @@
           {{ bottomLeft }}
         </div>
         <div
+          v-if="bottomRight"
           class="
             absolute
             bottom-0
