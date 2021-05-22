@@ -53,7 +53,7 @@ export const getters = {
     const eventsByDate = {};
     const sortedEvents = events.sort((e1, e2) => e1.time > e2.time);
     for (let i = 0; i < sortedEvents.length; i++) {
-      const event = events[i];
+      const event = sortedEvents[i];
       if (!eventsByDate[event.date]) {
         eventsByDate[event.date] = [event];
       } else {

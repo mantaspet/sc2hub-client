@@ -11,8 +11,8 @@
     <div v-show="isClientMounted" class="h-full">
       <PopupMessages />
 
-      <NavigationDesktop />
-      <NavigationMobile />
+      <DesktopNavigation />
+      <MobileNavigation />
       <div class="pb-20 md:pb-4 t-0 md:pt-20 px-0 sm:px-4">
         <Nuxt />
       </div>
@@ -24,13 +24,13 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 import breakpointMixin from '@/mixins/breakpoint-mixin';
 import { showSpoilerHintMessage } from '@/util/popup-messages';
-import NavigationDesktop from '../components/DesktopNavigation';
-import NavigationMobile from '../components/MobileNavigation';
+import DesktopNavigation from '../components/DesktopNavigation';
+import MobileNavigation from '../components/MobileNavigation';
 
 export default {
   name: 'DefaultLayout',
 
-  components: { NavigationMobile, NavigationDesktop },
+  components: { MobileNavigation, DesktopNavigation },
 
   mixins: [breakpointMixin],
 

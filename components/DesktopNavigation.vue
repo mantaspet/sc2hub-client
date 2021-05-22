@@ -61,7 +61,7 @@
         >
           {{ page.text }}
         </nuxt-link>
-        <BaseMenu nudge-top="56" close-on-content-click>
+        <BaseMenu :nudge-top="56" close-on-content-click left>
           <template #activator>
             <div
               class="
@@ -102,7 +102,7 @@
       </div>
 
       <div class="flex items-center pr-4">
-        <BaseMenu nudge-top="43" padding="4">
+        <BaseMenu :nudge-top="43" padding="4" left>
           <template #activator>
             <BaseIconButton
               icon="cog"
@@ -126,7 +126,7 @@ import Settings from '@/components/Settings';
 import { hideMessage } from '@/util/popup-messages';
 
 export default {
-  name: 'NavigationDesktop',
+  name: 'DesktopNavigation',
 
   components: { Settings, BaseMenu, BaseIconButton },
 

@@ -30,7 +30,7 @@
 import BaseIcon from './base/BaseIcon.vue';
 
 export default {
-  name: 'NavigationMobile',
+  name: 'MobileNavigation',
 
   components: { BaseIcon },
 

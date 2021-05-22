@@ -12,12 +12,12 @@
         @nextMonth="nextMonth"
       />
       <div class="md:w-1/4 flex justify-end px-2 md:px-0 pt-2 md:pt-0">
-        <div :style="mdAndUp ? 'max-width: 16rem' : 'width: 100%'">
+        <div class="w-full">
           <BaseTextField
             :value="clientEventsSearch"
             placeholder="Search..."
             clearable
-            @input="SET_CLIENT_EVENTS_SEARCH"
+            @input="onSearchInput"
             @click:clear="SET_CLIENT_EVENTS_SEARCH('')"
           />
         </div>
@@ -32,24 +32,22 @@
         md:font-semibold
       "
     >
-      <template v-if="mdAndUp">
-        <div
-          v-for="weekday in weekdays"
-          :key="weekday"
-          class="
-            hidden
-            md:block
-            text-center text-neutral-500
-            border-t border-b border-r
-            uppercase
-            bg-neutral-100
-            sticky
-          "
-          style="top: 56px"
-        >
-          {{ weekday }}
-        </div>
-      </template>
+      <div
+        v-for="weekday in weekdays"
+        :key="weekday"
+        class="
+          hidden
+          md:block
+          text-center text-neutral-500
+          border-t border-b border-r
+          uppercase
+          bg-neutral-100
+          sticky
+        "
+        style="top: 56px"
+      >
+        {{ weekday }}
+      </div>
       <div v-if="!displayedDates.length" class="text-center my-2">
         {{
           clientEventsSearch
@@ -62,21 +60,45 @@
         :key="date"
         :class="{
           'bg-positive-100': today === date,
+          'hidden md:block': !eventsByDate[date],
         }"
         class="border-r border-b px-1 pb-1"
       >
         <div class="text-center text-neutral-500 text-sm mt-1">
-          <span class="p-1">
-            {{ mdAndUp ? date.slice(8) : date }}
+          <span class="p-1 hidden md:inline">
+            {{ date.slice(8) }}
+          </span>
+          <span class="p-1 md:hidden">
+            {{ date }}
           </span>
         </div>
         <div
           v-for="event in eventsByDate[date]"
+          :id="`event-${event.id}`"
           :key="event.id"
-          :class="{
-            'bg-primary-700 text-neutral-100 rounded': event.eventCategoryId,
-          }"
-          class="flex justify-between px-1 mt-1"
+          :class="[
+            {
+              'bg-primary-700':
+                event.eventCategoryId && event.id !== selectedEvent.id,
+            },
+            {
+              'bg-primary-900':
+                event.eventCategoryId && event.id === selectedEvent.id,
+            },
+            {
+              'bg-neutral-200':
+                !event.eventCategoryId && event.id === selectedEvent.id,
+            },
+            {
+              'hover:bg-primary-900 text-neutral-100 rounded':
+                event.eventCategoryId,
+            },
+            {
+              'hover:bg-neutral-200': !event.eventCategoryId,
+            },
+          ]"
+          class="flex justify-between px-1 mt-1 cursor-pointer"
+          @click="openEventDetails(event)"
         >
           <span class="whitespace-no-wrap truncate">{{ event.title }}</span>
           <span
@@ -90,12 +112,27 @@
       </div>
     </div>
     <CalendarHeader
-      v-if="!mdAndUp && displayedDates.length"
+      v-if="displayedDates.length"
       :title="title"
-      class="mt-4"
+      class="mt-4 md:hidden"
       @previousMonth="previousMonth"
       @nextMonth="nextMonth"
     />
+
+    <BaseMenu
+      :is-open="!!selectedEvent.id"
+      :position-x="eventMenuPositionX"
+      :position-y="eventMenuPositionY"
+      :nudge-top="20"
+      padding="4"
+      @close="selectedEvent = {}"
+    >
+      <EventDetails
+        :event="selectedEvent"
+        style="width: 20rem"
+        class="w-full"
+      />
+    </BaseMenu>
   </section>
 </template>
 
@@ -110,15 +147,10 @@ import {
   startOfWeek,
   endOfWeek,
 } from 'date-fns';
-import breakpointMixin from '../mixins/breakpoint-mixin';
-import CalendarHeader from '../components/CalendarHeader';
+import { sleep } from '@/util/sleep';
 
 export default {
   name: 'Calendar',
-
-  components: { CalendarHeader },
-
-  mixins: [breakpointMixin],
 
   async fetch({ store, error, route }) {
     if (store.state.events.events) {
@@ -137,6 +169,10 @@ export default {
   data() {
     return {
       today: format(new Date(), 'yyyy-MM-dd'),
+      selectedEvent: {},
+      eventMenuPositionX: -1,
+      eventMenuPositionY: -1,
+      searchTimerId: null,
     };
   },
 
@@ -145,15 +181,10 @@ export default {
     ...mapGetters('events', ['eventsByDate']),
 
     displayedDates() {
-      let dates = eachDayOfInterval({
+      return eachDayOfInterval({
         start: new Date(this.eventFilterParams.date_from),
         end: new Date(this.eventFilterParams.date_to),
       }).map((date) => format(date, 'yyyy-MM-dd'));
-      if (!this.mdAndUp) {
-        // on calendar mobile view, do not show empty days because they are displayed in one column
-        dates = dates.filter((d) => this.eventsByDate[d]);
-      }
-      return dates;
     },
 
     middleDate() {
@@ -225,6 +256,21 @@ export default {
           date_to: dateTo,
         },
       });
+    },
+
+    async openEventDetails(event) {
+      await sleep(); // to give time for window click listener to close an open menu
+      const element = document.getElementById(`event-${event.id}`);
+      this.eventMenuPositionX = element.offsetLeft;
+      this.eventMenuPositionY = element.offsetTop;
+      this.selectedEvent = event;
+    },
+
+    onSearchInput(value) {
+      clearTimeout(this.searchTimerId);
+      this.searchTimerId = setTimeout(() => {
+        this.SET_CLIENT_EVENTS_SEARCH(value);
+      }, 500);
     },
   },
 };
