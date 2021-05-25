@@ -9,12 +9,17 @@
     <transition name="fade">
       <div
         v-if="isMenuOpen"
-        :class="[{ 'right-0': left }, { 'left-0': right }, `p-${padding}`]"
+        :class="[{ 'right-0': left }, { 'left-0': right }]"
         :style="menuStyles"
-        class="absolute bg-white rounded border shadow-md z-30"
-        @click="onContentClick"
+        class="absolute z-30 shadow-md"
       >
-        <slot></slot>
+        <div
+          :class="`p-${padding}`"
+          class="bg-white rounded border overflow-x-hidden overflow-y-auto"
+          @click="onContentClick"
+        >
+          <slot></slot>
+        </div>
       </div>
     </transition>
   </div>
@@ -57,6 +62,10 @@ export default {
       type: Number,
       default: -1,
     },
+    maxHeight: {
+      type: String,
+      default: '',
+    },
   },
 
   data() {
@@ -87,6 +96,11 @@ export default {
       if (this.positionX >= 0) {
         styles += `left: ${this.positionX}px;`;
       }
+
+      if (this.maxHeight) {
+        styles += `max-height: ${this.maxHeight};`;
+      }
+
       return styles;
     },
   },
@@ -100,6 +114,8 @@ export default {
       }
     },
   },
+
+  mounted() {},
 
   beforeDestroy() {
     window.removeEventListener('click', this.onWindowClick);

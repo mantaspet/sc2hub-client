@@ -1,8 +1,14 @@
 <template>
   <div>
-    <p>{{ event.stage }}</p>
-    <p class="text-sm">{{ eventTimeString }}</p>
-    <div v-if="eventVideos.length" class="pt-4">
+    <div class="p-4 bg-white">
+      <p>{{ event.stage }}</p>
+      <p class="text-sm">{{ eventTimeString }}</p>
+    </div>
+    <div
+      v-if="eventVideos.length"
+      class="px-4 mt-1 bg-white overflow-y-auto"
+      style="max-height: 30rem"
+    >
       <MediaCard
         v-for="video in eventVideos"
         :key="video.ID"
@@ -17,6 +23,7 @@
         :top-left="enableSpoilers ? video.Duration : ''"
         :bottom-left="video.ViewCount"
         :bottom-right="video.CreatedAtHumanized"
+        disable-hover-effect
         @click="storeLastOpenedVideo(video)"
       />
     </div>
@@ -24,7 +31,7 @@
 </template>
 
 <script>
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, isValid } from 'date-fns';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { processVideos } from '@/store/videos';
 
@@ -67,7 +74,9 @@ export default {
   },
 
   created() {
-    this.fetchEventBroadcasts(this.event);
+    if (!this.event.videos) {
+      this.fetchEventBroadcasts(this.event);
+    }
     this.setEventTimeString();
     this.intervalId = setInterval(this.setEventTimeString, 1000);
   },
@@ -82,9 +91,13 @@ export default {
 
     setEventTimeString() {
       let string = '';
-      const now = new Date();
       const eventDate = new Date(`${this.event.date} ${this.event.time}`);
-      string += now > eventDate ? 'Happened ' : 'Starts in ';
+      if (!isValid(eventDate)) {
+        this.eventTimeString = '';
+        return;
+      }
+      const now = new Date();
+      string += new Date() > eventDate ? 'Happened ' : 'Starts in ';
       string += formatDistanceToNow(eventDate);
       if (now > eventDate) {
         string += ' ago';

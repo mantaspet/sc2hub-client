@@ -124,7 +124,6 @@
       :position-x="eventMenuPositionX"
       :position-y="eventMenuPositionY"
       :nudge-top="20"
-      padding="4"
       @close="selectedEvent = {}"
     >
       <EventDetails

@@ -1,15 +1,11 @@
 <template>
   <a :href="url" target="_blank" @click="$emit('click')">
     <article
-      class="
-        flex flex-col
-        h-full
-        mb-4
-        duration-150
-        transition-all
-        transform
-        hover:scale-105
-      "
+      :class="{
+        'hover:scale-105 transform transition-all duration-150':
+          !disableHoverEffect,
+      }"
+      class="flex flex-col h-full mb-4"
     >
       <div class="bg-gray-200 relative video-card-image-wrapper">
         <img
@@ -129,6 +125,11 @@ export default {
     bottomRight: {
       type: String,
       default: '',
+    },
+
+    disableHoverEffect: {
+      type: Boolean,
+      default: false,
     },
   },
 
