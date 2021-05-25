@@ -21,6 +21,12 @@
       @input="$emit('clear:errors', 'ExcludePatterns')"
     />
     <BaseTextField
+      v-model="eventCategory.ImageURL"
+      :errors="errors.ImageURL"
+      label="ImageURL"
+      @input="$emit('clear:errors', 'ImageURL')"
+    />
+    <BaseTextField
       v-model="eventCategory.InfoURL"
       :errors="errors.InfoURL"
       label="InfoURL"
