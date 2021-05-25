@@ -10,6 +10,16 @@ export const state = () => ({
   eventCategoryValidationErrors: {},
 });
 
+export const getters = {
+  eventCategoriesMap(state) {
+    const map = {};
+    for (let i = 0; i < state.eventCategories?.length; i++) {
+      map[state.eventCategories[i].ID] = state.eventCategories[i];
+    }
+    return map;
+  },
+};
+
 export const mutations = {
   SET_EVENT_CATEGORIES(state, eventCategories) {
     state.eventCategories = eventCategories;
@@ -53,6 +63,7 @@ export const actions = {
   async fetchEventCategories({ commit }) {
     const eventCategories = await this.$axios.$get('/event-categories');
     commit('SET_EVENT_CATEGORIES', eventCategories);
+    return eventCategories;
   },
 
   async editEventCategory({ state, commit }, eventCategoryId) {

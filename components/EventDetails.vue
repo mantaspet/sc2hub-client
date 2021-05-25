@@ -1,13 +1,32 @@
 <template>
-  <div>
+  <div class="event-details-sheet">
     <div class="p-4 bg-white">
-      <p>{{ event.stage }}</p>
-      <p class="text-sm">{{ eventTimeString }}</p>
+      <div class="flex items-center">
+        <img
+          v-if="eventCategory && eventCategory.ImageURL"
+          :src="eventCategory.ImageURL"
+          class="w-24 pr-4"
+          alt=""
+        />
+        <div class="w-full">
+          <h3 class="uppercase text-lg font-medium">
+            {{ event.title }}
+          </h3>
+          <p class="text-sm">{{ event.stage }}</p>
+          <p class="text-sm">{{ eventTimeString }}</p>
+        </div>
+      </div>
     </div>
     <div
       v-if="eventVideos.length"
-      class="px-4 mt-1 bg-white overflow-y-auto"
-      style="max-height: 30rem"
+      class="
+        px-4
+        mt-1
+        bg-white
+        overflow-y-auto
+        video-grid
+        max-2-cols max-h-half-screen
+      "
     >
       <MediaCard
         v-for="video in eventVideos"
@@ -24,7 +43,7 @@
         :bottom-left="video.ViewCount"
         :bottom-right="video.CreatedAtHumanized"
         disable-hover-effect
-        @click="storeLastOpenedVideo(video)"
+        @click="storeLastOpenedVideo({ event, video })"
       />
     </div>
   </div>
@@ -54,29 +73,34 @@ export default {
 
   computed: {
     ...mapState('settings', ['enableSpoilers']),
+    ...mapState('events', ['eventVideosMap']),
     ...mapGetters('players', ['playerIdRegexes']),
     ...mapGetters('matchups', ['matchupRegexes']),
     ...mapGetters('races', ['raceRegexes']),
+    ...mapGetters('eventCategories', ['eventCategoriesMap']),
 
     eventVideos() {
-      if (!this.event.videos?.length) {
+      if (!this.eventVideosMap[this.event.id]?.length) {
         return [];
       }
 
       return processVideos(
-        this.event.videos,
+        this.eventVideosMap[this.event.id],
         this.enableSpoilers,
         this.playerIdRegexes,
         this.matchupRegexes,
         this.raceRegexes,
       );
     },
+
+    eventCategory() {
+      return this.event.eventCategoryId
+        ? this.eventCategoriesMap[this.event.eventCategoryId]
+        : null;
+    },
   },
 
   created() {
-    if (!this.event.videos) {
-      this.fetchEventBroadcasts(this.event);
-    }
     this.setEventTimeString();
     this.intervalId = setInterval(this.setEventTimeString, 1000);
   },
@@ -87,7 +111,7 @@ export default {
 
   methods: {
     ...mapActions('events', ['fetchEventBroadcasts']),
-    ...mapActions('videos', ['storeLastOpenedVideo']),
+    ...mapActions('events', ['storeLastOpenedVideo']),
 
     setEventTimeString() {
       let string = '';

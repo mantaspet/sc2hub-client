@@ -24,8 +24,9 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 import breakpointMixin from '@/mixins/breakpoint-mixin';
 import { showSpoilerHintMessage } from '@/util/popup-messages';
-import DesktopNavigation from '../components/DesktopNavigation';
-import MobileNavigation from '../components/MobileNavigation';
+import DesktopNavigation from '@/components/DesktopNavigation';
+import MobileNavigation from '@/components/MobileNavigation';
+import { preloadImage } from '@/util/preload-image';
 
 export default {
   name: 'DefaultLayout',
@@ -49,6 +50,11 @@ export default {
     if (!this.enableSpoilers) {
       this.loadPlayerIds();
     }
+    this.fetchEventCategories().then((eventCategories) => {
+      for (let i = 0; i < eventCategories?.length; i++) {
+        preloadImage(eventCategories[i].ImageURL);
+      }
+    });
 
     if (!this.accessToken) {
       const token = localStorage.sc2hubAccessToken;
@@ -63,6 +69,7 @@ export default {
     ...mapActions('videos', ['loadLastOpenedVideos']),
     ...mapActions('settings', ['loadSettings']),
     ...mapActions('players', ['loadPlayerIds']),
+    ...mapActions('eventCategories', ['fetchEventCategories']),
   },
 };
 </script>

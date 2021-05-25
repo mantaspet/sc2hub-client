@@ -36,6 +36,7 @@ function getDefaultEventFilterParams() {
 
 export const state = () => ({
   events: null,
+  eventVideosMap: {},
   eventFilterParams: getDefaultEventFilterParams(),
   clientEventsSearch: '',
   loadedEventIntervals: [],
@@ -100,12 +101,7 @@ export const mutations = {
   },
 
   SET_EVENT_BROADCASTS(state, { event, videos }) {
-    for (let i = 0; i < state.events?.length; i++) {
-      if (state.events[i].id === event.id) {
-        Vue.set(state.events[i], 'videos', decorateVideos(videos));
-        break;
-      }
-    }
+    Vue.set(state.eventVideosMap, event.id, decorateVideos(videos));
   },
 };
 
@@ -141,5 +137,16 @@ export const actions = {
       { params },
     );
     commit('SET_EVENT_BROADCASTS', { event, videos });
+  },
+
+  storeLastOpenedVideo({ rootState, state, commit }, { event, video }) {
+    const videoWithSpoilers = !rootState.settings.enableSpoilers
+      ? state.eventVideosMap[event.id]?.find((v) => v.ID === video.ID)
+      : video;
+    commit('videos/STORE_LAST_OPENED_VIDEO', videoWithSpoilers, { root: true });
+    localStorage.setItem(
+      'lastOpenedVideos',
+      JSON.stringify(state.lastOpenedVideos),
+    );
   },
 };

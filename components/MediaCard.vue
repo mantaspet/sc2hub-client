@@ -5,7 +5,7 @@
         'hover:scale-105 transform transition-all duration-150':
           !disableHoverEffect,
       }"
-      class="flex flex-col h-full mb-4"
+      class="flex flex-col mb-4"
     >
       <div class="bg-gray-200 relative video-card-image-wrapper">
         <img

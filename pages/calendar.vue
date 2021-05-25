@@ -119,19 +119,15 @@
       @nextMonth="nextMonth"
     />
 
-    <BaseMenu
+    <BaseBottomSheet
       :is-open="!!selectedEvent.id"
       :position-x="eventMenuPositionX"
       :position-y="eventMenuPositionY"
       :nudge-top="20"
       @close="selectedEvent = {}"
     >
-      <EventDetails
-        :event="selectedEvent"
-        style="width: 20rem"
-        class="w-full"
-      />
-    </BaseMenu>
+      <EventDetails :event="selectedEvent" />
+    </BaseBottomSheet>
   </section>
 </template>
 
@@ -176,7 +172,11 @@ export default {
   },
 
   computed: {
-    ...mapState('events', ['eventFilterParams', 'clientEventsSearch']),
+    ...mapState('events', [
+      'eventFilterParams',
+      'clientEventsSearch',
+      'eventVideosMap',
+    ]),
     ...mapGetters('events', ['eventsByDate']),
 
     displayedDates() {
@@ -215,7 +215,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('events', ['fetchEvents']),
+    ...mapActions('events', ['fetchEvents', 'fetchEventBroadcasts']),
     ...mapMutations('events', ['SET_CLIENT_EVENTS_SEARCH']),
     format,
 
@@ -258,6 +258,13 @@ export default {
     },
 
     async openEventDetails(event) {
+      if (this.selectedEvent.id === event.id) {
+        this.selectedEvent = {};
+        return;
+      }
+      if (!this.eventVideosMap[event.id]) {
+        await this.fetchEventBroadcasts(event);
+      }
       await sleep(); // to give time for window click listener to close an open menu
       const element = document.getElementById(`event-${event.id}`);
       this.eventMenuPositionX = element.offsetLeft;

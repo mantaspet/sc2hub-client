@@ -115,8 +115,6 @@ export default {
     },
   },
 
-  mounted() {},
-
   beforeDestroy() {
     window.removeEventListener('click', this.onWindowClick);
   },
