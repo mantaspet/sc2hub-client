@@ -5,6 +5,8 @@ import {
   startOfMonth,
   endOfMonth,
 } from 'date-fns';
+import Vue from 'vue';
+import { decorateVideos } from '@/store/videos';
 
 function decorateEvents(events) {
   return events.map((e) => ({
@@ -96,6 +98,15 @@ export const mutations = {
   SET_CLIENT_EVENTS_SEARCH(state, search) {
     state.clientEventsSearch = search;
   },
+
+  SET_EVENT_BROADCASTS(state, { event, videos }) {
+    for (let i = 0; i < state.events?.length; i++) {
+      if (state.events[i].id === event.id) {
+        Vue.set(state.events[i], 'videos', decorateVideos(videos));
+        break;
+      }
+    }
+  },
 };
 
 export const actions = {
@@ -115,5 +126,20 @@ export const actions = {
     commit('SET_EVENT_FILTER_PARAMS', params);
     commit('STORE_LOADED_INTERVAL', interval);
     commit('STORE_EVENTS', decorateEvents(events));
+  },
+
+  async fetchEventBroadcasts({ commit }, event) {
+    if (!event.eventCategoryId) {
+      return;
+    }
+
+    const params = {
+      date: event.date,
+    };
+    const videos = await this.$axios.$get(
+      `/event-categories/${event.eventCategoryId}/broadcasts`,
+      { params },
+    );
+    commit('SET_EVENT_BROADCASTS', { event, videos });
   },
 };
