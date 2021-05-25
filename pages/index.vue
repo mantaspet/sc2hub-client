@@ -52,7 +52,7 @@
               : '/youtube-placeholder.jpg'
           "
           :title="video.Title"
-          :top-left="video.Duration"
+          :top-left="enableSpoilers ? video.Duration : ''"
           :bottom-left="video.ViewCount"
           :bottom-right="video.CreatedAtHumanized"
           @click="storeLastOpenedVideo(video)"
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import MediaCard from '@/components/MediaCard';
 import BaseIconButton from '@/components/base/BaseIconButton';
 
@@ -102,6 +102,7 @@ export default {
   },
 
   computed: {
+    ...mapState('settings', ['enableSpoilers']),
     ...mapGetters('articles', ['recentArticles']),
     ...mapGetters('videos', ['recentVideos', 'lastOpenedVideos']),
     ...mapGetters('channels', ['liveRegisteredChannels']),

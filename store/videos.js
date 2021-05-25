@@ -1,7 +1,7 @@
 import { formatDistance } from 'date-fns';
 import { getHumanizedDuration, getHumanizedNumber } from '@/util/number';
 
-function decorateVideos(videos) {
+export function decorateVideos(videos) {
   for (let i = 0; i < videos.length; i++) {
     const v = videos[i];
     if (v.PlatformID === 1 && v.ThumbnailURL) {
@@ -28,10 +28,13 @@ function decorateVideos(videos) {
   return videos;
 }
 
-function processVideos(videos, getters, rootState, rootGetters) {
-  const playerIdRegexes = rootGetters['players/playerIdRegexes'];
-  const matchupRegexes = rootGetters['matchups/matchupRegexes'];
-  const raceRegexes = rootGetters['races/raceRegexes'];
+export function processVideos(
+  videos,
+  enableSpoilers,
+  playerIdRegexes,
+  matchupRegexes,
+  raceRegexes,
+) {
   const now = new Date();
 
   if (!videos) {
@@ -39,11 +42,11 @@ function processVideos(videos, getters, rootState, rootGetters) {
   }
 
   // spoilers are disabled but playerIds are not loaded yet
-  if (!playerIdRegexes && !rootState.settings.enableSpoilers) {
+  if (!playerIdRegexes && !enableSpoilers) {
     return null;
   }
 
-  if (rootState.settings.enableSpoilers) {
+  if (enableSpoilers) {
     return videos.map((v) => ({
       ...v,
       CreatedAtHumanized: formatDistance(new Date(v.CreatedAt), now, {
@@ -92,20 +95,33 @@ export const state = () => ({
 
 export const getters = {
   videos(state, getters, rootState, rootGetters) {
-    return processVideos(state.videos, getters, rootState, rootGetters);
+    return processVideos(
+      state.videos,
+      rootState.settings.enableSpoilers,
+      rootGetters['players/playerIdRegexes'],
+      rootGetters['matchups/matchupRegexes'],
+      rootGetters['races/raceRegexes'],
+    );
   },
 
   lastOpenedVideos(state, getters, rootState, rootGetters) {
     return processVideos(
       state.lastOpenedVideos,
-      getters,
-      rootState,
-      rootGetters,
+      rootState.settings.enableSpoilers,
+      rootGetters['players/playerIdRegexes'],
+      rootGetters['matchups/matchupRegexes'],
+      rootGetters['races/raceRegexes'],
     );
   },
 
   recentVideos(state, getters, rootState, rootGetters) {
-    return processVideos(state.recentVideos, getters, rootState, rootGetters);
+    return processVideos(
+      state.recentVideos,
+      rootState.settings.enableSpoilers,
+      rootGetters['players/playerIdRegexes'],
+      rootGetters['matchups/matchupRegexes'],
+      rootGetters['races/raceRegexes'],
+    );
   },
 };
 

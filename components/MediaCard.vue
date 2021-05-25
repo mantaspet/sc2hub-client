@@ -1,7 +1,11 @@
 <template>
   <a :href="url" target="_blank" @click="$emit('click')">
     <article
-      class="flex flex-col h-full mb-4 duration-150 transition-all transform hover:scale-105"
+      :class="{
+        'hover:scale-105 transform transition-all duration-150':
+          !disableHoverEffect,
+      }"
+      class="flex flex-col mb-4"
     >
       <div class="bg-gray-200 relative video-card-image-wrapper">
         <img
@@ -10,24 +14,63 @@
           @error="failedToLoadImage = true"
         />
         <div
-          class="absolute top-0 left-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"
+          v-if="topLeft"
+          class="
+            absolute
+            top-0
+            left-0
+            bg-black
+            text-white
+            m-1
+            px-1
+            rounded
+            text-xs
+            font-bold
+          "
         >
           {{ topLeft }}
         </div>
         <div class="absolute top-0 right-0 m-1">
           <slot name="top-right">
-            <div class="bg-black text-white px-1 rounded text-xs font-bold">
+            <div
+              v-if="topRight"
+              class="bg-black text-white px-1 rounded text-xs font-bold"
+            >
               {{ topRight }}
             </div>
           </slot>
         </div>
         <div
-          class="absolute bottom-0 left-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"
+          v-if="bottomLeft"
+          class="
+            absolute
+            bottom-0
+            left-0
+            bg-black
+            text-white
+            m-1
+            px-1
+            rounded
+            text-xs
+            font-bold
+          "
         >
           {{ bottomLeft }}
         </div>
         <div
-          class="absolute bottom-0 right-0 bg-black text-white m-1 px-1 rounded text-xs font-bold"
+          v-if="bottomRight"
+          class="
+            absolute
+            bottom-0
+            right-0
+            bg-black
+            text-white
+            m-1
+            px-1
+            rounded
+            text-xs
+            font-bold
+          "
         >
           {{ bottomRight }}
         </div>
@@ -82,6 +125,11 @@ export default {
     bottomRight: {
       type: String,
       default: '',
+    },
+
+    disableHoverEffect: {
+      type: Boolean,
+      default: false,
     },
   },
 

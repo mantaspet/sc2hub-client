@@ -12,7 +12,7 @@
             : '/youtube-placeholder.png'
         "
         :title="video.Title"
-        :top-left="video.Duration"
+        :top-left="enableSpoilers ? video.Duration : ''"
         :bottom-left="video.ViewCount"
         :bottom-right="video.CreatedAtHumanized"
         @click="storeLastOpenedVideo(video)"
@@ -85,6 +85,7 @@ export default {
 
   computed: {
     ...mapState('videos', ['videoPaginationCursor']),
+    ...mapState('settings', ['enableSpoilers']),
     ...mapGetters('videos', ['videos']),
   },
 

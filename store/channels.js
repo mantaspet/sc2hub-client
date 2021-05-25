@@ -74,7 +74,7 @@ export const mutations = {
     state.liveChannelsPaginationCursor = Cursor;
   },
 
-  SET_LIVE_REGISTERED_CHANNELS(state, { Items }) {
+  SET_LIVE_REGISTERED_CHANNELS(state, Items) {
     state.liveRegisteredChannels = decorateChannels(Items);
   },
 

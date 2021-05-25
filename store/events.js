@@ -5,6 +5,8 @@ import {
   startOfMonth,
   endOfMonth,
 } from 'date-fns';
+import Vue from 'vue';
+import { decorateVideos } from '@/store/videos';
 
 function decorateEvents(events) {
   return events.map((e) => ({
@@ -34,6 +36,7 @@ function getDefaultEventFilterParams() {
 
 export const state = () => ({
   events: null,
+  eventVideosMap: {},
   eventFilterParams: getDefaultEventFilterParams(),
   clientEventsSearch: '',
   loadedEventIntervals: [],
@@ -51,8 +54,9 @@ export const getters = {
         e.stage.toLowerCase().includes(search),
     );
     const eventsByDate = {};
-    for (let i = 0; i < events.length; i++) {
-      const event = events[i];
+    const sortedEvents = events.sort((e1, e2) => e1.time > e2.time);
+    for (let i = 0; i < sortedEvents.length; i++) {
+      const event = sortedEvents[i];
       if (!eventsByDate[event.date]) {
         eventsByDate[event.date] = [event];
       } else {
@@ -95,6 +99,10 @@ export const mutations = {
   SET_CLIENT_EVENTS_SEARCH(state, search) {
     state.clientEventsSearch = search;
   },
+
+  SET_EVENT_BROADCASTS(state, { event, videos }) {
+    Vue.set(state.eventVideosMap, event.id, decorateVideos(videos));
+  },
 };
 
 export const actions = {
@@ -114,5 +122,31 @@ export const actions = {
     commit('SET_EVENT_FILTER_PARAMS', params);
     commit('STORE_LOADED_INTERVAL', interval);
     commit('STORE_EVENTS', decorateEvents(events));
+  },
+
+  async fetchEventBroadcasts({ commit }, event) {
+    if (!event.eventCategoryId) {
+      return;
+    }
+
+    const params = {
+      date: event.date,
+    };
+    const videos = await this.$axios.$get(
+      `/event-categories/${event.eventCategoryId}/broadcasts`,
+      { params },
+    );
+    commit('SET_EVENT_BROADCASTS', { event, videos });
+  },
+
+  storeLastOpenedVideo({ rootState, state, commit }, { event, video }) {
+    const videoWithSpoilers = !rootState.settings.enableSpoilers
+      ? state.eventVideosMap[event.id]?.find((v) => v.ID === video.ID)
+      : video;
+    commit('videos/STORE_LAST_OPENED_VIDEO', videoWithSpoilers, { root: true });
+    localStorage.setItem(
+      'lastOpenedVideos',
+      JSON.stringify(state.lastOpenedVideos),
+    );
   },
 };

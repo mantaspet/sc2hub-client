@@ -4,7 +4,15 @@
     :to="to"
     :class="{ 'w-full': block }"
     :disabled="disabled"
-    class="py-1 px-2 border-2 border-primary-700 text-primary-700 hover:bg-neutral-200 active:bg-neutral-300 rounded"
+    class="
+      py-1
+      px-2
+      border-2 border-primary-700
+      text-primary-700
+      hover:bg-neutral-200
+      active:bg-neutral-300
+      rounded
+    "
   >
     <slot></slot>
   </nuxt-link>
@@ -12,7 +20,15 @@
     v-else
     :class="{ 'w-full': block, 'cursor-wait': loading }"
     :disabled="disabled"
-    class="py-1 px-2 border-2 border-primary-700 text-primary-700 hover:bg-neutral-200 active:bg-neutral-300 rounded"
+    class="
+      py-1
+      px-2
+      border-2 border-primary-700
+      text-primary-700
+      hover:bg-neutral-200
+      active:bg-neutral-300
+      rounded
+    "
     @click="$emit('click', $event)"
   >
     <slot></slot>

@@ -5,7 +5,15 @@
         :checked="checked"
         :disabled="disabled"
         type="checkbox"
-        class="focus:ring-indigo-500 h-4 w-4 text-primary-700 border-neutral-500 rounded mr-2"
+        class="
+          focus:ring-indigo-500
+          h-4
+          w-4
+          text-primary-700
+          border-neutral-500
+          rounded
+          mr-2
+        "
         @change="$emit('change', $event.target.checked)"
       />
       {{ label }}

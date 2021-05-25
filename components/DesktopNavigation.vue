@@ -1,6 +1,17 @@
 <template>
   <nav
-    class="hidden md:flex fixed top-0 align-middle justify-between w-full z-10 transition-shadow duration-300"
+    class="
+      hidden
+      md:flex
+      fixed
+      top-0
+      align-middle
+      justify-between
+      w-full
+      z-10
+      transition-shadow
+      duration-300
+    "
     :class="`${scrollY > 0 ? 'shadow-md' : 'border-b'}`"
   >
     <div class="flex justify-between flex-1">
@@ -10,7 +21,14 @@
           v-for="page in leftLinks"
           :key="page.text"
           :to="page.route"
-          class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
+          class="
+            hover:bg-neutral-100
+            transition-all
+            duration-150
+            flex
+            items-center
+            px-3
+          "
           exact-active-class="active-primary-link"
         >
           {{ page.text }}
@@ -31,15 +49,31 @@
           v-for="page in rightLinks"
           :key="page.text"
           :to="page.route"
-          class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3"
+          class="
+            hover:bg-neutral-100
+            transition-all
+            duration-150
+            flex
+            items-center
+            px-3
+          "
           exact-active-class="active-primary-link"
         >
           {{ page.text }}
         </nuxt-link>
-        <BaseMenu nudge-top="56" close-on-content-click>
+        <BaseMenu :nudge-top="56" close-on-content-click left>
           <template #activator>
             <div
-              class="hover:bg-neutral-100 transition-all duration-150 flex items-center px-3 h-full cursor-pointer"
+              class="
+                hover:bg-neutral-100
+                transition-all
+                duration-150
+                flex
+                items-center
+                px-3
+                h-full
+                cursor-pointer
+              "
             >
               More
             </div>
@@ -49,7 +83,16 @@
               v-for="page in moreMenuLinks"
               :key="page.text"
               :to="page.route"
-              class="hover:bg-neutral-100 block transition-all duration-150 py-4 px-4 whitespace-no-wrap text-center"
+              class="
+                hover:bg-neutral-100
+                block
+                transition-all
+                duration-150
+                py-4
+                px-4
+                whitespace-no-wrap
+                text-center
+              "
               exact-active-class="active-secondary-link"
             >
               {{ page.text }}
@@ -59,7 +102,7 @@
       </div>
 
       <div class="flex items-center pr-4">
-        <BaseMenu nudge-top="43" padding="4">
+        <BaseMenu :nudge-top="43" padding="4" left>
           <template #activator>
             <BaseIconButton
               icon="cog"
@@ -83,7 +126,7 @@ import Settings from '@/components/Settings';
 import { hideMessage } from '@/util/popup-messages';
 
 export default {
-  name: 'NavigationDesktop',
+  name: 'DesktopNavigation',
 
   components: { Settings, BaseMenu, BaseIconButton },
 

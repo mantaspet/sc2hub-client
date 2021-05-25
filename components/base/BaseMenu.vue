@@ -1,17 +1,25 @@
 <template>
-  <div class="relative" @click.stop="isOpen = !isOpen">
-    <div :class="{ 'text-primary-700': isOpen }" class="h-full">
-      <slot name="activator" :is-open="isOpen" />
+  <div
+    :class="{ relative: positionX < 0 && positionY < 0 }"
+    @click.stop="isOpenInternal = !isOpenInternal"
+  >
+    <div :class="{ 'text-primary-700': isOpenInternal }" class="h-full">
+      <slot name="activator" :is-open="isOpenInternal" />
     </div>
     <transition name="fade">
       <div
-        v-if="isOpen"
-        :class="`${right ? 'left' : 'right'}-0 p-${padding}`"
-        class="absolute bg-white rounded border shadow-md z-30"
-        :style="`top: ${nudgeTop}px`"
-        @click="onContentClick"
+        v-if="isMenuOpen"
+        :class="[{ 'right-0': left }, { 'left-0': right }]"
+        :style="menuStyles"
+        class="absolute z-30 shadow-md"
       >
-        <slot></slot>
+        <div
+          :class="`p-${padding}`"
+          class="bg-white rounded border overflow-x-hidden overflow-y-auto"
+          @click="onContentClick"
+        >
+          <slot></slot>
+        </div>
       </div>
     </transition>
   </div>
@@ -26,8 +34,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    left: {
+      type: Boolean,
+      default: false,
+    },
     nudgeTop: {
-      type: [Number, String],
+      type: Number,
       default: 24,
     },
     closeOnContentClick: {
@@ -38,16 +50,69 @@ export default {
       type: [Number, String],
       default: 0,
     },
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+    positionX: {
+      type: Number,
+      default: -1,
+    },
+    positionY: {
+      type: Number,
+      default: -1,
+    },
+    maxHeight: {
+      type: String,
+      default: '',
+    },
   },
 
   data() {
     return {
-      isOpen: false,
+      isOpenInternal: false, // when using activator slot instead of the prop
     };
   },
 
-  mounted() {
-    window.addEventListener('click', this.onWindowClick);
+  computed: {
+    isMenuOpen() {
+      return this.isOpen || this.isOpenInternal;
+    },
+
+    menuStyles() {
+      let styles = '';
+      let top = 0;
+      if (this.nudgeTop) {
+        top += this.nudgeTop;
+      }
+      if (this.positionY >= 0) {
+        top += this.positionY;
+      }
+
+      if (this.nudgeTop || this.positionY >= 0) {
+        styles += `top: ${top}px;`;
+      }
+
+      if (this.positionX >= 0) {
+        styles += `left: ${this.positionX}px;`;
+      }
+
+      if (this.maxHeight) {
+        styles += `max-height: ${this.maxHeight};`;
+      }
+
+      return styles;
+    },
+  },
+
+  watch: {
+    isMenuOpen(newValue) {
+      if (newValue) {
+        window.addEventListener('click', this.onWindowClick);
+      } else {
+        window.removeEventListener('click', this.onWindowClick);
+      }
+    },
   },
 
   beforeDestroy() {
@@ -57,7 +122,8 @@ export default {
   methods: {
     onWindowClick() {
       // When clicking on content or on activator - propagation is stopped
-      this.isOpen = false;
+      this.isOpenInternal = false;
+      this.$emit('close');
     },
 
     onContentClick(event) {

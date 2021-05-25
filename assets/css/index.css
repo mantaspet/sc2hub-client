@@ -206,7 +206,7 @@ button {
 
 .slide-y-enter-active,
 .slide-y-leave-active {
-  transition: transform 0.15s ease-out;
+  transition: transform 0.3s ease;
 }
 
 .slide-y-enter,
@@ -218,6 +218,14 @@ button {
 .narrow-page-wrapper {
   max-width: 48rem;
   margin: 0 auto;
+}
+
+.event-details-sheet {
+  width: 100vw;
+}
+
+.max-h-half-screen {
+  max-height: 50vh;
 }
 
 .link {
@@ -243,14 +251,30 @@ button {
     @apply grid-cols-3;
   }
 
+  .video-grid.max-2-cols {
+    @apply grid-cols-2;
+  }
+
   .pagination-wrapper {
     @apply w-1/3;
+  }
+
+  .event-details-sheet {
+    width: 50vw;
   }
 }
 
 @screen lg {
   .video-grid {
     @apply grid-cols-4;
+  }
+
+  .event-details-sheet {
+    width: 40vw;
+  }
+
+  .video-grid.max-2-cols {
+    @apply grid-cols-2;
   }
 
   .pagination-wrapper {

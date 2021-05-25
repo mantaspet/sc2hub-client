@@ -1,17 +1,38 @@
 <template>
   <div
-    class="fixed z-20 p-2 w-full flex justify-center md:justify-end pointer-events-none"
+    class="
+      fixed
+      z-20
+      p-2
+      w-full
+      flex
+      justify-center
+      md:justify-end
+      pointer-events-none
+    "
     :style="mdAndUp ? 'top: 56px' : 'top: 0'"
   >
     <transition-group name="fade">
       <div
         v-for="message in messages"
         :key="message.key"
-        class="bg-neutral-1000 hover:bg-neutral-900 text-neutral-100 transition-all duration-150 shadow-md mb-4 relative rounded cursor-pointer pointer-events-auto"
+        class="
+          bg-neutral-1000
+          hover:bg-neutral-900
+          text-neutral-100
+          transition-all
+          duration-150
+          shadow-md
+          mb-4
+          relative
+          rounded
+          cursor-pointer
+          pointer-events-auto
+        "
         :style="{ width: mdAndUp ? '20rem' : '100%' }"
         @mouseenter="pauseProgress(message)"
         @mouseleave="resumeProgress(message)"
-        @click="hideMessage(message.key)"
+        @click="onMessageClick(message)"
       >
         <div
           :ref="`message-${message.key}-progress-bar`"
@@ -32,6 +53,7 @@ import {
   SHOW_POPUP_MESSAGE_EVENT_NAME,
 } from '@/util/popup-messages';
 import breakpointMixin from '@/mixins/breakpoint-mixin';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'PopupMessages',
@@ -56,6 +78,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('settings', ['toggleSpoilers']),
+
     async showMessage(event) {
       const message = event.detail;
       for (let i = 0; i < this.messages.length; i++) {
@@ -68,9 +92,8 @@ export default {
       }
       this.messages.push(message);
       await this.$nextTick();
-      const messageProgressBar = this.$refs[
-        `message-${message.key}-progress-bar`
-      ][0];
+      const messageProgressBar =
+        this.$refs[`message-${message.key}-progress-bar`][0];
       messageProgressBar.style.width = '100%';
 
       message.updateIntervalId = setInterval(() => {
@@ -107,6 +130,13 @@ export default {
 
     resumeProgress(message) {
       message.isProgressPaused = false;
+    },
+
+    onMessageClick(message) {
+      this.hideMessage(message.key);
+      if (message.key === 'spoilers-are-enabled-by-default') {
+        this.toggleSpoilers(false);
+      }
     },
   },
 };
