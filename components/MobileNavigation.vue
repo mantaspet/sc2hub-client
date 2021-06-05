@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import BaseIcon from './base/BaseIcon.vue';
 
 export default {
@@ -39,11 +40,18 @@ export default {
   }),
 
   computed: {
+    ...mapState('events', ['eventFilterParams']),
+
     pages() {
       return [
         { name: 'Home', url: '/', icon: 'home' },
         { name: 'Videos', url: '/videos', icon: 'videocam' },
-        { name: 'News', url: '/news', icon: 'news' },
+        {
+          name: 'Calendar',
+          url: '/calendar',
+          icon: 'calendar',
+          query: this.eventFilterParams,
+        },
         { name: 'Livestreams', url: '/livestreams', icon: 'play' },
         { name: 'More', url: '/more', icon: 'dots-horizontal' },
       ];

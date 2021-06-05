@@ -35,15 +35,14 @@ export default {
   components: { BaseIcon, Settings },
 
   computed: {
-    ...mapState('events', ['eventFilterParams']),
     ...mapState('auth', ['accessToken']),
 
     pages() {
       const pages = [
         {
-          text: 'Calendar',
-          route: { name: 'calendar', query: this.eventFilterParams },
-        }, // , icon: 'calendar'
+          text: 'News',
+          route: { name: 'news' },
+        },
         { text: 'Content creators', route: { name: 'content-creators' } },
         { text: 'About SC2Hub', route: { name: 'information' } },
         {
