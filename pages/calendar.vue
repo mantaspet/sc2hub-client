@@ -177,6 +177,7 @@ export default {
       'clientEventsSearch',
       'eventVideosMap',
     ]),
+    ...mapState('eventCategoryChannels', ['eventCategoryChannelsMap']),
     ...mapGetters('events', ['eventsByDate']),
 
     displayedDates() {
@@ -216,6 +217,7 @@ export default {
 
   methods: {
     ...mapActions('events', ['fetchEvents', 'fetchEventBroadcasts']),
+    ...mapActions('eventCategoryChannels', ['fetchEventCategoryChannels']),
     ...mapMutations('events', ['SET_CLIENT_EVENTS_SEARCH']),
     format,
 
@@ -262,10 +264,23 @@ export default {
         this.selectedEvent = {};
         return;
       }
+
+      const requests = [];
+
       if (!this.eventVideosMap[event.id]) {
-        await this.fetchEventBroadcasts(event);
+        requests.push(this.fetchEventBroadcasts(event));
       }
+
+      if (
+        event.eventCategoryId &&
+        !this.eventCategoryChannelsMap[event.eventCategoryId]
+      ) {
+        requests.push(this.fetchEventCategoryChannels(event.eventCategoryId));
+      }
+
+      await Promise.allSettled(requests);
       await sleep(); // to give time for window click listener to close an open menu
+
       const element = document.getElementById(`event-${event.id}`);
       this.eventMenuPositionX = element.offsetLeft;
       this.eventMenuPositionY = element.offsetTop;
