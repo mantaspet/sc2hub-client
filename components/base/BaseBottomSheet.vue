@@ -8,6 +8,8 @@
           w-full
           fixed
           bottom-0
+          left-0
+          right-0
           flex
           justify-center
           z-20
