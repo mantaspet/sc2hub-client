@@ -1,6 +1,6 @@
 <template>
   <div class="event-details-sheet">
-    <div class="p-4 bg-white">
+    <div class="px-4 pt-4 pb-6 bg-white">
       <div class="flex items-center">
         <img
           v-if="eventCategory && eventCategory.ImageURL"
@@ -14,6 +14,9 @@
           </h3>
           <p class="text-sm">{{ event.stage }}</p>
           <p class="text-sm">{{ eventTimeString }}</p>
+          <p v-if="!event.eventCategoryId" class="mt-4">
+            SC2Hub currently does not collect videos for this event.
+          </p>
         </div>
       </div>
     </div>
