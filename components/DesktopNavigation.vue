@@ -149,12 +149,11 @@ export default {
 
     rightLinks() {
       return [
-        { text: 'Livestreams', route: { name: 'livestreams' } },
-
         {
           text: 'Calendar',
           route: { name: 'calendar', query: this.eventFilterParams },
         },
+        { text: 'Livestreams', route: { name: 'livestreams' } },
       ];
     },
 
