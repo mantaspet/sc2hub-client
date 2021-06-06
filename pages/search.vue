@@ -3,47 +3,83 @@
     <div class="py-4 w-full md:w-1/2">
       <BaseTextField
         :value="searchQuery"
+        :placeholder="searchInputPlaceholder"
         input-id="search-input"
         class="w-full"
+        clearable
         @input="onSearchQueryInput"
+        @click:clear="SET_SEARCH_QUERY('')"
       />
     </div>
 
-    <h2
-      v-if="videoSearchResults && videoSearchResults.length"
-      class="py-3 text-center text-xl"
-    >
-      Videos
-    </h2>
-    <div class="video-grid">
-      <MediaCard
-        v-for="video in videoSearchResults"
-        :key="video.ID"
-        :url="video.VideoURL"
-        :image-url="video.ThumbnailURL"
-        :fallback-image-url="
-          video.PlatformID === 1
-            ? '/twitch-placeholder.jpg'
-            : '/youtube-placeholder.png'
+    <div class="pb-8 flex flex-col items-center justify-center">
+      <h2
+        v-if="videoSearchResults && videoSearchResults.length"
+        class="py-3 text-center text-xl"
+      >
+        Videos
+      </h2>
+      <div class="video-grid">
+        <MediaCard
+          v-for="video in videoSearchResults"
+          :key="video.ID"
+          :url="video.VideoURL"
+          :image-url="video.ThumbnailURL"
+          :fallback-image-url="
+            video.PlatformID === 1
+              ? '/twitch-placeholder.jpg'
+              : '/youtube-placeholder.png'
+          "
+          :title="video.Title"
+          :top-left="enableSpoilers ? video.Duration : ''"
+          :bottom-left="video.ViewCount"
+          :bottom-right="video.CreatedAtHumanized"
+          @click="storeLastOpenedVideo(video)"
+        />
+      </div>
+      <div
+        v-if="
+          videoSearchResultsPaginationCursor &&
+          videoSearchResults &&
+          videoSearchResults.length
         "
-        :title="video.Title"
-        :top-left="enableSpoilers ? video.Duration : ''"
-        :bottom-left="video.ViewCount"
-        :bottom-right="video.CreatedAtHumanized"
-        @click="storeLastOpenedVideo(video)"
-      />
+        class="pagination-wrapper"
+      >
+        <BaseButton block @click="fetchNextVideoSearchResultsPage">
+          Load more
+        </BaseButton>
+      </div>
     </div>
-    <div
-      v-if="
-        videoSearchResultsPaginationCursor &&
-        videoSearchResults &&
-        videoSearchResults.length
-      "
-      class="pagination-wrapper"
-    >
-      <BaseButton block @click="fetchNextVideoSearchResultsPage">
-        Load more
-      </BaseButton>
+
+    <div class="pb-8 narrow-page-wrapper w-full flex flex-col">
+      <h2
+        v-if="articleSearchResults && articleSearchResults.length"
+        class="py-3 text-center text-xl"
+      >
+        Articles
+      </h2>
+      <Article
+        v-for="article in articleSearchResults"
+        :key="article.id"
+        :title="article.Title"
+        :image="article.ThumbnailURL"
+        :excerpt="article.Excerpt"
+        :url="article.URL"
+        :published-at="article.PublishedAtHumanized"
+        :source="article.Source"
+      />
+      <div
+        v-if="
+          articleSearchResultsPaginationCursor &&
+          articleSearchResults &&
+          articleSearchResults.length
+        "
+        class="pagination-wrapper mx-auto"
+      >
+        <BaseButton block @click="fetchNextArticleVideoSearchResultsPage">
+          Load more
+        </BaseButton>
+      </div>
     </div>
   </section>
 </template>
@@ -58,38 +94,75 @@ export default {
   data() {
     return {
       debounceTimerId: null,
+      placeholderIntervalId: null,
+      searchInputPlaceholder: '',
     };
   },
 
   computed: {
     ...mapState('search', [
       'searchQuery',
+      'articleSearchResultsPaginationCursor',
       'videoSearchResultsPaginationCursor',
     ]),
     ...mapState('settings', ['enableSpoilers']),
-    ...mapGetters('search', ['videoSearchResults']),
+    ...mapGetters('search', ['videoSearchResults', 'articleSearchResults']),
   },
 
   mounted() {
+    this.setSearchInputPlaceholder();
+    this.placeholderIntervalId = setInterval(
+      this.setSearchInputPlaceholder,
+      7000,
+    );
     setTimeout(() => {
       // for some reason doesn't work without setTimeout
       document.getElementById('search-input')?.focus();
     });
   },
 
+  beforeDestroy() {
+    clearInterval(this.placeholderIntervalId);
+  },
+
   methods: {
     ...mapMutations('search', ['SET_SEARCH_QUERY']),
     ...mapActions('search', [
-      'fetchVideoSearchResults',
+      'fetchSearchResults',
+      'fetchNextArticleVideoSearchResultsPage',
       'fetchNextVideoSearchResultsPage',
       'storeLastOpenedVideo',
     ]),
+
+    setSearchInputPlaceholder() {
+      const placeholders = [
+        'GSL Super Tournament',
+        'Maru TvP',
+        'Trap',
+        'GSL Finals',
+        'Serral vs Reynor',
+        'ZvZ',
+        'ZvP',
+        'ZvT',
+        'PvP',
+        'PvT',
+        'PvZ',
+        'TvT',
+        'TvZ',
+        'TvP',
+        'Serral',
+        'IEM Katowice',
+        'Classic',
+      ].filter((p) => p !== this.searchInputPlaceholder);
+      const randomIndex = Math.floor(Math.random() * placeholders.length);
+      this.searchInputPlaceholder = placeholders[randomIndex];
+    },
 
     onSearchQueryInput(value) {
       clearTimeout(this.debounceTimerId);
       this.debounceTimerId = setTimeout(() => {
         this.SET_SEARCH_QUERY(value);
-        this.fetchVideoSearchResults({ query: value });
+        this.fetchSearchResults({ query: value });
       }, 500);
     },
   },

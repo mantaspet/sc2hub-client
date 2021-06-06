@@ -102,7 +102,11 @@
       </div>
 
       <div class="flex items-center pr-4">
-        <nuxt-link to="/search" class="mr-4">
+        <nuxt-link
+          to="/search"
+          class="mr-4"
+          exact-active-class="active-secondary-link"
+        >
           <BaseIconButton icon="search" />
         </nuxt-link>
         <BaseMenu :nudge-top="43" padding="4" left>
