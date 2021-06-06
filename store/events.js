@@ -146,7 +146,7 @@ export const actions = {
     commit('videos/STORE_LAST_OPENED_VIDEO', videoWithSpoilers, { root: true });
     localStorage.setItem(
       'lastOpenedVideos',
-      JSON.stringify(state.lastOpenedVideos),
+      JSON.stringify(rootState.videos.lastOpenedVideos),
     );
   },
 };
