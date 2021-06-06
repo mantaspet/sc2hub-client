@@ -9,7 +9,10 @@
       />
     </div>
 
-    <h2 v-if="videoSearchResults.length" class="py-3 text-center text-xl">
+    <h2
+      v-if="videoSearchResults && videoSearchResults.length"
+      class="py-3 text-center text-xl"
+    >
       Videos
     </h2>
     <div class="video-grid">
@@ -31,7 +34,11 @@
       />
     </div>
     <div
-      v-if="videoSearchResultsPaginationCursor && videoSearchResults.length"
+      v-if="
+        videoSearchResultsPaginationCursor &&
+        videoSearchResults &&
+        videoSearchResults.length
+      "
       class="pagination-wrapper"
     >
       <BaseButton block @click="fetchNextVideoSearchResultsPage">
@@ -64,7 +71,10 @@ export default {
   },
 
   mounted() {
-    document.getElementById('search-input')?.focus();
+    setTimeout(() => {
+      // for some reason doesn't work without setTimeout
+      document.getElementById('search-input')?.focus();
+    });
   },
 
   methods: {

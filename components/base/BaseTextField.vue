@@ -10,8 +10,8 @@
           v-if="!textarea"
           :value="value"
           :type="type"
-          :placeholder="placeholder"
           :id="inputId"
+          :placeholder="placeholder"
           class="p-2 border-none outline-none flex-grow"
           @input="$emit('input', $event.target.value)"
           @focus="isFocused = true"
@@ -21,8 +21,8 @@
           v-else
           :value="value"
           :rows="rows"
-          :placeholder="placeholder"
           :id="inputId"
+          :placeholder="placeholder"
           class="outline-none border-none p-2 w-full"
           @input="$emit('input', $event.target.value)"
         />
