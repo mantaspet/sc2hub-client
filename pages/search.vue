@@ -155,22 +155,14 @@ export default {
     setSearchInputPlaceholder() {
       const placeholders = [
         'GSL Super Tournament',
-        'Maru TvP',
-        'Trap',
-        'GSL Finals',
-        'Serral vs Reynor',
-        'ZvZ',
-        'ZvP',
-        'ZvT',
-        'PvP',
-        'PvT',
-        'PvZ',
-        'TvT',
-        'TvZ',
-        'TvP',
-        'Serral',
         'IEM Katowice',
-        'Classic',
+        'SC2 Masters Summer',
+        'GSL Finals',
+        'Trap',
+        'Serral vs Reynor',
+        'Maru vs TY',
+        'Serral',
+        'DreamHack Final',
       ].filter((p) => p !== this.searchInputPlaceholder);
       const randomIndex = Math.floor(Math.random() * placeholders.length);
       this.searchInputPlaceholder = placeholders[randomIndex];
