@@ -162,7 +162,9 @@ export default {
 
     setEventTimeString() {
       let string = '';
-      const eventDate = new Date(`${this.event.date} ${this.event.time}`);
+      const eventDate = new Date(
+        `${this.event.date.replaceAll('-', '/')} ${this.event.time}`,
+      );
       if (!isValid(eventDate)) {
         this.eventTimeString = '';
         return;
