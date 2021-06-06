@@ -1,6 +1,6 @@
 <template>
   <section class="content-wrapper flex flex-col items-center justify-center">
-    <div class="py-4 w-full md:w-1/2">
+    <div class="px-2 md:px-0 pt-2 w-full md:w-1/2">
       <BaseTextField
         :value="searchQuery"
         :placeholder="searchInputPlaceholder"
@@ -11,6 +11,10 @@
         @click:clear="SET_SEARCH_QUERY('')"
       />
     </div>
+
+    <h2 v-if="showNoResultsMessage" class="py-3 text-center text-xl">
+      No results found
+    </h2>
 
     <div class="pb-8 flex flex-col items-center justify-center">
       <h2
@@ -107,6 +111,20 @@ export default {
     ]),
     ...mapState('settings', ['enableSpoilers']),
     ...mapGetters('search', ['videoSearchResults', 'articleSearchResults']),
+    ...mapGetters('progress', ['loading']),
+
+    showNoResultsMessage() {
+      if (this.articleSearchResults?.length) {
+        return false;
+      }
+      if (this.videoSearchResults?.length) {
+        return false;
+      }
+      if (!this.searchQuery) {
+        return false;
+      }
+      return !(this.loading['get:/videos'] || this.loading['get:/articles']);
+    },
   },
 
   mounted() {

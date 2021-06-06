@@ -43,6 +43,10 @@ export default {
           text: 'News',
           route: { name: 'news' },
         },
+        {
+          text: 'Search',
+          route: { name: 'search' },
+        },
         { text: 'Content creators', route: { name: 'content-creators' } },
         { text: 'About SC2Hub', route: { name: 'information' } },
         {

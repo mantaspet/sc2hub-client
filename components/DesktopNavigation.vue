@@ -103,7 +103,7 @@
 
       <div class="flex items-center pr-4">
         <nuxt-link
-          to="/search"
+          :to="{ name: 'search' }"
           class="mr-4"
           exact-active-class="active-secondary-link"
         >
