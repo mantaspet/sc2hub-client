@@ -1,5 +1,5 @@
 <template>
-  <div class="col-span-3 sm:col-span-2 mb-4">
+  <div class="mb-4">
     <label class="block">
       {{ label }}
       <div
@@ -10,6 +10,7 @@
           v-if="!textarea"
           :value="value"
           :type="type"
+          :id="inputId"
           :placeholder="placeholder"
           class="p-2 border-none outline-none flex-grow"
           @input="$emit('input', $event.target.value)"
@@ -20,6 +21,7 @@
           v-else
           :value="value"
           :rows="rows"
+          :id="inputId"
           :placeholder="placeholder"
           class="outline-none border-none p-2 w-full"
           @input="$emit('input', $event.target.value)"
@@ -83,6 +85,11 @@ export default {
     clearable: {
       type: Boolean,
       default: false,
+    },
+
+    inputId: {
+      type: String,
+      default: '',
     },
   },
 

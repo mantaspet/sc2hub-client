@@ -1,6 +1,6 @@
 import { formatDistance } from 'date-fns';
 
-function processArticles(articles, getters, rootState, rootGetters) {
+export function processArticles(articles, getters, rootState, rootGetters) {
   const playerIdRegexes = rootGetters['players/playerIdRegexes'];
   const matchupRegexes = rootGetters['matchups/matchupRegexes'];
   const raceRegexes = rootGetters['races/raceRegexes'];
