@@ -97,10 +97,15 @@
               'hover:bg-neutral-200': !event.eventCategoryId,
             },
           ]"
-          class="flex justify-between px-1 mt-1 cursor-pointer"
+          class="flex justify-between px-1 mt-1 cursor-pointer event-chip"
           @click="openEventDetails(event)"
         >
-          <span class="whitespace-no-wrap truncate">{{ event.title }}</span>
+          <span class="whitespace-no-wrap truncate event-title">{{
+            event.title
+          }}</span>
+          <span class="whitespace-no-wrap truncate event-stage">{{
+            event.stage || event.title
+          }}</span>
           <span
             :class="
               event.eventCategoryId ? 'text-neutral-100' : 'text-neutral-500'
@@ -296,3 +301,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.event-stage {
+  display: none;
+}
+
+.event-chip:hover .event-stage {
+  display: inline;
+}
+
+.event-chip:hover .event-title {
+  display: none;
+}
+</style>
