@@ -96,8 +96,11 @@
             {
               'hover:bg-neutral-200': !event.eventCategoryId,
             },
+            {
+              'event-chip-with-hover': isUsingMouse,
+            },
           ]"
-          class="flex justify-between px-1 mt-1 cursor-pointer event-chip"
+          class="flex justify-between px-1 mt-1 cursor-pointer"
           @click="openEventDetails(event)"
         >
           <span class="whitespace-no-wrap truncate event-title">{{
@@ -151,9 +154,12 @@ import {
   endOfWeek,
 } from 'date-fns';
 import { sleep } from '@/util/sleep';
+import detectMouseMixin from '@/mixins/detect-mouse-mixin';
 
 export default {
   name: 'Calendar',
+
+  mixins: [detectMouseMixin],
 
   async fetch({ store, error, route }) {
     if (store.state.events.events) {
@@ -329,11 +335,11 @@ export default {
   display: none;
 }
 
-.event-chip:hover .event-stage {
+.event-chip-with-hover:hover .event-stage {
   display: inline;
 }
 
-.event-chip:hover .event-title {
+.event-chip-with-hover:hover .event-title {
   display: none;
 }
 </style>
