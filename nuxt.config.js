@@ -21,7 +21,8 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'StarCraft 2 esports and resources',
+        content:
+          'Watch StarCraft 2 esports content without spoilers. SC2Hub collects videos, articles and events of major StarCraft 2 tournaments and optionally hides player names, matchups and other information that might spoil the tournament winners while you are still watching the group stage. Optimized for both desktop and mobile devices. Integrated with both Twitch and Youtube platforms. Connects TL.net events calendar with the videos of those events. No sign up required.',
       },
     ],
     link: [
