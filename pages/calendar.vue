@@ -97,7 +97,7 @@
               'hover:bg-neutral-200': !event.eventCategoryId,
             },
             {
-              'event-chip-with-hover': isUsingMouse,
+              'event-chip-with-hover': !isUsingTouch,
             },
           ]"
           class="flex justify-between px-1 mt-1 cursor-pointer"
@@ -154,12 +154,12 @@ import {
   endOfWeek,
 } from 'date-fns';
 import { sleep } from '@/util/sleep';
-import detectMouseMixin from '@/mixins/detect-mouse-mixin';
+import detectTouchDeviceMixin from '@/mixins/detect-touch-device-mixin';
 
 export default {
   name: 'Calendar',
 
-  mixins: [detectMouseMixin],
+  mixins: [detectTouchDeviceMixin],
 
   async fetch({ store, error, route }) {
     if (store.state.events.events) {
