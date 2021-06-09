@@ -8,7 +8,7 @@
         class="w-full"
         clearable
         @input="onSearchQueryInput"
-        @click:clear="SET_SEARCH_QUERY('')"
+        @click:clear="onSearchInputClear"
       />
     </div>
 
@@ -128,13 +128,10 @@ export default {
   },
 
   mounted() {
-    this.setSearchInputPlaceholder();
-    this.placeholderIntervalId = setInterval(
-      this.setSearchInputPlaceholder,
-      7000,
-    );
+    this.setSearchInputPlaceholderInterval();
     setTimeout(() => {
-      // for some reason doesn't work without setTimeout
+      // for some reason doesn't work without setTimeout.
+      // also doesn't bring keyboard in iOS but I haven't found a workaround
       document.getElementById('search-input')?.focus();
     });
   },
@@ -152,6 +149,15 @@ export default {
       'storeLastOpenedVideo',
     ]),
 
+    setSearchInputPlaceholderInterval() {
+      clearInterval(this.placeholderIntervalId);
+      this.setSearchInputPlaceholder();
+      this.placeholderIntervalId = setInterval(
+        this.setSearchInputPlaceholder,
+        5000,
+      );
+    },
+
     setSearchInputPlaceholder() {
       const placeholders = [
         'GSL Super Tournament',
@@ -165,15 +171,21 @@ export default {
         'DreamHack Final',
       ].filter((p) => p !== this.searchInputPlaceholder);
       const randomIndex = Math.floor(Math.random() * placeholders.length);
-      this.searchInputPlaceholder = placeholders[randomIndex];
+      this.searchInputPlaceholder = `e.g. ${placeholders[randomIndex]}`;
     },
 
     onSearchQueryInput(value) {
       clearTimeout(this.debounceTimerId);
       this.debounceTimerId = setTimeout(() => {
         this.SET_SEARCH_QUERY(value);
+        this.setSearchInputPlaceholderInterval();
         this.fetchSearchResults({ query: value });
       }, 500);
+    },
+
+    onSearchInputClear() {
+      this.setSearchInputPlaceholderInterval();
+      this.SET_SEARCH_QUERY('');
     },
   },
 };

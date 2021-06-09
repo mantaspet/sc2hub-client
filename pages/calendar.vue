@@ -60,7 +60,7 @@
         :key="date"
         :class="{
           'bg-positive-100': today === date,
-          'hidden md:block': !eventsByDate[date],
+          'hidden md:block': !eventsByDate[date] || !isInCurrentMonth(date),
         }"
         class="border-r border-b px-1 pb-1"
       >
@@ -97,10 +97,15 @@
               'hover:bg-neutral-200': !event.eventCategoryId,
             },
           ]"
-          class="flex justify-between px-1 mt-1 cursor-pointer"
+          class="flex justify-between px-1 mt-1 cursor-pointer event-chip"
           @click="openEventDetails(event)"
         >
-          <span class="whitespace-no-wrap truncate">{{ event.title }}</span>
+          <span class="whitespace-no-wrap truncate event-title">{{
+            event.title
+          }}</span>
+          <span class="whitespace-no-wrap truncate event-stage">{{
+            event.stage || event.title
+          }}</span>
           <span
             :class="
               event.eventCategoryId ? 'text-neutral-100' : 'text-neutral-500'
@@ -112,12 +117,15 @@
       </div>
     </div>
     <CalendarHeader
-      v-if="displayedDates.length"
+      v-if="daysWithEvents > 10"
       :title="title"
       class="mt-4 md:hidden"
       @previousMonth="previousMonth"
       @nextMonth="nextMonth"
     />
+    <p v-if="daysWithEvents === 0" class="md:hidden py-3 px-4 text-center">
+      No events found for this month.
+    </p>
 
     <BaseBottomSheet
       :is-open="!!selectedEvent.id"
@@ -197,6 +205,10 @@ export default {
       return new Date(timeMiddle);
     },
 
+    currentMonth() {
+      return this.middleDate.getMonth();
+    },
+
     title() {
       return format(this.middleDate, 'MMMM, yyyy');
     },
@@ -207,6 +219,17 @@ export default {
         weekdays.push(format(new Date(this.displayedDates[i]), 'E'));
       }
       return weekdays;
+    },
+
+    daysWithEvents() {
+      let count = 0;
+      for (let i = 0; i < this.displayedDates.length; i++) {
+        const date = this.displayedDates[i];
+        if (this.isInCurrentMonth(date) && this.eventsByDate[date]?.length) {
+          count += 1;
+        }
+      }
+      return count;
     },
   },
 
@@ -220,6 +243,10 @@ export default {
     ...mapActions('eventCategoryChannels', ['fetchEventCategoryChannels']),
     ...mapMutations('events', ['SET_CLIENT_EVENTS_SEARCH']),
     format,
+
+    isInCurrentMonth(date) {
+      return new Date(date).getMonth() === this.currentMonth;
+    },
 
     previousMonth() {
       const previousMonth = addMonths(this.middleDate, -1);
@@ -296,3 +323,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.event-stage {
+  display: none;
+}
+
+.event-chip:hover .event-stage {
+  display: inline;
+}
+
+.event-chip:hover .event-title {
+  display: none;
+}
+</style>

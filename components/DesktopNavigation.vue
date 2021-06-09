@@ -166,11 +166,11 @@ export default {
 
     moreMenuLinks() {
       const links = [
-        { text: 'Content creators', route: { name: 'content-creators' } },
-        { text: 'About SC2Hub', route: { name: 'information' } },
+        // { text: 'Content creators', route: { name: 'content-creators' } },
+        { text: 'About SC2Hub', route: { name: 'about' } },
         {
           text: 'Planned features',
-          route: { name: 'information', hash: '#planned-features' },
+          route: { name: 'about', hash: '#planned-features' },
         },
       ];
       if (this.accessToken) {

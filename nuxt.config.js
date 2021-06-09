@@ -13,6 +13,9 @@ export default {
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
    */
+  server: {
+    host: '0.0.0.0', // to expose to local network
+  },
   head: {
     title: 'SC2Hub',
     meta: [
@@ -21,7 +24,8 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'StarCraft 2 esports and resources',
+        content:
+          'Browse StarCraft 2 esports content without spoilers. SC2Hub collects videos, articles and events of major StarCraft 2 tournaments and optionally hides player names, matchups and other information that might spoil the tournament winners while you are still watching the group stage. Optimized for both desktop and mobile devices. Integrated with both Twitch and Youtube platforms. Connects TL.net events calendar with the videos of those events. No sign up required.',
       },
     ],
     link: [
@@ -85,10 +89,17 @@ export default {
    */
   pwa: {
     meta: {
-      title: 'SC2Hub',
-      description: 'StarCraft 2 esports and resources',
+      name: 'SC2Hub',
+      description: 'Browse StarCraft 2 esports content without spoilers',
       theme_color: '#4299d7',
       ogHost: 'https://sc2hub.net',
+      viewport:
+        'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0',
+    },
+    manifest: {
+      name: 'SC2Hub',
+      short_name: 'SC2Hub',
+      description: 'Browse StarCraft 2 esports content without spoilers',
     },
   },
 };

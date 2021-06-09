@@ -54,7 +54,7 @@ export default {
       adminLinks: [
         { text: 'Dashboard', route: '/admin/dashboard' },
         { text: 'Event categories', route: '/admin/event-categories' },
-        { text: 'Content creators', route: '/admin/content-creators' },
+        // { text: 'Content creators', route: '/admin/content-creators' },
         { text: 'Main site', route: '/' },
       ],
     };

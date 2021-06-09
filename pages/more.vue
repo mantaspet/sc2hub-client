@@ -47,11 +47,11 @@ export default {
           text: 'Search',
           route: { name: 'search' },
         },
-        { text: 'Content creators', route: { name: 'content-creators' } },
-        { text: 'About SC2Hub', route: { name: 'information' } },
+        // { text: 'Content creators', route: { name: 'content-creators' } },
+        { text: 'About SC2Hub', route: { name: 'about' } },
         {
           text: 'Planned features',
-          route: { name: 'information', hash: '#planned-features' },
+          route: { name: 'about', hash: '#planned-features' },
         },
       ];
       if (this.accessToken) {

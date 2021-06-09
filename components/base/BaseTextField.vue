@@ -31,7 +31,7 @@
             v-if="clearable && value"
             classes="cursor-pointer text-neutral-500"
             icon="close"
-            @click.stop="$emit('click:clear')"
+            @click.stop.prevent="$emit('click:clear')"
           />
         </div>
       </div>

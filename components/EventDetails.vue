@@ -21,6 +21,11 @@
       </div>
     </div>
     <div class="overflow-y-auto max-h-half-screen">
+      <p v-if="eventVideos.length && hasAlreadyHappened" class="px-4 mb-4">
+        {{ eventCategory.Name }} videos from the day this event happened ({{
+          format(new Date(event.date), 'MMMM d, yyyy')
+        }}):
+      </p>
       <div
         v-if="eventVideos.length && hasAlreadyHappened"
         class="px-4 pb-4 mt-1 video-grid max-2-cols"
@@ -57,18 +62,35 @@
             <div>
               {{ channel.Title }}
             </div>
-            <a :href="channel.URL" class="link" target="_blank">
+            <a
+              :href="channel.URL"
+              class="link event-channel-link"
+              target="_blank"
+            >
               {{ channel.URL }}
             </a>
           </div>
         </div>
+        <p
+          v-if="
+            !eventVideos.length &&
+            eventChannels.length > 0 &&
+            hasAlreadyHappened
+          "
+          class="py-2"
+        >
+          If you found videos of this event on another channel, please send me
+          an email with the link to that channel and the event name to
+          <a href="mailto:sc2hub@icloud.com" class="link">sc2hub@icloud.com</a>
+          so it can be added to this event's registered channels list.
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { formatDistanceToNow, isValid } from 'date-fns';
+import { format, formatDistanceToNow, isValid } from 'date-fns';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { processVideos } from '@/store/videos';
 import { getChannelUrl } from '@/store/eventCategoryChannels';
@@ -140,10 +162,10 @@ export default {
       }
 
       if (this.eventVideos.length > 0 && this.eventChannels.length > 0) {
-        return `You may find more videos of this event ${suffix}:`;
+        return `You may find more ${this.event.title} videos ${suffix}:`;
       }
 
-      return `You may find videos of this event ${suffix}:`;
+      return `No videos of this event were found. This happens when they aren't uploaded or are uploaded 1 or more days after the event to these channels:`;
     },
   },
 
@@ -159,6 +181,8 @@ export default {
   methods: {
     ...mapActions('events', ['fetchEventBroadcasts']),
     ...mapActions('events', ['storeLastOpenedVideo']),
+
+    format,
 
     setEventTimeString() {
       let string = '';
@@ -182,4 +206,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.event-channel-link {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100vw - 45px - 3rem);
+  white-space: nowrap;
+}
+</style>
