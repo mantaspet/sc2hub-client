@@ -62,7 +62,11 @@
             <div>
               {{ channel.Title }}
             </div>
-            <a :href="channel.URL" class="link" target="_blank">
+            <a
+              :href="channel.URL"
+              class="link event-channel-link"
+              target="_blank"
+            >
               {{ channel.URL }}
             </a>
           </div>
@@ -202,4 +206,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.event-channel-link {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100vw - 45px - 3rem);
+  white-space: nowrap;
+}
+</style>
