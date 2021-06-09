@@ -102,4 +102,8 @@ export default {
       description: 'Browse StarCraft 2 esports content without spoilers',
     },
   },
+  loading: {
+    color: 'var(--color-primary-700)',
+    error: 'var(--color-negative-700)',
+  },
 };
